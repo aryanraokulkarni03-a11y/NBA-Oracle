@@ -54,6 +54,7 @@ nba-oracle/
 - Phase 2.1 hardening pass: [docs/plans/implementation/phase-2-1.md](docs/plans/implementation/phase-2-1.md)
 - Phase 3 implementation plan: [docs/plans/implementation/phase-3.md](docs/plans/implementation/phase-3.md)
 - Phase 3 runbook: [docs/runbooks/phase-3.md](docs/runbooks/phase-3.md)
+- Phase 3.1 hardening plan: [docs/plans/implementation/phase-3-1.md](docs/plans/implementation/phase-3-1.md)
 - Phase 1 runbook: [docs/runbooks/phase-1.md](docs/runbooks/phase-1.md)
 - Phase 2 runbook: [docs/runbooks/phase-2.md](docs/runbooks/phase-2.md)
 - Supabase Phase 2 schema: [supabase/phase2_schema.sql](supabase/phase2_schema.sql)

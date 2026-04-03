@@ -28,6 +28,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Live-mode no-slate handling | Complete | `--live` mode now treats zero-game days as valid empty runs instead of cascading failures. | Safer daily operations | Date-targeted slate support |
 | Phase 3 implementation plan | Complete | Stability-layer work is now captured as a concrete build plan. | Safe Phase 3 execution | Continue converting the plan into code |
 | Phase 3 execution start | In progress | Saved-baseline review flow, drift checks, timing checks, market locks, and analyst-containment reporting landed. | Operator stability review without spreadsheet work | Retraining workflow and richer graded evidence |
+| Phase 3.1 hardening plan | Complete | A one-shot closeout plan now targets the remaining Phase 3 gaps directly. | Precise Phase 3 bug-fix and hardening pass | Execute the Phase 3.1 code changes |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
 ## Current Implementation Delta
@@ -55,7 +56,7 @@ python main.py review-stability
 
 1. [project-status-matrix.md](./project-status-matrix.md)
 2. [phase-3.md](../plans/implementation/phase-3.md)
-3. [phase-3.md](../runbooks/phase-3.md)
-4. [phase-2.md](../runbooks/phase-2.md)
-5. [phase-2-1.md](../plans/implementation/phase-2-1.md)
+3. [phase-3-1.md](../plans/implementation/phase-3-1.md)
+4. [phase-3.md](../runbooks/phase-3.md)
+5. [phase-2.md](../runbooks/phase-2.md)
 6. [master-spec.md](../spec/master-spec.md)
