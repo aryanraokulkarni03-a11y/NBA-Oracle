@@ -19,6 +19,13 @@ Phase 2 is complete:
 - Phase 2.2 schedule fallback derives the upcoming slate from odds when the official live scoreboard is stale
 - real live verification has produced non-zero snapshots and predictions with no `supabase_error:...`
 
+Phase 3 is now in progress:
+- baseline-backed stability review command
+- drift assessment against a saved Phase 3 baseline
+- timing/freshness review
+- strict market-readiness locks for moneylines vs totals/props
+- analyst-containment checks and reporting
+
 ## Repo Structure
 
 ```text
@@ -45,6 +52,8 @@ nba-oracle/
 - Phase 1 implementation plan: [docs/plans/implementation/phase-1.md](docs/plans/implementation/phase-1.md)
 - Phase 2 implementation plan: [docs/plans/implementation/phase-2.md](docs/plans/implementation/phase-2.md)
 - Phase 2.1 hardening pass: [docs/plans/implementation/phase-2-1.md](docs/plans/implementation/phase-2-1.md)
+- Phase 3 implementation plan: [docs/plans/implementation/phase-3.md](docs/plans/implementation/phase-3.md)
+- Phase 3 runbook: [docs/runbooks/phase-3.md](docs/runbooks/phase-3.md)
 - Phase 1 runbook: [docs/runbooks/phase-1.md](docs/runbooks/phase-1.md)
 - Phase 2 runbook: [docs/runbooks/phase-2.md](docs/runbooks/phase-2.md)
 - Supabase Phase 2 schema: [supabase/phase2_schema.sql](supabase/phase2_schema.sql)
@@ -58,6 +67,7 @@ nba-oracle/
 python main.py validate-fixture
 python -m unittest discover -s tests -p "test_*.py"
 python main.py replay
+python main.py review-stability
 ```
 
 Generated replay and live-slate outputs are written to `reports/`.
@@ -68,4 +78,4 @@ Generated replay and live-slate outputs are written to `reports/`.
 - The detailed product doctrine, research, and build theory live under `docs/`.
 - Sentiment is still intentionally deferred in live mode.
 - Supabase is active through the dual storage path.
-- Phase 3 is the next backend phase.
+- Phase 3 is now the active backend phase.

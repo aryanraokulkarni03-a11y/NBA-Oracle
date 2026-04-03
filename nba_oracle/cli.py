@@ -4,11 +4,12 @@ import argparse
 from datetime import datetime
 from pathlib import Path
 
-from nba_oracle.config import DEFAULT_FIXTURE_PATH, DEFAULT_LIVE_BUNDLE_PATH
+from nba_oracle.config import DEFAULT_FIXTURE_PATH, DEFAULT_JSON_REPORT_PATH, DEFAULT_LIVE_BUNDLE_PATH, RUNTIME_DIR
 from nba_oracle.live_reporting import write_live_json_report, write_live_markdown_report
 from nba_oracle.reporting import write_json_report, write_markdown_report
 from nba_oracle.replay import run_replay
 from nba_oracle.runs.build_live_slate import build_live_slate
+from nba_oracle.runs.review_stability import review_stability
 from nba_oracle.snapshots import load_game_snapshots
 
 
@@ -53,6 +54,29 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Override the decision time used for live mode (ISO-8601)",
     )
+
+    stability = subparsers.add_parser(
+        "review-stability",
+        help="Review recent live runs against the replay/live baseline and emit a Phase 3 stability report",
+    )
+    stability.add_argument(
+        "--replay-report",
+        type=Path,
+        default=DEFAULT_JSON_REPORT_PATH,
+        help="Path to the Phase 1 replay JSON report",
+    )
+    stability.add_argument(
+        "--runtime-dir",
+        type=Path,
+        default=RUNTIME_DIR,
+        help="Path to the runtime directory that contains live runs",
+    )
+    stability.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Maximum number of live runs to review",
+    )
     return parser
 
 
@@ -84,6 +108,20 @@ def main() -> None:
         json_path = write_live_json_report(result)
         print(f"Live slate build complete. Markdown report: {md_path}")
         print(f"Live slate build complete. JSON report: {json_path}")
+        return
+
+    if args.command == "review-stability":
+        result, baseline_path, md_path, json_path = review_stability(
+            replay_report_path=args.replay_report,
+            runtime_dir=args.runtime_dir,
+            limit=args.limit,
+        )
+        print(f"Stability review complete. Baseline file: {baseline_path}")
+        print(f"Stability review complete. Markdown report: {md_path}")
+        print(f"Stability review complete. JSON report: {json_path}")
+        print(f"Drift status: {result.drift.status}")
+        print(f"Timing status: {result.timing.status}")
+        print(f"Analyst containment: {result.readiness.analyst.status}")
         return
 
     parser.error("Unknown command")

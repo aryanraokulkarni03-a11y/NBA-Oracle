@@ -8,6 +8,7 @@ DATA_DIR = ROOT_DIR / "data"
 FIXTURES_DIR = DATA_DIR / "fixtures"
 LIVE_SOURCES_DIR = DATA_DIR / "live_sources"
 RUNTIME_DIR = DATA_DIR / "runtime"
+STABILITY_DIR = DATA_DIR / "stability"
 REPORTS_DIR = ROOT_DIR / "reports"
 
 DEFAULT_FIXTURE_PATH = FIXTURES_DIR / "phase1_sample_slate.json"
@@ -16,6 +17,8 @@ DEFAULT_JSON_REPORT_PATH = REPORTS_DIR / "phase1_replay_report.json"
 DEFAULT_LIVE_BUNDLE_PATH = LIVE_SOURCES_DIR / "phase2_sample_bundle.json"
 DEFAULT_LIVE_REPORT_PATH = REPORTS_DIR / "phase2_live_slate_report.md"
 DEFAULT_LIVE_JSON_REPORT_PATH = REPORTS_DIR / "phase2_live_slate_report.json"
+DEFAULT_STABILITY_REPORT_PATH = REPORTS_DIR / "phase3_stability_report.md"
+DEFAULT_STABILITY_JSON_REPORT_PATH = REPORTS_DIR / "phase3_stability_report.json"
 
 MIN_SOURCE_QUALITY = 0.55
 MIN_EDGE_FOR_LEAN = 0.015
@@ -38,6 +41,20 @@ DEFAULT_ODDS_PROVIDER = "the_odds_api"
 DEFAULT_INJURY_PROVIDER = "espn_nba_api"
 DEFAULT_SENTIMENT_PROVIDER = "reddit_only"
 
+
+def _env_int(name: str, default: int) -> int:
+    raw_value = get_env_value(name)
+    if raw_value in {None, ""}:
+        return default
+    return int(raw_value)
+
+
+def _env_bool(name: str, default: bool) -> bool:
+    raw_value = get_env_value(name)
+    if raw_value in {None, ""}:
+        return default
+    return str(raw_value).strip().lower() in {"1", "true", "yes", "on"}
+
 ODDS_API_KEY = get_env_value("ODDS_API_KEY")
 SUPABASE_URL = get_env_value("SUPABASE_URL")
 SUPABASE_SERVICE_ROLE_KEY = get_env_value("SUPABASE_SERVICE_ROLE_KEY")
@@ -59,3 +76,21 @@ SUPABASE_RUNS_TABLE = "phase2_runs"
 SUPABASE_PROVIDER_TABLE = "phase2_provider_runs"
 SUPABASE_SNAPSHOTS_TABLE = "phase2_snapshots"
 SUPABASE_PREDICTIONS_TABLE = "phase2_predictions"
+
+PHASE3_DRIFT_WINDOW_RUNS = _env_int("PHASE3_DRIFT_WINDOW_RUNS", 30)
+PHASE3_MIN_GRADED_PICKS_FOR_RETRAIN = _env_int("PHASE3_MIN_GRADED_PICKS_FOR_RETRAIN", 100)
+PHASE3_MARKET_UNLOCK_MIN_SAMPLE = _env_int("PHASE3_MARKET_UNLOCK_MIN_SAMPLE", 100)
+PHASE3_MARKET_UNLOCK_POLICY = get_env_value("PHASE3_MARKET_UNLOCK_POLICY", "strict") or "strict"
+PHASE3_ANALYST_LOGGING_ENABLED = _env_bool("PHASE3_ANALYST_LOGGING_ENABLED", True)
+PHASE3_MIN_LIVE_RUNS_FOR_DRIFT = _env_int("PHASE3_MIN_LIVE_RUNS_FOR_DRIFT", 3)
+PHASE3_MAX_PROVIDER_DEGRADATION_RATE = float(
+    get_env_value("PHASE3_MAX_PROVIDER_DEGRADATION_RATE", "0.35") or "0.35"
+)
+PHASE3_MAX_SKIP_RATE_DELTA = float(get_env_value("PHASE3_MAX_SKIP_RATE_DELTA", "0.20") or "0.20")
+PHASE3_MAX_ACTIVE_BET_RATE_DELTA = float(
+    get_env_value("PHASE3_MAX_ACTIVE_BET_RATE_DELTA", "0.15") or "0.15"
+)
+PHASE3_MAX_SOURCE_QUALITY_DELTA = float(
+    get_env_value("PHASE3_MAX_SOURCE_QUALITY_DELTA", "0.08") or "0.08"
+)
+PHASE3_MAX_EDGE_DELTA = float(get_env_value("PHASE3_MAX_EDGE_DELTA", "0.02") or "0.02")

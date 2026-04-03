@@ -40,7 +40,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|---|---|
 | Philosophy, research, and operating doctrine | Done | [master-spec.md](../spec/master-spec.md), [prediction-systems-and-public-sentiment-signals.md](../research/prediction-systems-and-public-sentiment-signals.md), [problems-plan.md](../plans/problems-plan.md), [ftw-plan.md](../plans/ftw-plan.md) | Keep updated as phases land |
 | Batch 1 money-viability theory | Done | Reflected in docs and Phase 1 implementation | Continue validating with real data later |
-| Batch 2 stability theory | Done as spec | Captured in master spec and plan docs | Not implemented yet |
+| Batch 2 stability theory | In progress | Captured in master spec and now partially executed through the Phase 3 stability review flow | Continue implementing drift follow-through and retraining review workflows |
 | Frozen snapshot contract | Done | [snapshots.py](../../nba_oracle/snapshots.py), [phase1_sample_slate.json](../../data/fixtures/phase1_sample_slate.json) | Extend to live providers later |
 | Point-in-time replay engine | Done | [replay.py](../../nba_oracle/replay.py), [cli.py](../../nba_oracle/cli.py) | Broaden historical coverage and real data ingestion |
 | Deterministic predictor | Done | [predictor.py](../../nba_oracle/predictor.py), [market.py](../../nba_oracle/market.py), [models.py](../../nba_oracle/models.py) | Replace or augment with production-grade scoring later |
@@ -56,6 +56,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Stats ingestion | Done | [stats.py](../../nba_oracle/providers/stats.py) calls NBA estimated metrics with bundle fallback | Add richer pregame context later |
 | Sentiment ingestion | Done for Phase 2 scope | [sentiment.py](../../nba_oracle/providers/sentiment.py) remains intentionally optional and safely deferred in live mode | Add real Reddit integration in a later phase |
 | Context builder | Done | [live_snapshot_builder.py](../../nba_oracle/assembly/live_snapshot_builder.py) merges real or bundle providers with placeholder fallback for degraded non-market sources | Expand context richness later |
+| Stability review layer | In progress | [baseline.py](../../nba_oracle/stability/baseline.py), [drift.py](../../nba_oracle/stability/drift.py), [timing.py](../../nba_oracle/stability/timing.py), [readiness.py](../../nba_oracle/stability/readiness.py), [reporting.py](../../nba_oracle/stability/reporting.py), [review_stability.py](../../nba_oracle/runs/review_stability.py) | Add richer graded-outcome and retraining workflows later |
 | LLM analyst engine | Not started | None | Add analyst-only explanation layer |
 | Telegram delivery | Not started | None | Build bot, formatting, and commands |
 | Gmail notifications | Not started | None | Build schedule confirmation notifier |
@@ -73,7 +74,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 1: Validation Core | Complete | The model can replay frozen slates, gate decisions, and produce audit reports. |
 | Phase 1.1: Hardening | Complete | Calibration gate, source audit output, and status reporting are in place. |
 | Phase 2: Signal Quality Layer | Complete | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built and verified on a real pregame run. |
-| Phase 3: Stability Layer | Not started | Drift control, retraining discipline, and market scope hardening are still ahead. |
+| Phase 3: Stability Layer | In progress | Baseline-backed stability review, timing checks, market-scope locks, and analyst-containment reporting are live; retraining workflow and richer graded drift evidence still need to mature. |
 | Phase 4: Output / Operating Layer | Not started | Delivery, dashboard, auth, and live operations are untouched. |
 
 ## Recent Changes Summary
@@ -87,8 +88,9 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 2 live execution mode | Complete | `--live` mode now runs against upstreams, handles no-slate days, and has produced a real non-zero pregame slate. |
 | Phase 2.1 hardening | Complete | Dual storage wiring, `.env` support, schema bootstrap, and honest market labels landed. |
 | Phase 2.2 closeout path | Complete | Official schedule now falls back to odds-derived upcoming games when the live scoreboard is stale, and the fallback has produced real predictions. |
+| Phase 3 stability review | In progress | `review-stability` now creates or reuses a saved baseline, reviews recent live runs, and emits markdown/JSON health reports. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
-| Supabase | In progress | Credentials can now be read from `.env`, and the storage layer is dual-ready. |
+| Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
 ## Last Verified State
 
@@ -102,6 +104,7 @@ Use this as the operational checkpoint before starting a new phase.
 - Phase 2.1 dual-storage code path and reference-line reporting are covered by tests.
 - Phase 2.2 schedule fallback is covered by tests.
 - `python main.py build-live-slate --live` has now produced `Snapshot count: 9`, `Prediction count: 9`, and no `supabase_error:...` markers.
+- `python main.py review-stability` now succeeds and writes baseline-backed Phase 3 health reports.
 - GitHub and local `main` are in sync.
 
 ## Active Backend Assets
@@ -111,16 +114,16 @@ Use this as the operational checkpoint before starting a new phase.
 | Validation core | [predictor.py](../../nba_oracle/predictor.py), [replay.py](../../nba_oracle/replay.py), [reporting.py](../../nba_oracle/reporting.py) |
 | Live provider layer | [schedule.py](../../nba_oracle/providers/schedule.py), [odds.py](../../nba_oracle/providers/odds.py), [injuries.py](../../nba_oracle/providers/injuries.py), [stats.py](../../nba_oracle/providers/stats.py), [sentiment.py](../../nba_oracle/providers/sentiment.py) |
 | Live run orchestration | [build_live_slate.py](../../nba_oracle/runs/build_live_slate.py), [live_snapshot_builder.py](../../nba_oracle/assembly/live_snapshot_builder.py), [cli.py](../../nba_oracle/cli.py) |
+| Stability layer | [baseline.py](../../nba_oracle/stability/baseline.py), [drift.py](../../nba_oracle/stability/drift.py), [timing.py](../../nba_oracle/stability/timing.py), [readiness.py](../../nba_oracle/stability/readiness.py), [reporting.py](../../nba_oracle/stability/reporting.py), [review_stability.py](../../nba_oracle/runs/review_stability.py), [catalog.py](../../nba_oracle/models_registry/catalog.py) |
 | Runtime persistence | [repository.py](../../nba_oracle/storage/repository.py) |
 | Config and env | [config.py](../../nba_oracle/config.py), [env.py](../../nba_oracle/env.py), [http.py](../../nba_oracle/http.py), [teams.py](../../nba_oracle/teams.py) |
 | Manual bootstrap artifacts | [.env.example](../../.env.example), [phase2_schema.sql](../../supabase/phase2_schema.sql) |
 
 ## Next Recommended Step
 
-Begin Phase 3:
-- drift control
-- retraining discipline
-- market-scope hardening
-- continued protection of the Phase 1 replay acceptance gate
+Continue Phase 3:
+- add graded-outcome-based drift evidence
+- add explicit retraining review and promotion bookkeeping
+- keep moneylines as the only active market until promotion rules exist
 
 Keep the Phase 1 replay flow intact as the acceptance gate for every new provider added.
