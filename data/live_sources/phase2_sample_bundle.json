@@ -45,9 +45,12 @@
         "stake_american": -142,
         "best_american": -136,
         "close_american": -148,
+        "opening_american": -145,
         "consensus_probability": 0.592,
         "signal_delta": 0.018,
-        "line_move": "toward_boston"
+        "line_move": "toward_boston",
+        "reference_bookmaker": "stake_reference",
+        "market_timestamp": "2026-04-05T15:22:00+00:00"
       },
       {
         "game_id": "2026-04-05-lal-phx",
@@ -55,9 +58,12 @@
         "stake_american": 118,
         "best_american": 125,
         "close_american": 110,
+        "opening_american": 120,
         "consensus_probability": 0.476,
         "signal_delta": 0.011,
-        "line_move": "toward_phoenix"
+        "line_move": "toward_phoenix",
+        "reference_bookmaker": "stake_reference",
+        "market_timestamp": "2026-04-05T15:22:00+00:00"
       },
       {
         "game_id": "2026-04-05-den-sac",
@@ -65,9 +71,12 @@
         "stake_american": -112,
         "best_american": -105,
         "close_american": -118,
+        "opening_american": -110,
         "consensus_probability": 0.527,
         "signal_delta": 0.01,
-        "line_move": "stable"
+        "line_move": "stable",
+        "reference_bookmaker": "stake_reference",
+        "market_timestamp": "2026-04-05T15:22:00+00:00"
       }
     ]
   },
@@ -153,4 +162,3 @@
     ]
   }
 }
-

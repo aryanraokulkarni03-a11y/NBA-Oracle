@@ -95,6 +95,9 @@ class InjuryProvider(BundleProvider):
                             f"vs {opponent_team} {opponent_summary['major_flags']} major flags"
                         ),
                         "confirmation_level": "reported",
+                        "update_timestamp": decision_time.isoformat(),
+                        "selected_team_player_statuses": selected_summary["player_statuses"],
+                        "opponent_team_player_statuses": opponent_summary["player_statuses"],
                         "selected_team_flags": selected_summary["total_flags"],
                         "opponent_team_flags": opponent_summary["total_flags"],
                     },
@@ -142,11 +145,12 @@ def _extract_team_sections(payload: str) -> dict[str, list[str]]:
     return sections
 
 
-def _summarize_team(lines: list[str]) -> dict[str, float | int]:
+def _summarize_team(lines: list[str]) -> dict[str, float | int | list[dict[str, str]]]:
     severity = 0.0
     total_flags = 0
     major_flags = 0
-    for line in lines:
+    player_statuses: list[dict[str, str]] = []
+    for index, line in enumerate(lines):
         normalized = line.lower()
         if normalized not in STATUS_WEIGHTS:
             continue
@@ -155,8 +159,29 @@ def _summarize_team(lines: list[str]) -> dict[str, float | int]:
         severity += weight
         if weight >= STATUS_WEIGHTS["questionable"]:
             major_flags += 1
+        player_statuses.append(
+            {
+                "player": _guess_player_name(lines, index),
+                "status": normalized,
+            }
+        )
     return {
         "severity": severity,
         "total_flags": total_flags,
         "major_flags": major_flags,
+        "player_statuses": player_statuses,
     }
+
+
+def _guess_player_name(lines: list[str], status_index: int) -> str:
+    for candidate_index in range(status_index - 1, max(status_index - 4, -1), -1):
+        candidate = lines[candidate_index].strip()
+        normalized = candidate.lower()
+        if normalized in STATUS_WEIGHTS:
+            continue
+        if len(candidate.split()) < 2:
+            continue
+        if any(token.isdigit() for token in candidate.split()):
+            continue
+        return candidate
+    return "Unknown Player"

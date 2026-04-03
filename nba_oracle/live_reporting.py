@@ -40,16 +40,16 @@ def write_live_markdown_report(
     lines.append("## Decisions")
     lines.append("")
     lines.append(
-        "| Game | Team | Decision | Model prob | Stake line | Best line | Close line | "
-        "Stake prob | Best prob | Close prob | EV | Edge | Source quality | Reasons |"
+        "| Game | Team | Decision | Model prob | Reference book | Reference line | Best line | Close line | "
+        "Reference prob | Best prob | Close prob | EV | Edge vs reference | Source quality | Reasons |"
     )
     lines.append(
-        "|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"
+        "|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"
     )
     for prediction in result.predictions:
         lines.append(
             f"| {prediction.game_id} | {prediction.selected_team} | {prediction.decision} | "
-            f"{prediction.model_probability:.2%} | {prediction.stake_american} | {prediction.best_american} | "
+            f"{prediction.model_probability:.2%} | {prediction.reference_bookmaker} | {prediction.stake_american} | {prediction.best_american} | "
             f"{prediction.close_american} | {prediction.stake_probability:.2%} | {prediction.best_probability:.2%} | "
             f"{prediction.close_probability:.2%} | {prediction.expected_value:.2%} | {prediction.edge_vs_stake:.2%} | "
             f"{prediction.source_quality:.2%} | {', '.join(prediction.reasons)} |"
@@ -91,9 +91,12 @@ def write_live_json_report(
                 "game_id": item.game_id,
                 "selected_team": item.selected_team,
                 "decision": item.decision,
+                "reference_bookmaker": item.reference_bookmaker,
                 "stake_american": item.stake_american,
                 "best_american": item.best_american,
                 "close_american": item.close_american,
+                "opening_american": item.opening_american,
+                "market_timestamp": item.market_timestamp.isoformat() if item.market_timestamp else None,
                 "model_probability": item.model_probability,
                 "stake_probability": item.stake_probability,
                 "best_probability": item.best_probability,

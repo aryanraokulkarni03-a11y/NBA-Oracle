@@ -84,4 +84,7 @@ def evaluate_game(game: GameSnapshot) -> PredictionResult:
         source_scores=scores,
         reasons=tuple(reasons),
         actual_winner=game.actual_winner,
+        reference_bookmaker=game.market.reference_bookmaker,
+        market_timestamp=game.market.market_timestamp,
+        opening_american=game.market.opening_american,
     )

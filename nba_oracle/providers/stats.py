@@ -11,6 +11,11 @@ from nba_oracle.models import ProviderRecord, ProviderResponse
 from nba_oracle.providers.base import BundleProvider
 from nba_oracle.teams import canonicalize_team_name, season_string_for_date
 
+try:  # pragma: no cover - optional runtime path
+    from nba_api.stats.endpoints import teamestimatedmetrics as nba_teamestimatedmetrics
+except ImportError:  # pragma: no cover
+    nba_teamestimatedmetrics = None
+
 NBA_STATS_HEADERS = {
     "Accept": "application/json, text/plain, */*",
     "Origin": "https://www.nba.com",
@@ -51,17 +56,24 @@ class StatsProvider(BundleProvider):
             )
 
         try:
-            payload, _ = request_json(
-                NBA_TEAM_ESTIMATED_METRICS_URL,
-                params={
-                    "LeagueID": "00",
-                    "Season": season_string_for_date(decision_time),
-                    "SeasonType": "Regular Season",
-                },
-                headers=NBA_STATS_HEADERS,
-                timeout=HTTP_TIMEOUT_SECONDS,
-            )
-        except HttpRequestError as exc:
+            if nba_teamestimatedmetrics is not None:
+                payload = nba_teamestimatedmetrics.TeamEstimatedMetrics(
+                    league_id="00",
+                    season=season_string_for_date(decision_time),
+                    season_type="Regular Season",
+                ).get_dict()
+            else:
+                payload, _ = request_json(
+                    NBA_TEAM_ESTIMATED_METRICS_URL,
+                    params={
+                        "LeagueID": "00",
+                        "Season": season_string_for_date(decision_time),
+                        "SeasonType": "Regular Season",
+                    },
+                    headers=NBA_STATS_HEADERS,
+                    timeout=HTTP_TIMEOUT_SECONDS,
+                )
+        except Exception as exc:
             return self.degraded_response(
                 decision_time,
                 error=f"stats_fetch_failed:{exc}",

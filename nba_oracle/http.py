@@ -13,12 +13,19 @@ class HttpRequestError(RuntimeError):
 def request_text(
     url: str,
     *,
+    method: str = "GET",
     params: dict[str, object] | None = None,
     headers: dict[str, str] | None = None,
+    json_body: dict[str, object] | list[object] | None = None,
     timeout: int = 20,
 ) -> tuple[str, dict[str, str]]:
     full_url = _build_url(url, params)
-    request = Request(full_url, headers=headers or {})
+    payload = None
+    request_headers = dict(headers or {})
+    if json_body is not None:
+        payload = json.dumps(json_body).encode("utf-8")
+        request_headers.setdefault("Content-Type", "application/json")
+    request = Request(full_url, headers=request_headers, data=payload, method=method.upper())
 
     try:
         with urlopen(request, timeout=timeout) as response:
@@ -33,14 +40,18 @@ def request_text(
 def request_json(
     url: str,
     *,
+    method: str = "GET",
     params: dict[str, object] | None = None,
     headers: dict[str, str] | None = None,
+    json_body: dict[str, object] | list[object] | None = None,
     timeout: int = 20,
 ) -> tuple[dict[str, object] | list[object], dict[str, str]]:
     body, response_headers = request_text(
         url,
+        method=method,
         params=params,
         headers=headers,
+        json_body=json_body,
         timeout=timeout,
     )
     return json.loads(body), response_headers

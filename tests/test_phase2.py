@@ -10,12 +10,14 @@ from unittest.mock import patch
 from nba_oracle.assembly.live_snapshot_builder import build_live_snapshots
 from nba_oracle.config import DEFAULT_LIVE_BUNDLE_PATH
 from nba_oracle.models import ProviderRecord, ProviderResponse
+from nba_oracle.live_reporting import write_live_json_report, write_live_markdown_report
 from nba_oracle.providers.injuries import InjuryProvider
 from nba_oracle.providers.odds import OddsProvider
 from nba_oracle.providers.schedule import ScheduleProvider
 from nba_oracle.providers.sentiment import SentimentProvider
 from nba_oracle.providers.stats import StatsProvider
 from nba_oracle.runs.build_live_slate import build_live_slate
+from nba_oracle.storage.repository import DualRepository, SupabaseRepository
 
 
 class Phase2Tests(unittest.TestCase):
@@ -182,6 +184,42 @@ class Phase2Tests(unittest.TestCase):
         injury_source = next(source for source in snapshots[0].sources if source.kind == "injury")
         self.assertEqual(injury_source.signal_delta, 0.0)
         self.assertTrue(injury_source.metadata["placeholder"])
+
+    def test_dual_repository_attempts_supabase_and_local(self) -> None:
+        decision_time = datetime(2026, 4, 5, 15, 30, tzinfo=timezone.utc)
+        result = build_live_slate(DEFAULT_LIVE_BUNDLE_PATH)
+        repository = DualRepository(supabase_repository=SupabaseRepository(url="https://example.supabase.co", service_role_key="service-key"))
+
+        with patch("nba_oracle.storage.repository.request_json", return_value=({}, {})) as request_json:
+            paths = repository.store_provider_responses(
+                "phase2-test-run",
+                result.providers,
+                decision_time=decision_time,
+                snapshot_count=len(result.snapshots),
+                prediction_count=len(result.predictions),
+            )
+            snapshot_path = repository.store_snapshots("phase2-test-run", result.snapshots)
+            prediction_path = repository.store_predictions("phase2-test-run", result.predictions)
+
+        self.assertTrue(any(path.startswith("C:\\") for path in paths))
+        self.assertTrue(any(path.startswith("supabase:phase2_provider_runs") for path in paths))
+        self.assertIn("supabase:phase2_snapshots", snapshot_path)
+        self.assertIn("supabase:phase2_predictions", prediction_path)
+        self.assertGreaterEqual(request_json.call_count, 4)
+
+    def test_live_reports_use_reference_labels(self) -> None:
+        result = build_live_slate(DEFAULT_LIVE_BUNDLE_PATH)
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            md_path = Path(tmp_dir) / "report.md"
+            json_path = Path(tmp_dir) / "report.json"
+            write_live_markdown_report(result, md_path)
+            write_live_json_report(result, json_path)
+            markdown = md_path.read_text(encoding="utf-8")
+            payload = json.loads(json_path.read_text(encoding="utf-8"))
+
+        self.assertIn("Reference book", markdown)
+        self.assertIn("Edge vs reference", markdown)
+        self.assertIn("reference_bookmaker", payload["predictions"][0])
 
 
 if __name__ == "__main__":

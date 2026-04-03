@@ -5,10 +5,13 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "nba-oracle"
 version = "0.1.0"
-description = "Phase 1 validation core for NBA Oracle."
+description = "NBA Oracle validation and live-slate backend."
 requires-python = ">=3.11"
-dependencies = []
+dependencies = [
+    "nba_api>=1.11.4",
+    "requests>=2.32.3",
+    "supabase>=2.28.3",
+]
 
 [project.scripts]
 nba-oracle = "nba_oracle.cli:main"
-

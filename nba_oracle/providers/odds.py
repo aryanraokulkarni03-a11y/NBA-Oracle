@@ -105,7 +105,8 @@ class OddsProvider(BundleProvider):
 
             selected_team = max(normalized_probs, key=normalized_probs.get)
             selected_prices = team_prices[selected_team]
-            stake_american = _select_reference_price(selected_prices)
+            reference_bookmaker = _select_reference_bookmaker(selected_prices)
+            stake_american = selected_prices[reference_bookmaker]
             best_american = max(selected_prices.values(), key=_price_rank)
             records.append(
                 ProviderRecord(
@@ -116,11 +117,13 @@ class OddsProvider(BundleProvider):
                         "stake_american": stake_american,
                         "best_american": best_american,
                         "close_american": stake_american,
+                        "opening_american": None,
                         "consensus_probability": round(normalized_probs[selected_team], 4),
                         "signal_delta": 0.0,
                         "line_move": "unavailable_live_snapshot",
-                        "reference_bookmaker": _select_reference_bookmaker(selected_prices),
+                        "reference_bookmaker": reference_bookmaker,
                         "book_count": len(selected_prices),
+                        "market_timestamp": event.get("commence_time"),
                     },
                 )
             )
@@ -192,13 +195,7 @@ def _extract_market_view(
     }
     return normalized, prices
 
-
 def _select_reference_bookmaker(prices: dict[str, int]) -> str:
     if ODDS_REFERENCE_BOOKMAKER and ODDS_REFERENCE_BOOKMAKER in prices:
         return ODDS_REFERENCE_BOOKMAKER
     return sorted(prices.keys())[0]
-
-
-def _select_reference_price(prices: dict[str, int]) -> int:
-    bookmaker = _select_reference_bookmaker(prices)
-    return prices[bookmaker]

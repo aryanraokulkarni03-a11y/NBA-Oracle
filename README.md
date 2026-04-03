@@ -14,7 +14,7 @@ Phase 1 is complete locally:
 Phase 2 has started:
 - real live-provider wiring for schedule, odds, stats, and injuries
 - live-slate assembly path with no-slate-day handling
-- local durable storage for provider outputs, snapshots, and predictions
+- dual local-plus-Supabase storage path in code
 - bundle and `--live` execution modes through the Phase 1 predictor
 
 ## Repo Structure
@@ -42,8 +42,10 @@ nba-oracle/
 - Changes matrix: [docs/status/changes-matrix.md](docs/status/changes-matrix.md)
 - Phase 1 implementation plan: [docs/plans/implementation/phase-1.md](docs/plans/implementation/phase-1.md)
 - Phase 2 implementation plan: [docs/plans/implementation/phase-2.md](docs/plans/implementation/phase-2.md)
+- Phase 2.1 hardening pass: [docs/plans/implementation/phase-2-1.md](docs/plans/implementation/phase-2-1.md)
 - Phase 1 runbook: [docs/runbooks/phase-1.md](docs/runbooks/phase-1.md)
 - Phase 2 runbook: [docs/runbooks/phase-2.md](docs/runbooks/phase-2.md)
+- Supabase Phase 2 schema: [supabase/phase2_schema.sql](supabase/phase2_schema.sql)
 - Problems tracker: [docs/plans/problems-plan.md](docs/plans/problems-plan.md)
 - FTW solutions plan: [docs/plans/ftw-plan.md](docs/plans/ftw-plan.md)
 - Research report: [docs/research/prediction-systems-and-public-sentiment-signals.md](docs/research/prediction-systems-and-public-sentiment-signals.md)
@@ -63,4 +65,4 @@ Generated replay and live-slate outputs are written to `reports/`.
 - The root README is intentionally concise for GitHub.
 - The detailed product doctrine, research, and build theory live under `docs/`.
 - Sentiment is still intentionally deferred in live mode.
-- Supabase wiring and delivery systems are planned for later phases.
+- Supabase is now wired in code, but still needs schema bootstrap before it becomes active.

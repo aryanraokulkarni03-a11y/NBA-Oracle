@@ -4,7 +4,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from nba_oracle.assembly.live_snapshot_builder import build_live_snapshots, load_bundle_metadata
-from nba_oracle.config import DEFAULT_STORAGE_MODE
+from nba_oracle.config import STORAGE_MODE
 from nba_oracle.models import LiveRunResult
 from nba_oracle.predictor import evaluate_game
 from nba_oracle.providers.injuries import InjuryProvider
@@ -12,7 +12,7 @@ from nba_oracle.providers.odds import OddsProvider
 from nba_oracle.providers.schedule import ScheduleProvider
 from nba_oracle.providers.sentiment import SentimentProvider
 from nba_oracle.providers.stats import StatsProvider
-from nba_oracle.storage.repository import LocalRepository
+from nba_oracle.storage.repository import build_repository
 
 
 def build_live_slate(
@@ -49,16 +49,24 @@ def build_live_slate(
     snapshots = build_live_snapshots(resolved_decision_time, providers)
     predictions = tuple(evaluate_game(snapshot) for snapshot in snapshots)
 
-    repository = LocalRepository()
+    repository = build_repository()
     stored_paths = []
-    stored_paths.extend(str(path) for path in repository.store_provider_responses(run_id, providers))
-    stored_paths.append(str(repository.store_snapshots(run_id, snapshots)))
-    stored_paths.append(str(repository.store_predictions(run_id, predictions)))
+    stored_paths.extend(
+        repository.store_provider_responses(
+            run_id,
+            providers,
+            decision_time=resolved_decision_time,
+            snapshot_count=len(snapshots),
+            prediction_count=len(predictions),
+        )
+    )
+    stored_paths.append(repository.store_snapshots(run_id, snapshots))
+    stored_paths.append(repository.store_predictions(run_id, predictions))
 
     return LiveRunResult(
         run_id=run_id,
         decision_time=resolved_decision_time,
-        storage_mode=DEFAULT_STORAGE_MODE,
+        storage_mode=repository.storage_mode,
         providers=providers,
         snapshots=snapshots,
         predictions=predictions,

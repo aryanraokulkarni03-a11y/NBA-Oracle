@@ -8,6 +8,11 @@ from nba_oracle.models import ProviderRecord, ProviderResponse, parse_dt
 from nba_oracle.providers.base import BundleProvider
 from nba_oracle.teams import build_game_id, compose_full_team_name
 
+try:  # pragma: no cover - optional runtime path
+    from nba_api.live.nba.endpoints import scoreboard as nba_scoreboard
+except ImportError:  # pragma: no cover
+    nba_scoreboard = None
+
 
 class ScheduleProvider(BundleProvider):
     name = "nba_scoreboard_live"
@@ -19,11 +24,15 @@ class ScheduleProvider(BundleProvider):
         decision_time: datetime,
         context: dict[str, ProviderResponse],
     ) -> ProviderResponse:
+        payload = None
         try:
-            payload, _ = request_json(
-                NBA_SCOREBOARD_URL,
-                timeout=HTTP_TIMEOUT_SECONDS,
-            )
+            if nba_scoreboard is not None:
+                payload = nba_scoreboard.ScoreBoard().get_dict()
+            else:
+                payload, _ = request_json(
+                    NBA_SCOREBOARD_URL,
+                    timeout=HTTP_TIMEOUT_SECONDS,
+                )
         except HttpRequestError as exc:
             return self.degraded_response(
                 decision_time,
@@ -61,6 +70,7 @@ class ScheduleProvider(BundleProvider):
                         "away_team_abbr": game.get("awayTeam", {}).get("teamTricode"),
                         "home_team_abbr": game.get("homeTeam", {}).get("teamTricode"),
                         "game_status": game.get("gameStatus"),
+                        "decision_time_candidate": decision_time.isoformat(),
                     },
                 )
             )

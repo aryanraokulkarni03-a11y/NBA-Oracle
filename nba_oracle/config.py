@@ -41,6 +41,10 @@ DEFAULT_SENTIMENT_PROVIDER = "reddit_only"
 ODDS_API_KEY = get_env_value("ODDS_API_KEY")
 SUPABASE_URL = get_env_value("SUPABASE_URL")
 SUPABASE_SERVICE_ROLE_KEY = get_env_value("SUPABASE_SERVICE_ROLE_KEY")
+STORAGE_MODE = get_env_value(
+    "ORACLE_STORAGE_MODE",
+    "dual" if SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY else DEFAULT_STORAGE_MODE,
+) or DEFAULT_STORAGE_MODE
 ODDS_API_BASE_URL = "https://api.the-odds-api.com/v4"
 ODDS_API_SPORT = "basketball_nba"
 ODDS_API_REGIONS = "us"
@@ -51,3 +55,7 @@ NBA_SCOREBOARD_URL = "https://cdn.nba.com/static/json/liveData/scoreboard/todays
 NBA_TEAM_ESTIMATED_METRICS_URL = "https://stats.nba.com/stats/teamestimatedmetrics"
 ESPN_NBA_INJURIES_URL = "https://www.espn.com/nba/injuries"
 HTTP_TIMEOUT_SECONDS = 20
+SUPABASE_RUNS_TABLE = "phase2_runs"
+SUPABASE_PROVIDER_TABLE = "phase2_provider_runs"
+SUPABASE_SNAPSHOTS_TABLE = "phase2_snapshots"
+SUPABASE_PREDICTIONS_TABLE = "phase2_predictions"

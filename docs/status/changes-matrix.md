@@ -24,6 +24,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 2 scaffold | Complete | Provider interfaces, assembly layer, local repository, sample bundle, and tests landed. | Live-style execution without real providers | Real upstream wiring |
 | Manual setup path | Complete | Supabase, The Odds API, `nba_api`, and ESPN decisions were locked in. | Real provider implementation path | Supabase still needs code wiring |
 | Phase 2 live provider wiring | In progress | Real schedule, odds, stats, and injury fetch paths now exist with bundle fallback. | Live mode through the CLI | Provider hardening and richer data coverage |
+| Phase 2.1 hardening | In progress | `.env` config, dual storage code path, Supabase schema, and reference-line reporting landed. | Honest storage and setup workflow | Apply schema and verify remote writes |
 | Live-mode no-slate handling | Complete | `--live` mode now treats zero-game days as valid empty runs instead of cascading failures. | Safer daily operations | Date-targeted slate support |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
@@ -36,7 +37,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Injuries | ESPN parser with graceful degradation | Secondary confirmation source and parser hardening |
 | Stats | NBA metrics fetch path | Rest, travel, and broader pregame context |
 | Sentiment | Deferred placeholder path | Real Reddit-first live adapter |
-| Storage | Local runtime artifact persistence | Supabase tables and database writes |
+| Storage | Local runtime persistence plus dual Supabase code path | Apply schema and verify remote database writes |
 | CLI | Bundle mode and `--live` mode | Scheduler/operator workflow integration |
 
 ## Latest Verified Commands
@@ -51,5 +52,6 @@ python main.py build-live-slate --live
 
 1. [project-status-matrix.md](./project-status-matrix.md)
 2. [phase-2.md](../runbooks/phase-2.md)
-3. [phase-2.md](../plans/implementation/phase-2.md)
-4. [master-spec.md](../spec/master-spec.md)
+3. [phase-2-1.md](../plans/implementation/phase-2-1.md)
+4. [phase-2.md](../plans/implementation/phase-2.md)
+5. [master-spec.md](../spec/master-spec.md)

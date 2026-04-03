@@ -37,6 +37,13 @@ def build_live_snapshots(
             best_american=int(odds_row["best_american"]),
             close_american=int(odds_row.get("close_american", odds_row["best_american"])),
             consensus_probability=float(odds_row["consensus_probability"]),
+            reference_bookmaker=str(odds_row.get("reference_bookmaker", "reference")),
+            market_timestamp=parse_dt(str(odds_row["market_timestamp"]))
+            if odds_row.get("market_timestamp")
+            else None,
+            opening_american=int(odds_row["opening_american"])
+            if odds_row.get("opening_american") is not None
+            else None,
         )
         sources = [
             _build_source(provider_map["odds"], odds_row),

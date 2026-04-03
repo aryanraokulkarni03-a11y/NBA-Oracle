@@ -39,6 +39,9 @@ class MarketSnapshot:
     best_american: int
     close_american: int
     consensus_probability: float
+    reference_bookmaker: str = "reference"
+    market_timestamp: datetime | None = None
+    opening_american: int | None = None
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "MarketSnapshot":
@@ -48,6 +51,13 @@ class MarketSnapshot:
             best_american=int(payload["best_american"]),
             close_american=int(payload["close_american"]),
             consensus_probability=float(payload["consensus_probability"]),
+            reference_bookmaker=payload.get("reference_bookmaker", "reference"),
+            market_timestamp=parse_dt(payload["market_timestamp"])
+            if payload.get("market_timestamp")
+            else None,
+            opening_american=int(payload["opening_american"])
+            if payload.get("opening_american") is not None
+            else None,
         )
 
 
@@ -106,6 +116,9 @@ class PredictionResult:
     source_scores: tuple[SourceScore, ...]
     reasons: tuple[str, ...]
     actual_winner: str
+    reference_bookmaker: str = "reference"
+    market_timestamp: datetime | None = None
+    opening_american: int | None = None
 
     @property
     def is_active(self) -> bool:
