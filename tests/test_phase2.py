@@ -14,7 +14,7 @@ from nba_oracle.models import ProviderRecord, ProviderResponse
 from nba_oracle.live_reporting import write_live_json_report, write_live_markdown_report
 from nba_oracle.providers.injuries import InjuryProvider
 from nba_oracle.providers.odds import OddsProvider
-from nba_oracle.providers.schedule import ScheduleProvider
+from nba_oracle.providers.schedule import ScheduleProvider, _build_odds_fallback_schedule
 from nba_oracle.providers.sentiment import SentimentProvider
 from nba_oracle.providers.stats import StatsProvider
 from nba_oracle.runs.build_live_slate import build_live_slate
@@ -228,6 +228,56 @@ class Phase2Tests(unittest.TestCase):
 
         self.assertEqual(payload, {})
         self.assertEqual(headers["content-length"], "0")
+
+    def test_schedule_provider_uses_odds_fallback_for_upcoming_games(self) -> None:
+        decision_time = datetime(2026, 4, 3, 10, 58, tzinfo=timezone.utc)
+        stale_schedule_payload = {
+            "scoreboard": {
+                "games": [
+                    {
+                        "gameTimeUTC": "2026-04-03T02:00:00Z",
+                        "gameStatus": 3,
+                        "awayTeam": {"teamCity": "Cleveland", "teamName": "Cavaliers", "teamTricode": "CLE"},
+                        "homeTeam": {"teamCity": "Golden State", "teamName": "Warriors", "teamTricode": "GSW"},
+                    }
+                ]
+            }
+        }
+        odds_events = [
+            {
+                "away_team": "Indiana Pacers",
+                "home_team": "Charlotte Hornets",
+                "commence_time": "2026-04-03T23:00:00Z",
+            }
+        ]
+
+        provider = ScheduleProvider()
+        with (
+            patch("nba_oracle.providers.schedule.nba_scoreboard", None),
+            patch("nba_oracle.providers.schedule.ODDS_API_KEY", "test-odds-key"),
+            patch(
+                "nba_oracle.providers.schedule.request_json",
+                side_effect=[(stale_schedule_payload, {}), (odds_events, {})],
+            ),
+        ):
+            response = provider.fetch_live(decision_time, {})
+
+        self.assertTrue(response.success)
+        self.assertTrue(response.degraded)
+        self.assertEqual(response.name, "nba_schedule_with_odds_fallback")
+        self.assertEqual(len(response.records), 1)
+        self.assertEqual(response.records[0].data["away_team"], "Indiana Pacers")
+        self.assertEqual(response.records[0].data["schedule_origin"], "odds_fallback")
+
+    def test_schedule_odds_fallback_returns_none_without_upcoming_events(self) -> None:
+        decision_time = datetime(2026, 4, 3, 10, 58, tzinfo=timezone.utc)
+        with (
+            patch("nba_oracle.providers.schedule.ODDS_API_KEY", "test-odds-key"),
+            patch("nba_oracle.providers.schedule.request_json", return_value=([], {})),
+        ):
+            response = _build_odds_fallback_schedule(decision_time)
+
+        self.assertIsNone(response)
 
 
 if __name__ == "__main__":

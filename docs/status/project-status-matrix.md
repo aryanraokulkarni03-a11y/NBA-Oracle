@@ -27,12 +27,12 @@ Use this as the operational checkpoint before starting a new phase.
 
 | Question | Answer |
 |---|---|
-| Where are we now? | Late Phase 2, with real live-provider wiring in place but no permanent database wiring yet. |
+| Where are we now? | Late Phase 2, with live providers, dual storage, and Phase 2.2 schedule fallback in place. |
 | What is production-ready today? | Phase 1 replay/validation and Phase 2 local-plus-live provider execution with graceful degradation. |
-| What is the biggest unfinished backend item? | Supabase-backed persistence and stronger provider hardening. |
+| What is the biggest unfinished backend item? | Final live pregame verification that produces non-zero snapshots and predictions from real upstream data. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. Delivery, persistent storage, scheduler runtime, and final operating flows are still missing. |
-| What manual bootstrap is still required? | Create `.env` from `.env.example` and apply `supabase/phase2_schema.sql`. |
+| What manual closeout is still required? | Run one real pregame live verification and confirm non-zero snapshots, non-zero predictions, and no `supabase_error:...`. |
 
 ## Build Matrix
 
@@ -50,7 +50,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Calibration assessment | Done | [replay.py](../../nba_oracle/replay.py), [reporting.py](../../nba_oracle/reporting.py) | Upgrade from fixture-driven to historical-data-driven |
 | Phase 1 runbook | Done | [phase-1.md](../runbooks/phase-1.md) | Expand as tooling grows |
 | Test coverage for validation core | Done | [test_phase1.py](../../tests/test_phase1.py) | Add integration tests once providers exist |
-| Schedule ingestion | In progress | [schedule.py](../../nba_oracle/providers/schedule.py), [build_live_slate.py](../../nba_oracle/runs/build_live_slate.py) call the NBA live scoreboard endpoint with bundle fallback | Add date-targeted live fetch options and stronger schedule metadata |
+| Schedule ingestion | In progress | [schedule.py](../../nba_oracle/providers/schedule.py), [build_live_slate.py](../../nba_oracle/runs/build_live_slate.py) call the NBA live scoreboard endpoint and now fall back to the odds-derived upcoming slate when the official feed is stale | Add stronger date-targeted schedule metadata and a second official pregame schedule path |
 | Odds ingestion | In progress | [odds.py](../../nba_oracle/providers/odds.py) calls The Odds API and normalizes market consensus with bundle fallback | Add bookmaker selection tuning and true Stake/line-shop support |
 | Injury/news ingestion | In progress | [injuries.py](../../nba_oracle/providers/injuries.py) pulls ESPN injuries and degrades safely | Improve parser robustness and add secondary confirmation source |
 | Stats ingestion | In progress | [stats.py](../../nba_oracle/providers/stats.py) calls NBA estimated metrics with bundle fallback | Add richer pregame context and rest/travel features |
@@ -59,8 +59,8 @@ Use this as the operational checkpoint before starting a new phase.
 | LLM analyst engine | Not started | None | Add analyst-only explanation layer |
 | Telegram delivery | Not started | None | Build bot, formatting, and commands |
 | Gmail notifications | Not started | None | Build schedule confirmation notifier |
-| Supabase schema and client wiring | In progress | [repository.py](../../nba_oracle/storage/repository.py), [phase2_schema.sql](../../supabase/phase2_schema.sql) | Apply schema and verify remote writes end to end |
-| Pick logging and results tracking | In progress | [repository.py](../../nba_oracle/storage/repository.py) stores locally and can write remotely | Verify Supabase inserts with real credentials and schema |
+| Supabase schema and client wiring | In progress | [repository.py](../../nba_oracle/storage/repository.py), [phase2_schema.sql](../../supabase/phase2_schema.sql) | Keep verified on real live runs |
+| Pick logging and results tracking | In progress | [repository.py](../../nba_oracle/storage/repository.py) stores locally and can write remotely | Confirm one real non-zero pregame run end to end |
 | Dashboard backend and frontend | Not started | Spec only | Build FastAPI + UI |
 | Auth and security layer | Not started | Spec only | Build login, hashing, and route protection |
 | Learning engine and pattern miner | Not started | Spec only | Build learner and feedback loop |
@@ -72,7 +72,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|---|
 | Phase 1: Validation Core | Complete | The model can replay frozen slates, gate decisions, and produce audit reports. |
 | Phase 1.1: Hardening | Complete | Calibration gate, source audit output, and status reporting are in place. |
-| Phase 2: Signal Quality Layer | In progress | Real provider paths, bundle fallback, dual storage code path, and live execution mode are built. |
+| Phase 2: Signal Quality Layer | In progress | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built. |
 | Phase 3: Stability Layer | Not started | Drift control, retraining discipline, and market scope hardening are still ahead. |
 | Phase 4: Output / Operating Layer | Not started | Delivery, dashboard, auth, and live operations are untouched. |
 
@@ -86,6 +86,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 2 live provider wiring | In progress | Real schedule, odds, stats, and ESPN injury fetch paths now exist behind the provider interfaces. |
 | Phase 2 live execution mode | In progress | `--live` mode runs against upstreams and handles no-slate days without cascading failure. |
 | Phase 2.1 hardening | In progress | Dual storage wiring, `.env` support, schema bootstrap, and honest market labels landed. |
+| Phase 2.2 closeout path | In progress | Official schedule now falls back to odds-derived upcoming games when the live scoreboard is stale. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | In progress | Credentials can now be read from `.env`, and the storage layer is dual-ready. |
 
@@ -99,6 +100,7 @@ Use this as the operational checkpoint before starting a new phase.
 - `python main.py build-live-slate` succeeds against the sample live bundle.
 - `python main.py build-live-slate --live` completes and handles a no-slate day without cascading provider failure.
 - Phase 2.1 dual-storage code path and reference-line reporting are covered by tests.
+- Phase 2.2 schedule fallback is covered by tests.
 - GitHub and local `main` are in sync.
 
 ## Active Backend Assets
@@ -114,11 +116,11 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Continue Phase 2 by hardening the new live providers and wiring permanent storage:
-- strengthen schedule targeting beyond the current-day scoreboard
-- improve ESPN parser resilience and add a secondary injury confirmation path
-- add bookmaker selection strategy and a true Stake-specific price source if one becomes available
-- add Reddit-first live sentiment when ready
-- apply the Supabase schema and validate dual storage in a real run
+Close Phase 2 with one real pregame live verification:
+- run `python main.py build-live-slate --live` during a real pregame window
+- confirm `Snapshot count > 0`
+- confirm `Prediction count > 0`
+- confirm there are no `supabase_error:...` markers
+- then update this matrix and move to Phase 3
 
 Keep the Phase 1 replay flow intact as the acceptance gate for every new provider added.

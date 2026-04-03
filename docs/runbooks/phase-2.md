@@ -10,6 +10,7 @@ Bring up the Phase 2 signal-quality layer and verify that live-style provider in
 - sample live-style provider bundle
 - CLI command for bundle and live-slate building
 - tests for the Phase 2 local execution path
+- odds-derived schedule fallback when the official live scoreboard returns only stale or finished games
 
 ## Step 0: Create `.env`
 
@@ -57,6 +58,15 @@ Expected result:
 - sentiment remains optional and degraded by default
 - if there are valid pregame games available, snapshots and predictions are produced
 - if Supabase is ready, the storage path should include remote markers instead of local-only artifacts
+
+## Step 3.1: Phase 2 completion check
+
+To close Phase 2, run the live slate command during a real pregame window and confirm:
+- `Snapshot count > 0`
+- `Prediction count > 0`
+- no `supabase_error:...` markers appear in the stored artifact section
+- the schedule provider can still proceed if the official scoreboard is stale, by using the odds-derived fallback
+
 ## Step 4: Review the report
 Check that the report includes:
 - provider health table
@@ -87,3 +97,4 @@ These are the remaining manual pieces for a full Phase 2.1 closeout:
 - Real providers now sit behind the current adapter contracts, and bundle mode remains the safe fallback.
 - The current live schedule path only targets the current-day slate and will naturally return zero snapshots on a no-game day.
 - Reports now use `reference line` language instead of implying a true Stake-native price feed.
+- When the official live scoreboard only returns stale or finished games, the schedule layer now falls back to the upcoming slate exposed by the odds provider.
