@@ -23,6 +23,9 @@ Optional flags:
 python main.py review-stability --limit 10
 python main.py review-stability --runtime-dir data/runtime
 python main.py review-stability --replay-report reports/phase1_replay_report.json
+python main.py review-stability --force-refresh-baseline
+python main.py review-stability --analyst-payload data/stability/analyst_payload.json
+python main.py review-stability --candidate-model-version phase3-candidate-v1
 ```
 
 ## Outputs
@@ -31,11 +34,12 @@ Phase 3 writes:
 - [reports/phase3_stability_report.md](../../reports/phase3_stability_report.md)
 - [reports/phase3_stability_report.json](../../reports/phase3_stability_report.json)
 - [data/stability/phase3_baseline.json](../../data/stability/phase3_baseline.json)
+- [data/stability/phase3_model_registry.json](../../data/stability/phase3_model_registry.json)
 
 ## What The Command Does
 
 1. Creates the baseline file if one does not already exist.
-2. Reuses the saved baseline on later runs so drift is measured against a stable anchor.
+2. Automatically refreshes the saved baseline when replay/config/model metadata is incompatible or when `--force-refresh-baseline` is used.
 3. Reviews recent live runs from `data/runtime/live-*`.
 4. Ignores incomplete runtime folders safely.
 5. Computes:
@@ -43,7 +47,8 @@ Phase 3 writes:
    - timing status
    - market readiness
    - analyst containment
-6. Writes markdown and JSON reports for operator review.
+6. Records model-review workflow state in the local registry.
+7. Writes markdown and JSON reports for operator review.
 
 ## How To Read The Output
 
@@ -52,6 +57,7 @@ Phase 3 writes:
 - `warning` means behavior moved enough to deserve review.
 - `retrain_review` means drift is real and the graded sample is finally large enough to justify retraining review.
 - `insufficient_data` means there are not enough actionable live runs yet.
+- `insufficient_outcomes` means live runs exist, but graded outcome depth is still too thin for full ROI/CLV/calibration judgment.
 
 ### Timing status
 - `healthy` means source freshness and market age are still within acceptable bounds.
@@ -65,6 +71,17 @@ Phase 3 writes:
 ### Analyst containment
 - `contained` is the desired state.
 - anything weaker means predictor authority needs attention before Phase 4.
+
+## Supabase Closeout
+
+Phase 3.1 introduces new remote tables for:
+- baselines
+- reviews
+- timing events
+- analyst logs
+- model review records
+
+Apply [phase3_schema.sql](../../supabase/phase3_schema.sql) in Supabase SQL Editor to complete the dual-storage path for Phase 3.1.
 
 ## Good Phase 3 Output
 
@@ -95,4 +112,5 @@ At minimum, verify:
 ```powershell
 python -m unittest discover -s tests -p "test_*.py"
 python main.py review-stability
+python main.py review-stability --force-refresh-baseline
 ```

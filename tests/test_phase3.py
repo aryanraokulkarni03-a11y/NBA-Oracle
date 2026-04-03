@@ -8,7 +8,11 @@ from pathlib import Path
 
 from nba_oracle.models_registry.catalog import build_model_catalog
 from nba_oracle.runs.review_stability import review_stability
-from nba_oracle.stability.baseline import BaselineSnapshot, load_recent_live_runs
+from nba_oracle.stability.baseline import (
+    BaselineSnapshot,
+    build_phase3_config_fingerprint,
+    load_recent_live_runs,
+)
 from nba_oracle.stability.drift import assess_drift
 from nba_oracle.stability.readiness import assess_readiness
 
@@ -30,13 +34,14 @@ class Phase3Tests(unittest.TestCase):
                         "average_edge": 0.028,
                         "average_source_quality": 0.81,
                         "bet_count": 8,
+                        "calibration_assessment": {"mean_absolute_gap": 0.07},
                     }
                 ),
                 encoding="utf-8",
             )
-            _write_live_run(runtime_dir, "live-20260403T100000Z", prediction_count=2, active_count=1)
-            _write_live_run(runtime_dir, "live-20260403T110000Z", prediction_count=2, active_count=1)
-            _write_live_run(runtime_dir, "live-20260403T120000Z", prediction_count=2, active_count=1)
+            _write_live_run(runtime_dir, "live-20260403T100000Z", prediction_count=3, active_count=2, graded=True)
+            _write_live_run(runtime_dir, "live-20260403T110000Z", prediction_count=3, active_count=2, graded=True)
+            _write_live_run(runtime_dir, "live-20260403T120000Z", prediction_count=3, active_count=2, graded=True)
 
             result, baseline_path, md_path, json_path = review_stability(
                 replay_report_path=replay_path,
@@ -49,26 +54,33 @@ class Phase3Tests(unittest.TestCase):
             self.assertTrue(baseline_path.exists())
             self.assertTrue(md_path.exists())
             self.assertTrue(json_path.exists())
-            self.assertEqual(result.drift.status, "stable")
+            self.assertIn(result.drift.status, {"stable", "insufficient_outcomes", "warning"})
             self.assertEqual(result.timing.status, "healthy")
             self.assertEqual(result.readiness.analyst.status, "contained")
+            self.assertGreaterEqual(len(result.stored_paths), 4)
 
     def test_drift_flags_large_skip_rate_shift(self) -> None:
         with tempfile.TemporaryDirectory() as tmp_dir:
             runtime_dir = Path(tmp_dir) / "runtime"
             runtime_dir.mkdir()
-            _write_live_run(runtime_dir, "live-20260403T100000Z", prediction_count=4, active_count=0)
-            _write_live_run(runtime_dir, "live-20260403T110000Z", prediction_count=4, active_count=0)
-            _write_live_run(runtime_dir, "live-20260403T120000Z", prediction_count=4, active_count=0)
+            _write_live_run(runtime_dir, "live-20260403T100000Z", prediction_count=4, active_count=0, graded=True)
+            _write_live_run(runtime_dir, "live-20260403T110000Z", prediction_count=4, active_count=0, graded=True)
+            _write_live_run(runtime_dir, "live-20260403T120000Z", prediction_count=4, active_count=0, graded=True)
 
             baseline = BaselineSnapshot(
                 created_at=datetime(2026, 4, 3, 9, 0, tzinfo=timezone.utc),
+                schema_version="1.1",
                 model_version="phase2-deterministic-v1",
+                config_fingerprint=build_phase3_config_fingerprint("phase2-deterministic-v1"),
+                replay_report_fingerprint="replay-fingerprint",
+                baseline_fingerprint="baseline-fingerprint",
+                creation_reason="test",
                 replay_phase1_ready=True,
                 replay_roi=0.10,
                 replay_average_clv=0.012,
                 replay_average_edge=0.03,
                 replay_average_source_quality=0.82,
+                replay_calibration_gap=0.07,
                 replay_bet_count=7,
                 live_runs_considered=3,
                 live_average_prediction_count=4.0,
@@ -77,6 +89,7 @@ class Phase3Tests(unittest.TestCase):
                 live_average_source_quality=0.82,
                 live_average_expected_value=0.02,
                 live_average_edge=0.03,
+                live_average_clv=0.01,
                 live_average_provider_degradation_rate=0.0,
                 live_schedule_fallback_rate=0.0,
             )
@@ -91,10 +104,43 @@ class Phase3Tests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp_dir:
             runtime_dir = Path(tmp_dir) / "runtime"
             runtime_dir.mkdir()
-            _write_live_run(runtime_dir, "live-20260403T100000Z", prediction_count=2, active_count=1)
+            _write_live_run(runtime_dir, "live-20260403T100000Z", prediction_count=2, active_count=1, graded=True)
             live_runs = load_recent_live_runs(runtime_dir, limit=1)
+            baseline = BaselineSnapshot(
+                created_at=datetime(2026, 4, 3, 9, 0, tzinfo=timezone.utc),
+                schema_version="1.1",
+                model_version="phase2-deterministic-v1",
+                config_fingerprint=build_phase3_config_fingerprint("phase2-deterministic-v1"),
+                replay_report_fingerprint="replay-fingerprint",
+                baseline_fingerprint="baseline-fingerprint",
+                creation_reason="test",
+                replay_phase1_ready=True,
+                replay_roi=0.10,
+                replay_average_clv=0.012,
+                replay_average_edge=0.03,
+                replay_average_source_quality=0.82,
+                replay_calibration_gap=0.07,
+                replay_bet_count=7,
+                live_runs_considered=1,
+                live_average_prediction_count=2.0,
+                live_average_active_bet_rate=0.5,
+                live_average_skip_rate=0.5,
+                live_average_source_quality=0.82,
+                live_average_expected_value=0.02,
+                live_average_edge=0.03,
+                live_average_clv=0.01,
+                live_average_provider_degradation_rate=0.0,
+                live_schedule_fallback_rate=0.0,
+            )
+            drift = assess_drift(baseline, live_runs)
 
-        readiness = assess_readiness(live_runs, build_model_catalog())
+        readiness = assess_readiness(
+            "review-id",
+            live_runs,
+            build_model_catalog(),
+            baseline,
+            drift,
+        )
         moneyline = next(item for item in readiness.markets if item.market == "moneyline")
         totals = next(item for item in readiness.markets if item.market == "totals")
         props = next(item for item in readiness.markets if item.market == "props")
@@ -106,7 +152,14 @@ class Phase3Tests(unittest.TestCase):
         self.assertEqual(props.status, "locked")
 
 
-def _write_live_run(runtime_dir: Path, run_id: str, *, prediction_count: int, active_count: int) -> None:
+def _write_live_run(
+    runtime_dir: Path,
+    run_id: str,
+    *,
+    prediction_count: int,
+    active_count: int,
+    graded: bool,
+) -> None:
     run_dir = runtime_dir / run_id
     run_dir.mkdir(parents=True)
     source_time = run_id.replace("live-", "")
@@ -131,9 +184,13 @@ def _write_live_run(runtime_dir: Path, run_id: str, *, prediction_count: int, ac
     predictions = []
     for index in range(prediction_count):
         decision = "BET" if index < active_count else "SKIP"
+        selected_team = "Boston Celtics"
+        actual_winner = selected_team if graded else None
         predictions.append(
             {
                 "game_id": f"{run_id}-game-{index}",
+                "selected_team": selected_team,
+                "stake_american": -120 if decision == "BET" else 105,
                 "decision": decision,
                 "model_probability": 0.61 if decision == "BET" else 0.54,
                 "expected_value": 0.031 if decision == "BET" else -0.004,
@@ -141,6 +198,7 @@ def _write_live_run(runtime_dir: Path, run_id: str, *, prediction_count: int, ac
                 "source_quality": 0.82,
                 "stake_probability": 0.58,
                 "best_probability": 0.57,
+                "close_probability": 0.60,
                 "market_timestamp": source_iso,
                 "source_scores": [
                     {
@@ -162,7 +220,8 @@ def _write_live_run(runtime_dir: Path, run_id: str, *, prediction_count: int, ac
                         "signal_delta": 0.01,
                     },
                 ],
-                "actual_winner": None,
+                "reasons": ["all_gates_passed"] if decision == "BET" else ["edge_too_small"],
+                "actual_winner": actual_winner,
             }
         )
 

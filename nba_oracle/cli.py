@@ -77,6 +77,35 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Maximum number of live runs to review",
     )
+    stability.add_argument(
+        "--force-refresh-baseline",
+        action="store_true",
+        help="Force a Phase 3 baseline refresh before running the review",
+    )
+    stability.add_argument(
+        "--analyst-payload",
+        type=Path,
+        default=None,
+        help="Optional JSON payload with analyst suggestions keyed by game_id",
+    )
+    stability.add_argument(
+        "--candidate-model-version",
+        type=str,
+        default=None,
+        help="Optional candidate model version to record in the review workflow",
+    )
+    stability.add_argument(
+        "--promotion-reason",
+        type=str,
+        default=None,
+        help="Optional promotion reason if a candidate model is being recorded",
+    )
+    stability.add_argument(
+        "--rollback-reason",
+        type=str,
+        default=None,
+        help="Optional rollback reason if the review is recording a rollback event",
+    )
     return parser
 
 
@@ -115,6 +144,11 @@ def main() -> None:
             replay_report_path=args.replay_report,
             runtime_dir=args.runtime_dir,
             limit=args.limit,
+            force_refresh_baseline=bool(args.force_refresh_baseline),
+            analyst_payload_path=args.analyst_payload,
+            candidate_model_version=args.candidate_model_version,
+            promotion_reason=args.promotion_reason,
+            rollback_reason=args.rollback_reason,
         )
         print(f"Stability review complete. Baseline file: {baseline_path}")
         print(f"Stability review complete. Markdown report: {md_path}")
@@ -122,6 +156,7 @@ def main() -> None:
         print(f"Drift status: {result.drift.status}")
         print(f"Timing status: {result.timing.status}")
         print(f"Analyst containment: {result.readiness.analyst.status}")
+        print(f"Model review status: {result.model_registry.review_status}")
         return
 
     parser.error("Unknown command")
