@@ -36,6 +36,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 4A.1 hardening | Complete in code | Rate limiting is enforced, learning thresholds are aligned, the scheduler uses a real two-hour target window, Telegram command-style handling exists, and runtime bootstrap is explicit. | Safer 4A closeout and more reproducible setup | Final manual re-verification, then move toward Phase 4B |
 | Phase 4B final planning pass | Complete | The dashboard plan now targets the real 4A API contract, defines the exact pages and operator flows, and adds explicit frontend truth rules for degraded, skip, and insufficient-data states. | Safe UI execution without inventing backend behavior | Execute the React/Vite dashboard build in one pass |
 | Phase 4B dashboard execution start | In progress | The dashboard folder, app shell, auth flow, page set, inline operator controls, and shared Stripe-leaning dark UI system are now built and compile through Vite. | Real browser-facing operator workflow on top of 4A | Browser verification and final 4B polish before 4C |
+| Phase 4C final planning pass | Complete | The final phase is now rewritten as a real integration and hardening closeout around startup, restart, scheduler truth, dashboard/API refresh consistency, delivery verification, recovery, hosted deployment, and final acceptance. | A clean final execution target to finish the product without inventing new major surfaces | Execute the final integration pass end to end |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
 ## Current Implementation Delta
@@ -48,8 +49,8 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Stats | NBA metrics fetch path | Rest, travel, and broader pregame context |
 | Sentiment | Deferred placeholder path | Real Reddit-first live adapter |
 | Storage | Local runtime persistence plus verified dual Supabase path, with Phase 3.1 dual-storage code ready and outcome-grade dual persistence implemented | Apply the outcome-grade schema remotely |
-| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, and delivery test commands | Auto-start runtime and final 4C polish |
-| Dashboard | React/Vite scaffold, top-nav shell, authenticated pages, operator action cards, and shared CSS system | Browser verification, UI hardening, and final 4C integration |
+| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, and delivery test commands | Hosted deployment and final 4C polish |
+| Dashboard | React/Vite scaffold, top-nav shell, authenticated pages, operator action cards, and shared CSS system | Final browser verification, Vercel deployment, UI/API sync hardening, and 4C integration |
 
 ## Latest Verified Commands
 

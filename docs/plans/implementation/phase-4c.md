@@ -1,9 +1,15 @@
-# NBA Oracle Phase 4C Implementation Plan
+# NBA Oracle Phase 4C Final One-Shot Implementation Plan
 
 ## Purpose
-Phase 4C is the final wiring and production hardening pass.
+Phase 4C is the final wiring, operating hardening, and closeout pass.
 
-This is where the already-built backend and frontend become one coherent operating system.
+This is where the already-built backend and frontend stop being separate successes and become one coherent product that can run, recover, and stay truthful under real use.
+
+The final question is:
+
+> Can NBA Oracle run the full daily loop, expose the same truth across CLI, API, UI, Telegram, Gmail, storage, grading, stability, and learning, and recover cleanly when something goes wrong?
+
+If the answer is not yes, the project is not finished.
 
 ## Source of Truth
 This plan is derived from:
@@ -14,103 +20,231 @@ This plan is derived from:
 - [phase-4a.md](./phase-4a.md)
 - [phase-4b.md](./phase-4b.md)
 
+It is explicitly grounded in the code already shipped through:
+- [app.py](../../../nba_oracle/api/app.py)
+- [meta_scheduler.py](../../../nba_oracle/runtime/meta_scheduler.py)
+- [jobs.py](../../../nba_oracle/runtime/jobs.py)
+- [state.py](../../../nba_oracle/runtime/state.py)
+- [repository.py](../../../nba_oracle/storage/repository.py)
+- [grade_outcomes.py](../../../nba_oracle/runs/grade_outcomes.py)
+- [review_stability.py](../../../nba_oracle/runs/review_stability.py)
+- [trainer.py](../../../nba_oracle/learning/trainer.py)
+- [App.tsx](../../../dashboard/src/App.tsx)
+- [AppShell.tsx](../../../dashboard/src/components/AppShell.tsx)
+- [Operations.tsx](../../../dashboard/src/pages/Operations.tsx)
+
 ## Phase 4C Goal
 Prove the entire product works as one system:
 
 > scheduler -> live slate -> storage -> grading -> stability -> learning -> API -> UI -> delivery
 
-If any of those seams are unreliable, the project is not finished.
+No layer is allowed to lie about state, lag behind the others invisibly, or require terminal babysitting for normal operation.
+
+## What Phase 4C Must Respect
+
+1. The predictor remains the final betting authority.
+2. `BET`, `LEAN`, `SKIP`, degraded state, fallback usage, and insufficient-data states remain visible across every surface.
+3. The operator should not need the terminal for normal daily use once startup is done.
+4. Telegram, Gmail, API, and UI must agree on the same underlying run state.
+5. The system stays manual-bet only.
 
 ## In Scope
-- end-to-end integration
-- API/UI contract hardening
-- delivery/runtime truthfulness checks
-- auth/session hardening
-- deployment/startup hardening
-- failure recovery and operator runbooks
-- final acceptance verification
+- end-to-end API/UI/runtime/delivery wiring
+- startup and restart hardening
+- local automation and boot-time operating flow
+- hosted deployment target selection and operating shape
+- auth/session hardening across backend and dashboard
+- structured runbooks and recovery workflow
+- final acceptance verification across real commands and real UI paths
 
 ## Out of Scope
-- new major product surfaces
 - new betting markets
 - autonomous bet placement
+- new analyst/LLM explanation layer
 
 ## What Phase 4C Must Prove
 
-1. The scheduler can drive the product without terminal babysitting.
-2. UI, API, Telegram, and Gmail all reflect the same truth.
-3. Outcome grading, stability review, and learning updates are part of the same operating loop.
-4. Failures are visible and recoverable.
-5. The project can restart and continue without silent corruption or lost state.
+1. The scheduler can drive the product without manual babysitting.
+2. UI, API, Telegram, Gmail, and stored reports all reflect the same truth.
+3. Grading, stability, and learning are part of one operating loop, not isolated commands.
+4. Startup and restart are deterministic.
+5. Failures are visible, understandable, and recoverable.
+6. The operator can run the product normally from the dashboard plus delivery surfaces.
 
-## Major Workstreams
+## Deployment Direction
+Phase 4C will close against this deployment target:
 
-### Workstream 1: End-to-End Wiring
-Verify and tighten:
-- scheduler -> backend commands
-- backend commands -> persistence
+- `Vercel` for the dashboard frontend
+- `Render` for the FastAPI backend, scheduler cadence, and runtime jobs
+- `Supabase` for persistent storage
+
+This is the preferred shape because:
+- the dashboard benefits from Vercel's frontend workflow and preview model
+- the backend and runtime jobs need a more always-on operating path than a pure function-hosting model
+- Supabase is already the persistence system of record
+
+Local operation still matters for development and emergency fallback, but the finish line for the product is no longer "works only on one machine." It is "can run reliably as a hosted system with a documented local fallback."
+
+## Real Remaining Gaps To Close
+
+This phase is not about inventing major new features. It is about closing the seams that still remain:
+
+- browser-level verification and final truth checks across all dashboard pages
+- final delivery verification for Telegram and Gmail under the same live state the dashboard sees
+- startup and auto-start behavior that can survive restarts
+- schema/bootstrap sanity checks at startup
+- run-state consistency across runtime logs, reports, API payloads, and UI
+- clear recovery steps when providers, storage, delivery, or auth fail
+- hosted deployment verification for the chosen production shape
+- final acceptance suite and closeout docs
+
+## Workstreams
+
+### Workstream 1: End-to-End Truth Wiring
+Tighten and verify:
+- scheduler -> backend jobs
+- backend jobs -> local and Supabase persistence
 - persistence -> API
-- API -> UI
+- API -> dashboard
 - persistence/API -> Telegram/Gmail
-- grading -> stability
-- stability -> learning review
+- outcome grading -> stability review
+- stability review -> learning review
 
-### Workstream 2: Operator Flows
-Verify core operator flows:
-- login
-- inspect today’s slate
-- review provider degradation
-- inspect history
-- review stability
-- inspect learning state
-- trigger operator actions safely
+Deliverables:
+- single-source runtime truth checks
+- shared operator-visible run identifiers
+- consistent timestamps and status naming across surfaces
 
-### Workstream 3: Recovery and Logging
-Build/verify:
-- structured runtime logs
-- startup state checks
-- schema/bootstrap checks
-- failure banners/alerts
-- manual recovery runbooks
+### Workstream 2: Dashboard-to-Backend Hardening
+Finish the last UI/API seams:
+- expired-session handling
+- operator action feedback consistency
+- no stale page sections after operator-triggered jobs
+- dashboard refresh behavior after live-slate, grading, stability, and learning runs
+- browser-safe handling of `429`, `401`, and degraded states
 
-### Workstream 4: Deployment Hardening
-Finalize:
-- local startup instructions
-- Task Scheduler automation
-- environment checks
-- backup/recovery notes
-- operator boot-time sanity checklist
+Deliverables:
+- final dashboard interaction pass
+- route-level smoke verification
+- hardening notes in the runbook
 
-### Workstream 5: Final Acceptance Suite
+### Workstream 3: Delivery and Notification Truthfulness
+Verify and tighten:
+- Telegram test delivery
+- Gmail test delivery
+- operational digests reflect the same live run shown in the dashboard
+- failure alerts reflect real backend failures and not generic noise
+- notification history is inspectable and consistent with runtime state
+
+Deliverables:
+- final delivery verification notes
+- notification troubleshooting section
+
+### Workstream 4: Startup, Restart, and Automation
+Build and document the real operating path:
+- startup sanity check command
+- backend + dashboard launch flow
+- local Windows Task Scheduler fallback for backend startup and scheduler cadence
+- hosted launch flow for Vercel + Render
+- environment validation before runtime begins
+- restart/reboot behavior
+
+Deliverables:
+- `deployment.md`
+- boot-time checklist
+- startup automation instructions
+- hosted deployment instructions for Vercel frontend and Render backend/runtime
+
+### Workstream 5: Recovery and Operator Runbooks
+Write the operator-grade recovery layer:
+- provider failure recovery
+- auth/session recovery
+- Supabase failure handling
+- dashboard connectivity issues
+- delivery failure recovery
+- manual fallback command order
+
+Deliverables:
+- `recovery.md`
+- `phase-4.md` closeout runbook
+- operator quick-reference checklist
+
+### Workstream 6: Final Acceptance and Project Closeout
 Run and document:
-- full backend tests
-- key end-to-end smoke flows
-- real live run
-- grading pass
-- stability review pass
-- learning-cycle verification if enough evidence exists
+- backend tests
+- frontend build verification
+- hosted deployment verification
+- live slate execution
+- dashboard verification pass
+- delivery verification
+- outcome grading verification
+- stability review verification
+- learning review verification
+- scheduler once verification
 
-## Recommended Deliverables
+If enough graded evidence exists:
+- confirm learning review remains candidate-only and honest
 
+Deliverables:
+- final verification checklist
+- final status matrix update
+- final "project complete" closeout only if all gates pass
+
+## Recommended Implementation Areas
+
+- `nba_oracle/runtime/`
+- `nba_oracle/api/`
+- `nba_oracle/notifications/`
+- `nba_oracle/storage/`
+- `dashboard/src/`
 - `docs/runbooks/phase-4.md`
 - `docs/runbooks/deployment.md`
 - `docs/runbooks/recovery.md`
-- final operator checklist
-- end-to-end verification notes
-- final status matrix update
+- final operator checklist under `docs/runbooks/`
+
+## Concrete 4C Deliverables
+
+1. Final runtime/startup sanity command or equivalent startup checks
+2. Deployment runbook for:
+   - local backend start
+   - local dashboard start
+   - Vercel frontend deployment
+   - Render backend/runtime deployment
+   - scheduler cadence
+   - restart behavior
+3. Recovery runbook for:
+   - provider failures
+   - auth/session failures
+   - Supabase issues
+   - notification failures
+   - dashboard/API connectivity issues
+4. Phase 4 end-to-end operator checklist
+5. Status matrix and changes matrix closeout update
+6. Verified commands list for the finished product
 
 ## Manual Inputs Needed Later
-- preferred boot-time automation behavior
-- whether desktop auto-launch of dashboard/backend is desired
-- whether failure notifications should go to Telegram, Gmail, or both by default
+- preferred Windows Task Scheduler behavior for local fallback cadence
+- whether local backend should auto-start on login or machine boot
+- whether the local dashboard should auto-open after backend startup
+- default failure-alert destination if Telegram and Gmail disagree or one is down
 
 ## Acceptance Criteria
 Phase 4C is acceptable only if:
-- all major product surfaces agree on system state
-- the scheduler can drive the daily flow
-- runtime failures are visible and recoverable
-- the operator can use the system without terminal dependence for normal operation
-- the system remains faithful to the trust rules from Phases 1 to 3
+- scheduler, API, UI, Telegram, Gmail, and stored reports agree on current system state
+- operator actions from the dashboard reflect real backend outcomes immediately or through a documented refresh path
+- the system can start cleanly from a cold restart
+- the hosted deployment target is documented and verifiable
+- runtime failures are visible and recoverable through documented procedures
+- delivery tests succeed and are traceable in runtime history
+- outcome grading, stability review, and learning review all fit into one repeatable operating loop
+- the product can be used normally without terminal dependence after startup
+- the trust rules from Phases 1 to 3 are still preserved
 
 ## Final Exit Rule
-Do not call NBA Oracle complete until Phase 4A, 4B, and 4C have all passed their acceptance criteria and the end-to-end loop has been exercised successfully on real data.
+Do not call NBA Oracle complete until all of these are true:
+
+1. Phase 4A has passed real operating verification.
+2. Phase 4B has passed browser-level verification and operator-flow verification.
+3. Phase 4C has proven the full product loop is stable under real use.
+4. Recovery runbooks exist and are usable.
+5. The final status matrix and changes matrix reflect a finished project truthfully.

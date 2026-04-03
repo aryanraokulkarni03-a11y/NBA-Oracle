@@ -21,15 +21,15 @@ Use this as the operational checkpoint before starting a new phase.
 | Telegram and notifications | In progress | Telegram and Gmail service code, digests, and command-style handling now exist. |
 | Dashboard and auth | In progress | Phase 4A has auth bootstrap and protected API routes, and Phase 4B now has a real React/Vite dashboard scaffold with authenticated pages and operator controls. |
 | Learning engine | In progress | Phase 4A learning review execution and persistence now exist. |
-| Deployment hardening | In progress | API serve command, scheduler-once path, and explicit runtime bootstrap now exist; production hardening is still ahead. |
+| Deployment hardening | In progress | API serve command, scheduler-once path, explicit runtime bootstrap, and the final hosted target of Vercel + Render + Supabase are now defined; production hardening is still ahead. |
 
 ## Current Checkpoint
 
 | Question | Answer |
 |---|---|
-| Where are we now? | Phase 4A backend operating core is built, and Phase 4B dashboard execution is now underway with a working frontend scaffold and compiled build path. |
-| What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, the Phase 4A backend operating core, and the first compiled Phase 4B dashboard layer. |
-| What is the biggest unfinished product item? | Finishing browser-level verification and full end-to-end wiring across the new dashboard surfaces. |
+| Where are we now? | Phase 4A is built, Phase 4B is built in code, and the project is now ready for the final Phase 4C integration and production-hardening pass against the hosted target of Vercel + Render + Supabase. |
+| What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, the Phase 4A backend operating core, and the compiled Phase 4B dashboard layer. |
+| What is the biggest unfinished product item? | Final end-to-end wiring, hosted deployment hardening, startup/restart hardening, and operator recovery flow across every product surface. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. Delivery, persistent storage, scheduler runtime, and final operating flows are still missing. |
 | What manual closeout is still required? | Apply [phase4a_schema.sql](../../supabase/phase4a_schema.sql), bootstrap auth, and run live Telegram/Gmail delivery tests. |
@@ -63,10 +63,10 @@ Use this as the operational checkpoint before starting a new phase.
 | Gmail notifications | In progress | [gmail.py](../../nba_oracle/notifications/gmail.py), [formatters.py](../../nba_oracle/notifications/formatters.py), [cli.py](../../nba_oracle/cli.py) | Run live delivery tests and add richer summary formatting |
 | Supabase schema and client wiring | Done | [repository.py](../../nba_oracle/storage/repository.py), [phase2_schema.sql](../../supabase/phase2_schema.sql) | Expand schema in later phases as needed |
 | Pick logging and results tracking | Done for Phase 2 scope | [repository.py](../../nba_oracle/storage/repository.py) stores locally and remotely, and live verification has succeeded | Extend result tracking in later phases |
-| Dashboard backend and frontend | In progress | Phase 4A backend APIs, auth, and operator routes are real, and the React/Vite dashboard scaffold, pages, and operator UI flows now exist under `dashboard/` | Finish browser-level verification and end-to-end UI hardening |
+| Dashboard backend and frontend | In progress | Phase 4A backend APIs, auth, and operator routes are real, and the React/Vite dashboard scaffold, pages, and operator UI flows now exist under `dashboard/` | Final browser-level verification, UI/API refresh hardening, Vercel deployment, and 4C integration polish |
 | Auth and security layer | In progress | [app.py](../../nba_oracle/api/app.py), [dependencies.py](../../nba_oracle/api/dependencies.py), [auth.py](../../nba_oracle/auth.py), [security.py](../../nba_oracle/security.py), [setup_auth.py](../../setup_auth.py) | Add final session hardening and operator auth workflows |
 | Learning engine and pattern miner | In progress | [trainer.py](../../nba_oracle/learning/trainer.py), [weights.py](../../nba_oracle/learning/weights.py), [patterns.py](../../nba_oracle/learning/patterns.py), [review.py](../../nba_oracle/learning/review.py) | Accumulate more graded evidence and harden promotion workflow |
-| Scheduler and deployment flow | In progress | [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [state.py](../../nba_oracle/runtime/state.py), [cli.py](../../nba_oracle/cli.py) | Add production cadence hardening and auto-start setup |
+| Scheduler and deployment flow | In progress | [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [state.py](../../nba_oracle/runtime/state.py), [cli.py](../../nba_oracle/cli.py) | Add Render runtime deployment, Vercel dashboard deployment, production cadence hardening, and auto-start fallback setup |
 
 ## Phase Status
 
@@ -76,7 +76,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 1.1: Hardening | Complete | Calibration gate, source audit output, and status reporting are in place. |
 | Phase 2: Signal Quality Layer | Complete | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built and verified on a real pregame run. |
 | Phase 3: Stability Layer | In progress | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
-| Phase 4: Output / Operating Layer | In progress | Phase 4A operating core is built, Phase 4B dashboard implementation has started in code, and 4C final integration still remains. |
+| Phase 4: Output / Operating Layer | In progress | Phase 4A operating core is built, Phase 4B dashboard is built in code, and 4C final integration still remains. |
 
 ## Recent Changes Summary
 
@@ -96,6 +96,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4A operating core | In progress | Auth bootstrap, protected API routes, scheduler/meta-scheduler, Telegram/Gmail services, Telegram command-style handling, explicit runtime bootstrap, learning review execution, and Phase 4A runtime persistence have landed in code. |
 | Phase 4B final plan | Complete | The dashboard pass is now rewritten against the actual 4A route contract, page-by-page frontend truth rules, and explicit operator flows. |
 | Phase 4B dashboard execution | In progress | The dashboard folder, app shell, authenticated pages, shared UI system, and operator action panels now exist and compile successfully through `npm.cmd run build`. |
+| Phase 4C final one-shot plan | Complete | The last remaining pass is now rewritten around the real unfinished seams: startup, scheduler truth, dashboard/API refresh consistency, delivery verification, recovery, hosted deployment, and end-to-end closeout. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
@@ -116,6 +117,7 @@ Use this as the operational checkpoint before starting a new phase.
 - `python main.py run-scheduler-once` now executes due runtime jobs successfully.
 - `python main.py serve-api` boots the Phase 4A FastAPI server successfully.
 - `npm.cmd run build` now compiles the Phase 4B dashboard successfully.
+- Phase 4C now closes against `Vercel + Render + Supabase` as the deployment target.
 - GitHub and local `main` are in sync.
 
 ## Active Backend Assets
@@ -138,7 +140,7 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Continue Phase 4B, then continue Phase 4 in order:
+Move into Phase 4C:
 - apply [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql)
 - apply [phase4a_schema.sql](../../supabase/phase4a_schema.sql)
 - run `python main.py grade-outcomes` after games finish
@@ -146,6 +148,7 @@ Continue Phase 4B, then continue Phase 4 in order:
 - verify `python main.py serve-api`
 - verify delivery with `python main.py notify-telegram-test` and `python main.py notify-gmail-test`
 - verify the dashboard with [phase-4b.md](../runbooks/phase-4b.md)
-- finish with [phase-4c.md](../plans/implementation/phase-4c.md)
+- target deployment as `Vercel + Render + Supabase`
+- execute [phase-4c.md](../plans/implementation/phase-4c.md)
 
 Keep the Phase 1 replay flow intact as the acceptance gate for every new provider added.
