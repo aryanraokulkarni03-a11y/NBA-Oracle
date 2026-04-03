@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nba-oracle"
+version = "0.1.0"
+description = "Phase 1 validation core for NBA Oracle."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+nba-oracle = "nba_oracle.cli:main"
+

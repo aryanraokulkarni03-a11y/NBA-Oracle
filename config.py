@@ -1,0 +1,4 @@
+from nba_oracle.config import DEFAULT_REPORT_PATH, DEFAULT_FIXTURE_PATH
+
+__all__ = ["DEFAULT_FIXTURE_PATH", "DEFAULT_REPORT_PATH"]
+

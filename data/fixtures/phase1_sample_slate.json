@@ -1,0 +1,304 @@
+{
+  "games": [
+    {
+      "game_id": "2026-04-03-bos-mia",
+      "decision_time": "2026-04-03T15:30:00+00:00",
+      "tipoff_time": "2026-04-03T17:30:00+00:00",
+      "away_team": "Boston Celtics",
+      "home_team": "Miami Heat",
+      "market": {
+        "selected_team": "Boston Celtics",
+        "stake_american": -145,
+        "best_american": -138,
+        "close_american": -160,
+        "consensus_probability": 0.595
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-03T15:25:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.022,
+          "metadata": {
+            "line_move": "toward_boston"
+          }
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-03T15:00:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.026,
+          "metadata": {
+            "impact": "heat_guard_out"
+          }
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-03T12:00:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.9,
+          "signal_delta": 0.018
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-03T15:10:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.55,
+          "signal_delta": 0.006
+        }
+      ],
+      "actual_winner": "Boston Celtics"
+    },
+    {
+      "game_id": "2026-04-03-den-phx",
+      "decision_time": "2026-04-03T16:00:00+00:00",
+      "tipoff_time": "2026-04-03T18:00:00+00:00",
+      "away_team": "Denver Nuggets",
+      "home_team": "Phoenix Suns",
+      "market": {
+        "selected_team": "Denver Nuggets",
+        "stake_american": -110,
+        "best_american": -105,
+        "close_american": -125,
+        "consensus_probability": 0.529
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-03T15:50:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.01
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-03T15:25:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.012
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-03T15:00:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.88,
+          "signal_delta": 0.007
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-03T15:30:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.6,
+          "signal_delta": -0.002
+        }
+      ],
+      "actual_winner": "Denver Nuggets"
+    },
+    {
+      "game_id": "2026-04-03-nyk-mil",
+      "decision_time": "2026-04-03T16:30:00+00:00",
+      "tipoff_time": "2026-04-03T18:30:00+00:00",
+      "away_team": "New York Knicks",
+      "home_team": "Milwaukee Bucks",
+      "market": {
+        "selected_team": "Milwaukee Bucks",
+        "stake_american": -170,
+        "best_american": -150,
+        "close_american": -175,
+        "consensus_probability": 0.62
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-03T16:25:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.006
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-03T13:00:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": -0.004
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-03T09:00:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.9,
+          "signal_delta": 0.009
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-03T14:10:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.48,
+          "signal_delta": 0.003
+        }
+      ],
+      "actual_winner": "New York Knicks"
+    },
+    {
+      "game_id": "2026-04-03-lal-sac",
+      "decision_time": "2026-04-03T17:00:00+00:00",
+      "tipoff_time": "2026-04-03T19:00:00+00:00",
+      "away_team": "Los Angeles Lakers",
+      "home_team": "Sacramento Kings",
+      "market": {
+        "selected_team": "Sacramento Kings",
+        "stake_american": 118,
+        "best_american": 128,
+        "close_american": 105,
+        "consensus_probability": 0.485
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-03T16:52:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.015
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-03T16:35:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.99,
+          "signal_delta": 0.034
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-03T15:30:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.92,
+          "signal_delta": 0.009
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-03T16:10:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.62,
+          "signal_delta": 0.006
+        }
+      ],
+      "actual_winner": "Sacramento Kings"
+    },
+    {
+      "game_id": "2026-04-03-dal-min",
+      "decision_time": "2026-04-03T17:10:00+00:00",
+      "tipoff_time": "2026-04-03T19:10:00+00:00",
+      "away_team": "Dallas Mavericks",
+      "home_team": "Minnesota Timberwolves",
+      "market": {
+        "selected_team": "Minnesota Timberwolves",
+        "stake_american": -125,
+        "best_american": -102,
+        "close_american": -118,
+        "consensus_probability": 0.54
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-03T17:00:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.01
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-03T15:00:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.008
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-03T11:00:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.9,
+          "signal_delta": 0.006
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-03T14:00:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.45,
+          "signal_delta": 0.002
+        }
+      ],
+      "actual_winner": "Minnesota Timberwolves"
+    },
+    {
+      "game_id": "2026-04-03-orl-cle",
+      "decision_time": "2026-04-03T16:20:00+00:00",
+      "tipoff_time": "2026-04-03T18:20:00+00:00",
+      "away_team": "Orlando Magic",
+      "home_team": "Cleveland Cavaliers",
+      "market": {
+        "selected_team": "Cleveland Cavaliers",
+        "stake_american": -132,
+        "best_american": -135,
+        "close_american": -140,
+        "consensus_probability": 0.555
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-03T16:18:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.004
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-03T12:45:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.005
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-03T09:30:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.89,
+          "signal_delta": 0.003
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-03T13:00:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.4,
+          "signal_delta": -0.001
+        }
+      ],
+      "actual_winner": "Cleveland Cavaliers"
+    }
+  ]
+}
