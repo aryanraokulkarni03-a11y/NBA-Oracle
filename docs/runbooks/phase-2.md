@@ -67,6 +67,9 @@ To close Phase 2, run the live slate command during a real pregame window and co
 - no `supabase_error:...` markers appear in the stored artifact section
 - the schedule provider can still proceed if the official scoreboard is stale, by using the odds-derived fallback
 
+Status:
+- completed on a real pregame run with `Snapshot count: 9`, `Prediction count: 9`, and no `supabase_error:...`
+
 ## Step 4: Review the report
 Check that the report includes:
 - provider health table

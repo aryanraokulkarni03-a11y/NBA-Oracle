@@ -11,12 +11,13 @@ Phase 1 is complete locally:
 - calibration, source-quality, and market-discipline reporting
 - test coverage for the validation core
 
-Phase 2 has started:
+Phase 2 is complete:
 - real live-provider wiring for schedule, odds, stats, and injuries
 - live-slate assembly path with no-slate-day handling
 - dual local-plus-Supabase storage path in code
 - bundle and `--live` execution modes through the Phase 1 predictor
-- Phase 2.2 schedule fallback now derives the upcoming slate from odds when the official live scoreboard is stale
+- Phase 2.2 schedule fallback derives the upcoming slate from odds when the official live scoreboard is stale
+- real live verification has produced non-zero snapshots and predictions with no `supabase_error:...`
 
 ## Repo Structure
 
@@ -66,5 +67,5 @@ Generated replay and live-slate outputs are written to `reports/`.
 - The root README is intentionally concise for GitHub.
 - The detailed product doctrine, research, and build theory live under `docs/`.
 - Sentiment is still intentionally deferred in live mode.
-- Supabase is now wired in code, but still needs schema bootstrap before it becomes active.
-- Phase 2 still needs one real pregame live verification to be called fully complete in the docs.
+- Supabase is active through the dual storage path.
+- Phase 3 is the next backend phase.
