@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 from pathlib import Path
 
 from nba_oracle.config import DEFAULT_FIXTURE_PATH, DEFAULT_LIVE_BUNDLE_PATH
@@ -41,6 +42,17 @@ def build_parser() -> argparse.ArgumentParser:
         default=DEFAULT_LIVE_BUNDLE_PATH,
         help="Path to the live provider bundle JSON file",
     )
+    live.add_argument(
+        "--live",
+        action="store_true",
+        help="Fetch live providers instead of using a bundle file",
+    )
+    live.add_argument(
+        "--decision-time",
+        type=str,
+        default=None,
+        help="Override the decision time used for live mode (ISO-8601)",
+    )
     return parser
 
 
@@ -62,7 +74,12 @@ def main() -> None:
         return
 
     if args.command == "build-live-slate":
-        result = build_live_slate(args.bundle)
+        decision_time = datetime.fromisoformat(args.decision_time) if args.decision_time else None
+        result = build_live_slate(
+            None if args.live else args.bundle,
+            use_live=bool(args.live),
+            decision_time=decision_time,
+        )
         md_path = write_live_markdown_report(result)
         json_path = write_live_json_report(result)
         print(f"Live slate build complete. Markdown report: {md_path}")

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 from nba_oracle.models import GameSnapshot, MarketSnapshot, ProviderResponse, SourceSnapshot, parse_dt
@@ -12,11 +13,9 @@ def load_bundle_metadata(bundle_path: Path) -> dict[str, object]:
 
 
 def build_live_snapshots(
-    bundle_path: Path,
+    decision_time: datetime,
     providers: tuple[ProviderResponse, ...],
 ) -> tuple[GameSnapshot, ...]:
-    meta = load_bundle_metadata(bundle_path)
-    decision_time = parse_dt(str(meta["decision_time"]))
     schedule_provider = next(
         provider for provider in providers if provider.kind == "schedule"
     )
@@ -29,7 +28,7 @@ def build_live_snapshots(
         stats_row = provider_map["stats"].record_map.get(game_id)
         sentiment_row = provider_map.get("sentiment").record_map.get(game_id) if provider_map.get("sentiment") else None
 
-        if odds_row is None or injury_row is None or stats_row is None:
+        if odds_row is None:
             continue
 
         market = MarketSnapshot(
@@ -41,8 +40,8 @@ def build_live_snapshots(
         )
         sources = [
             _build_source(provider_map["odds"], odds_row),
-            _build_source(provider_map["injury"], injury_row),
-            _build_source(provider_map["stats"], stats_row),
+            _build_source_or_placeholder(provider_map["injury"], injury_row),
+            _build_source_or_placeholder(provider_map["stats"], stats_row),
         ]
         if sentiment_row and provider_map.get("sentiment") and provider_map["sentiment"].success:
             sources.append(_build_source(provider_map["sentiment"], sentiment_row))
@@ -71,4 +70,26 @@ def _build_source(provider: ProviderResponse, row: dict[str, object]) -> SourceS
         trust=provider.trust,
         signal_delta=float(row.get("signal_delta", 0.0)),
         metadata={k: v for k, v in row.items() if k not in {"game_id", "signal_delta"}},
+    )
+
+
+def _build_source_or_placeholder(
+    provider: ProviderResponse,
+    row: dict[str, object] | None,
+) -> SourceSnapshot:
+    if row is not None:
+        return _build_source(provider, row)
+
+    return SourceSnapshot(
+        name=provider.name,
+        kind=provider.kind,
+        source_time=provider.source_time,
+        source_version=provider.source_version,
+        trust=min(provider.trust, 0.35),
+        signal_delta=0.0,
+        metadata={
+            "placeholder": True,
+            "reason": "provider_record_missing",
+            "provider_error": provider.error,
+        },
     )

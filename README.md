@@ -12,10 +12,10 @@ Phase 1 is complete locally:
 - test coverage for the validation core
 
 Phase 2 has started:
-- provider adapter scaffold
-- live-slate assembly path
+- real live-provider wiring for schedule, odds, stats, and injuries
+- live-slate assembly path with no-slate-day handling
 - local durable storage for provider outputs, snapshots, and predictions
-- sample live-style bundle execution through the Phase 1 predictor
+- bundle and `--live` execution modes through the Phase 1 predictor
 
 ## Repo Structure
 
@@ -55,10 +55,11 @@ python -m unittest discover -s tests -p "test_*.py"
 python main.py replay
 ```
 
-Generated replay outputs are written to `reports/`.
+Generated replay and live-slate outputs are written to `reports/`.
 
 ## Notes
 
 - The root README is intentionally concise for GitHub.
 - The detailed product doctrine, research, and build theory live under `docs/`.
-- Live provider integrations, Supabase wiring, and delivery systems are planned for later phases.
+- Sentiment is still intentionally deferred in live mode.
+- Supabase wiring and delivery systems are planned for later phases.

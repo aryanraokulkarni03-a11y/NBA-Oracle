@@ -14,7 +14,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Product doctrine and master spec | Done | The long-form theory and architecture are documented. |
 | Research and model hardening docs | Done | Research, blockers, and FTW plans are in place. |
 | Phase 1 validation core | Done | Replay engine, gates, reporting, and tests are built. |
-| Live provider integrations | In progress | Provider adapter scaffold and local live-style bundle flow exist. |
+| Live provider integrations | In progress | Real schedule, odds, injuries, and stats fetch paths exist with bundle fallback and no-slate handling. |
 | Supabase persistence | Not started | Storage abstraction exists, but Supabase is not wired yet. |
 | Scheduler and orchestration | Not started | No meta-scheduler or analysis pipeline runner exists yet. |
 | LLM analyst layer | Not started | No live analyst-only explanation layer exists yet. |
@@ -39,12 +39,12 @@ Use this as the operational checkpoint before starting a new phase.
 | Calibration assessment | Done | [replay.py](../../nba_oracle/replay.py), [reporting.py](../../nba_oracle/reporting.py) | Upgrade from fixture-driven to historical-data-driven |
 | Phase 1 runbook | Done | [phase-1.md](../runbooks/phase-1.md) | Expand as tooling grows |
 | Test coverage for validation core | Done | [test_phase1.py](../../tests/test_phase1.py) | Add integration tests once providers exist |
-| Schedule ingestion | In progress | [schedule.py](../../nba_oracle/providers/schedule.py), [build_live_slate.py](../../nba_oracle/runs/build_live_slate.py) | Replace bundle-backed schedule flow with real provider calls |
-| Odds ingestion | In progress | [odds.py](../../nba_oracle/providers/odds.py), [phase2_sample_bundle.json](../../data/live_sources/phase2_sample_bundle.json) | Wire real odds provider and fallback path |
-| Injury/news ingestion | In progress | [injuries.py](../../nba_oracle/providers/injuries.py) | Wire official-first provider stack |
-| Stats ingestion | In progress | [stats.py](../../nba_oracle/providers/stats.py) | Replace bundle-backed stats flow with structured live adapter |
-| Sentiment ingestion | In progress | [sentiment.py](../../nba_oracle/providers/sentiment.py) | Keep optional and add real Reddit integration first |
-| Context builder | In progress | [live_snapshot_builder.py](../../nba_oracle/assembly/live_snapshot_builder.py) | Expand from bundle assembly to true provider merge logic |
+| Schedule ingestion | In progress | [schedule.py](../../nba_oracle/providers/schedule.py), [build_live_slate.py](../../nba_oracle/runs/build_live_slate.py) call the NBA live scoreboard endpoint with bundle fallback | Add date-targeted live fetch options and stronger schedule metadata |
+| Odds ingestion | In progress | [odds.py](../../nba_oracle/providers/odds.py) calls The Odds API and normalizes market consensus with bundle fallback | Add bookmaker selection tuning and true Stake/line-shop support |
+| Injury/news ingestion | In progress | [injuries.py](../../nba_oracle/providers/injuries.py) pulls ESPN injuries and degrades safely | Improve parser robustness and add secondary confirmation source |
+| Stats ingestion | In progress | [stats.py](../../nba_oracle/providers/stats.py) calls NBA estimated metrics with bundle fallback | Add richer pregame context and rest/travel features |
+| Sentiment ingestion | In progress | [sentiment.py](../../nba_oracle/providers/sentiment.py) is intentionally deferred in live mode | Add real Reddit integration first |
+| Context builder | In progress | [live_snapshot_builder.py](../../nba_oracle/assembly/live_snapshot_builder.py) merges real or bundle providers with placeholder fallback for degraded non-market sources | Expand context richness and stricter critical-source rules |
 | LLM analyst engine | Not started | None | Add analyst-only explanation layer |
 | Telegram delivery | Not started | None | Build bot, formatting, and commands |
 | Gmail notifications | Not started | None | Build schedule confirmation notifier |
@@ -61,7 +61,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|---|
 | Phase 1: Validation Core | Complete | The model can replay frozen slates, gate decisions, and produce audit reports. |
 | Phase 1.1: Hardening | Complete | Calibration gate, source audit output, and status reporting are in place. |
-| Phase 2: Signal Quality Layer | In progress | Adapter scaffold, local storage, and live-style execution path are built. |
+| Phase 2: Signal Quality Layer | In progress | Real provider paths, bundle fallback, local storage, and live execution mode are built. |
 | Phase 3: Stability Layer | Not started | Drift control, retraining discipline, and market scope hardening are still ahead. |
 | Phase 4: Output / Operating Layer | Not started | Delivery, dashboard, auth, and live operations are untouched. |
 
@@ -73,16 +73,16 @@ Use this as the operational checkpoint before starting a new phase.
 - Default replay reports `Phase 1 readiness: true`.
 - Phase 2 test suite passes.
 - `python main.py build-live-slate` succeeds against the sample live bundle.
+- `python main.py build-live-slate --live` completes and handles a no-slate day without cascading provider failure.
 - GitHub and local `main` are in sync.
 
 ## Next Recommended Step
 
-Continue Phase 2 by replacing bundle-backed provider inputs with real providers and wiring permanent storage:
-- real schedule adapter
-- real odds adapter
-- real injury/news adapter
-- real stats adapter
-- Reddit-first sentiment adapter
-- Supabase-backed storage
+Continue Phase 2 by hardening the new live providers and wiring permanent storage:
+- strengthen schedule targeting beyond the current-day scoreboard
+- improve ESPN parser resilience and add a secondary injury confirmation path
+- add bookmaker selection strategy and true Stake-aware price references
+- add Reddit-first live sentiment when ready
+- add Supabase-backed storage
 
 Keep the Phase 1 replay flow intact as the acceptance gate for every new provider added.

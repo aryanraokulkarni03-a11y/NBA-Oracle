@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from nba_oracle.env import get_env_value
+
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT_DIR / "data"
@@ -35,3 +37,17 @@ DEFAULT_STORAGE_MODE = "local"
 DEFAULT_ODDS_PROVIDER = "the_odds_api"
 DEFAULT_INJURY_PROVIDER = "espn_nba_api"
 DEFAULT_SENTIMENT_PROVIDER = "reddit_only"
+
+ODDS_API_KEY = get_env_value("ODDS_API_KEY")
+SUPABASE_URL = get_env_value("SUPABASE_URL")
+SUPABASE_SERVICE_ROLE_KEY = get_env_value("SUPABASE_SERVICE_ROLE_KEY")
+ODDS_API_BASE_URL = "https://api.the-odds-api.com/v4"
+ODDS_API_SPORT = "basketball_nba"
+ODDS_API_REGIONS = "us"
+ODDS_API_MARKETS = "h2h"
+ODDS_API_ODDS_FORMAT = "american"
+ODDS_REFERENCE_BOOKMAKER = get_env_value("ODDS_REFERENCE_BOOKMAKER")
+NBA_SCOREBOARD_URL = "https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json"
+NBA_TEAM_ESTIMATED_METRICS_URL = "https://stats.nba.com/stats/teamestimatedmetrics"
+ESPN_NBA_INJURIES_URL = "https://www.espn.com/nba/injuries"
+HTTP_TIMEOUT_SECONDS = 20
