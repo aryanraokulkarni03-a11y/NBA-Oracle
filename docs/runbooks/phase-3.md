@@ -8,6 +8,7 @@ Use this runbook to answer:
 - are freshness and timing still healthy?
 - are non-moneyline markets still locked?
 - is predictor authority still intact?
+- are finished games being graded back into the stored live runs?
 
 ## Command
 
@@ -26,6 +27,8 @@ python main.py review-stability --replay-report reports/phase1_replay_report.jso
 python main.py review-stability --force-refresh-baseline
 python main.py review-stability --analyst-payload data/stability/analyst_payload.json
 python main.py review-stability --candidate-model-version phase3-candidate-v1
+python main.py grade-outcomes
+python main.py grade-outcomes --limit 10
 ```
 
 ## Outputs
@@ -35,6 +38,11 @@ Phase 3 writes:
 - [reports/phase3_stability_report.json](../../reports/phase3_stability_report.json)
 - [data/stability/phase3_baseline.json](../../data/stability/phase3_baseline.json)
 - [data/stability/phase3_model_registry.json](../../data/stability/phase3_model_registry.json)
+
+Outcome grading writes:
+- [reports/phase3_outcome_grading_report.md](../../reports/phase3_outcome_grading_report.md)
+- [reports/phase3_outcome_grading_report.json](../../reports/phase3_outcome_grading_report.json)
+- `data/runtime/live-*/outcome_grades.json`
 
 ## What The Command Does
 
@@ -49,6 +57,26 @@ Phase 3 writes:
    - analyst containment
 6. Records model-review workflow state in the local registry.
 7. Writes markdown and JSON reports for operator review.
+
+## Outcome Accumulation Workflow
+
+Run from the repo root after games should be final:
+
+```powershell
+python main.py grade-outcomes
+```
+
+What it does:
+1. Scans recent `data/runtime/live-*` runs.
+2. Finds predictions whose tipoff has already passed and still have no `actual_winner`.
+3. Fetches official NBA final results.
+4. Backfills `actual_winner` into:
+   - `predictions.json`
+   - `snapshots.json`
+   - `outcome_grades.json`
+5. Persists outcome grades remotely when dual storage is active.
+
+This is the command that turns Phase 3 drift from `insufficient_outcomes` into something evidence-backed over time.
 
 ## How To Read The Output
 
@@ -83,6 +111,11 @@ Phase 3.1 introduces new remote tables for:
 
 Apply [phase3_schema.sql](../../supabase/phase3_schema.sql) in Supabase SQL Editor to complete the dual-storage path for Phase 3.1.
 
+Outcome grading introduces a new remote table for:
+- outcome grades
+
+Apply [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql) in Supabase SQL Editor to persist grading history remotely.
+
 ## Good Phase 3 Output
 
 Healthy Phase 3 output usually looks like:
@@ -113,4 +146,5 @@ At minimum, verify:
 python -m unittest discover -s tests -p "test_*.py"
 python main.py review-stability
 python main.py review-stability --force-refresh-baseline
+python main.py grade-outcomes
 ```

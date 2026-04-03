@@ -6,9 +6,11 @@ from pathlib import Path
 
 from nba_oracle.config import DEFAULT_FIXTURE_PATH, DEFAULT_JSON_REPORT_PATH, DEFAULT_LIVE_BUNDLE_PATH, RUNTIME_DIR
 from nba_oracle.live_reporting import write_live_json_report, write_live_markdown_report
+from nba_oracle.outcomes.reporting import write_outcome_json_report, write_outcome_markdown_report
 from nba_oracle.reporting import write_json_report, write_markdown_report
 from nba_oracle.replay import run_replay
 from nba_oracle.runs.build_live_slate import build_live_slate
+from nba_oracle.runs.grade_outcomes import grade_outcomes
 from nba_oracle.runs.review_stability import review_stability
 from nba_oracle.snapshots import load_game_snapshots
 
@@ -53,6 +55,29 @@ def build_parser() -> argparse.ArgumentParser:
         type=str,
         default=None,
         help="Override the decision time used for live mode (ISO-8601)",
+    )
+
+    outcomes = subparsers.add_parser(
+        "grade-outcomes",
+        help="Fetch official NBA final results and backfill stored live predictions",
+    )
+    outcomes.add_argument(
+        "--runtime-dir",
+        type=Path,
+        default=RUNTIME_DIR,
+        help="Path to the runtime directory that contains live runs",
+    )
+    outcomes.add_argument(
+        "--as-of",
+        type=str,
+        default=None,
+        help="Override the grading cutoff time used to decide which games should be final (ISO-8601)",
+    )
+    outcomes.add_argument(
+        "--limit",
+        type=int,
+        default=None,
+        help="Maximum number of live runs to inspect",
     )
 
     stability = subparsers.add_parser(
@@ -137,6 +162,22 @@ def main() -> None:
         json_path = write_live_json_report(result)
         print(f"Live slate build complete. Markdown report: {md_path}")
         print(f"Live slate build complete. JSON report: {json_path}")
+        return
+
+    if args.command == "grade-outcomes":
+        as_of = datetime.fromisoformat(args.as_of) if args.as_of else None
+        result = grade_outcomes(
+            runtime_dir=args.runtime_dir,
+            as_of=as_of,
+            limit=args.limit,
+        )
+        md_path = write_outcome_markdown_report(result)
+        json_path = write_outcome_json_report(result)
+        print(f"Outcome grading complete. Markdown report: {md_path}")
+        print(f"Outcome grading complete. JSON report: {json_path}")
+        print(f"Newly graded: {result.newly_graded}")
+        print(f"Pending unfinished: {result.pending_unfinished}")
+        print(f"Missing official outcomes: {result.missing_official_outcomes}")
         return
 
     if args.command == "review-stability":

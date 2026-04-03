@@ -27,12 +27,12 @@ Use this as the operational checkpoint before starting a new phase.
 
 | Question | Answer |
 |---|---|
-| Where are we now? | Phase 3.1 code is in place, and the remaining closeout is applying the Phase 3 Supabase schema plus continuing to accumulate graded evidence. |
+| Where are we now? | Phase 3.1 code is in place, and the new closeout loop is accumulating official graded outcomes into stored live runs so drift can mature beyond `insufficient_outcomes`. |
 | What is production-ready today? | Phase 1 replay/validation plus Phase 2 live provider execution, dual persistence, and live prediction assembly with graceful degradation. |
 | What is the biggest unfinished backend item? | Phase 3 stability work: drift control, retraining discipline, and market-scope hardening. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. Delivery, persistent storage, scheduler runtime, and final operating flows are still missing. |
-| What manual closeout is still required? | Apply [phase3_schema.sql](../../supabase/phase3_schema.sql) in Supabase to complete dual remote persistence for Phase 3.1 artifacts. |
+| What manual closeout is still required? | Apply [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql) in Supabase to persist outcome-grade history remotely, then keep running `grade-outcomes` after games finish. |
 
 ## Build Matrix
 
@@ -56,7 +56,8 @@ Use this as the operational checkpoint before starting a new phase.
 | Stats ingestion | Done | [stats.py](../../nba_oracle/providers/stats.py) calls NBA estimated metrics with bundle fallback | Add richer pregame context later |
 | Sentiment ingestion | Done for Phase 2 scope | [sentiment.py](../../nba_oracle/providers/sentiment.py) remains intentionally optional and safely deferred in live mode | Add real Reddit integration in a later phase |
 | Context builder | Done | [live_snapshot_builder.py](../../nba_oracle/assembly/live_snapshot_builder.py) merges real or bundle providers with placeholder fallback for degraded non-market sources | Expand context richness later |
-| Stability review layer | In progress | [baseline.py](../../nba_oracle/stability/baseline.py), [drift.py](../../nba_oracle/stability/drift.py), [timing.py](../../nba_oracle/stability/timing.py), [readiness.py](../../nba_oracle/stability/readiness.py), [reporting.py](../../nba_oracle/stability/reporting.py), [review_stability.py](../../nba_oracle/runs/review_stability.py), [catalog.py](../../nba_oracle/models_registry/catalog.py), [persistence.py](../../nba_oracle/stability/persistence.py) | Continue accumulating graded evidence and complete Supabase schema bootstrap for Phase 3.1 |
+| Stability review layer | In progress | [baseline.py](../../nba_oracle/stability/baseline.py), [drift.py](../../nba_oracle/stability/drift.py), [timing.py](../../nba_oracle/stability/timing.py), [readiness.py](../../nba_oracle/stability/readiness.py), [reporting.py](../../nba_oracle/stability/reporting.py), [review_stability.py](../../nba_oracle/runs/review_stability.py), [catalog.py](../../nba_oracle/models_registry/catalog.py), [persistence.py](../../nba_oracle/stability/persistence.py) | Continue accumulating graded evidence through the new outcome-grading workflow |
+| Outcome accumulation | Done for local workflow | [grade_outcomes.py](../../nba_oracle/runs/grade_outcomes.py), [fetcher.py](../../nba_oracle/outcomes/fetcher.py), [persistence.py](../../nba_oracle/outcomes/persistence.py), [reporting.py](../../nba_oracle/outcomes/reporting.py) | Apply remote outcome schema and keep running it after games finish |
 | LLM analyst engine | Not started | None | Add analyst-only explanation layer |
 | Telegram delivery | Not started | None | Build bot, formatting, and commands |
 | Gmail notifications | Not started | None | Build schedule confirmation notifier |
@@ -74,7 +75,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 1: Validation Core | Complete | The model can replay frozen slates, gate decisions, and produce audit reports. |
 | Phase 1.1: Hardening | Complete | Calibration gate, source audit output, and status reporting are in place. |
 | Phase 2: Signal Quality Layer | Complete | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built and verified on a real pregame run. |
-| Phase 3: Stability Layer | In progress | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, and model-review bookkeeping are live; graded evidence depth still needs to mature. |
+| Phase 3: Stability Layer | In progress | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
 | Phase 4: Output / Operating Layer | Not started | Delivery, dashboard, auth, and live operations are untouched. |
 
 ## Recent Changes Summary
@@ -90,6 +91,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 2.2 closeout path | Complete | Official schedule now falls back to odds-derived upcoming games when the live scoreboard is stale, and the fallback has produced real predictions. |
 | Phase 3 stability review | In progress | `review-stability` now creates or refreshes a saved baseline, reviews recent live runs, emits markdown/JSON health reports, writes a model-review registry, and can record analyst disagreements. |
 | Phase 3.1 hardening pass | Complete in code | ROI/CLV/calibration drift, baseline refresh discipline, timing-event logging, evidence-backed market locks, analyst disagreement logging, and review bookkeeping landed. |
+| Outcome grading workflow | Complete in code | `grade-outcomes` now fetches official NBA finals, backfills `actual_winner`, writes grading reports, and stores run-level outcome artifacts. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
@@ -106,6 +108,7 @@ Use this as the operational checkpoint before starting a new phase.
 - Phase 2.2 schedule fallback is covered by tests.
 - `python main.py build-live-slate --live` has now produced `Snapshot count: 9`, `Prediction count: 9`, and no `supabase_error:...` markers.
 - `python main.py review-stability --force-refresh-baseline` now succeeds and writes baseline-backed Phase 3.1 health reports.
+- `python main.py grade-outcomes` now succeeds and writes Phase 3 outcome-grading reports.
 - GitHub and local `main` are in sync.
 
 ## Active Backend Assets
@@ -116,16 +119,18 @@ Use this as the operational checkpoint before starting a new phase.
 | Live provider layer | [schedule.py](../../nba_oracle/providers/schedule.py), [odds.py](../../nba_oracle/providers/odds.py), [injuries.py](../../nba_oracle/providers/injuries.py), [stats.py](../../nba_oracle/providers/stats.py), [sentiment.py](../../nba_oracle/providers/sentiment.py) |
 | Live run orchestration | [build_live_slate.py](../../nba_oracle/runs/build_live_slate.py), [live_snapshot_builder.py](../../nba_oracle/assembly/live_snapshot_builder.py), [cli.py](../../nba_oracle/cli.py) |
 | Stability layer | [baseline.py](../../nba_oracle/stability/baseline.py), [drift.py](../../nba_oracle/stability/drift.py), [timing.py](../../nba_oracle/stability/timing.py), [readiness.py](../../nba_oracle/stability/readiness.py), [reporting.py](../../nba_oracle/stability/reporting.py), [review_stability.py](../../nba_oracle/runs/review_stability.py), [catalog.py](../../nba_oracle/models_registry/catalog.py) |
+| Outcome grading | [grade_outcomes.py](../../nba_oracle/runs/grade_outcomes.py), [fetcher.py](../../nba_oracle/outcomes/fetcher.py), [persistence.py](../../nba_oracle/outcomes/persistence.py), [reporting.py](../../nba_oracle/outcomes/reporting.py) |
 | Phase 3.1 remote schema | [phase3_schema.sql](../../supabase/phase3_schema.sql) |
+| Outcome remote schema | [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql) |
 | Runtime persistence | [repository.py](../../nba_oracle/storage/repository.py) |
 | Config and env | [config.py](../../nba_oracle/config.py), [env.py](../../nba_oracle/env.py), [http.py](../../nba_oracle/http.py), [teams.py](../../nba_oracle/teams.py) |
 | Manual bootstrap artifacts | [.env.example](../../.env.example), [phase2_schema.sql](../../supabase/phase2_schema.sql) |
 
 ## Next Recommended Step
 
-Complete the Phase 3.1 closeout:
-- apply [phase3_schema.sql](../../supabase/phase3_schema.sql)
-- keep collecting graded outcome depth
+Keep the Phase 3 evidence loop moving:
+- apply [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql)
+- run `python main.py grade-outcomes` after games finish
 - then re-run `python main.py review-stability --force-refresh-baseline`
 
 Keep the Phase 1 replay flow intact as the acceptance gate for every new provider added.

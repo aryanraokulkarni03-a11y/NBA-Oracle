@@ -30,6 +30,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 3 execution start | In progress | Saved-baseline review flow, drift checks, timing checks, market locks, and analyst-containment reporting landed. | Operator stability review without spreadsheet work | Retraining workflow and richer graded evidence |
 | Phase 3.1 hardening plan | Complete | A one-shot closeout plan now targets the remaining Phase 3 gaps directly. | Precise Phase 3 bug-fix and hardening pass | Execute the Phase 3.1 code changes |
 | Phase 3.1 execution | Complete in code | Baseline refresh rules, ROI/CLV/calibration drift, timing-event logs, evidence-backed market locks, analyst disagreement logging, model-review bookkeeping, and Supabase schema draft landed. | A much more trustworthy Phase 3 review workflow | Apply the Phase 3 schema and gather more graded live evidence |
+| Outcome grading workflow | Complete in code | A dedicated `grade-outcomes` command now fetches official final results, backfills `actual_winner` into stored live runs, emits reports, and persists grading artifacts. | Real outcome accumulation for Phase 3 drift and retraining evidence | Apply the outcome-grade schema remotely and keep running it after games finish |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
 ## Current Implementation Delta
@@ -41,7 +42,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Injuries | ESPN parser with graceful degradation | Secondary confirmation source and parser hardening |
 | Stats | NBA metrics fetch path | Rest, travel, and broader pregame context |
 | Sentiment | Deferred placeholder path | Real Reddit-first live adapter |
-| Storage | Local runtime persistence plus verified dual Supabase path, with Phase 3.1 dual-storage code ready | Apply the Phase 3 schema remotely |
+| Storage | Local runtime persistence plus verified dual Supabase path, with Phase 3.1 dual-storage code ready and outcome-grade dual persistence implemented | Apply the outcome-grade schema remotely |
 | CLI | Bundle mode, `--live` mode, and enhanced `review-stability` with refresh/analyst/review options | Scheduler/operator workflow integration |
 
 ## Latest Verified Commands
@@ -52,6 +53,7 @@ python main.py build-live-slate
 python main.py build-live-slate --live
 python main.py review-stability
 python main.py review-stability --force-refresh-baseline
+python main.py grade-outcomes
 ```
 
 ## Current Best Reading Order

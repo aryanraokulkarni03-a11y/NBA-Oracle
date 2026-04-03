@@ -26,6 +26,7 @@ Phase 3 is now in progress:
 - timing/freshness review with event logs
 - evidence-backed market-readiness locks for moneylines vs totals/props
 - analyst-containment checks, disagreement logging, and model-review bookkeeping
+- official outcome-grading command that backfills finished winners into stored live predictions
 
 ## Repo Structure
 
@@ -57,6 +58,7 @@ nba-oracle/
 - Phase 3 runbook: [docs/runbooks/phase-3.md](docs/runbooks/phase-3.md)
 - Phase 3.1 hardening plan: [docs/plans/implementation/phase-3-1.md](docs/plans/implementation/phase-3-1.md)
 - Supabase Phase 3 schema: [supabase/phase3_schema.sql](supabase/phase3_schema.sql)
+- Phase 3 outcome-grading schema: [supabase/phase3_2_schema.sql](supabase/phase3_2_schema.sql)
 - Phase 1 runbook: [docs/runbooks/phase-1.md](docs/runbooks/phase-1.md)
 - Phase 2 runbook: [docs/runbooks/phase-2.md](docs/runbooks/phase-2.md)
 - Supabase Phase 2 schema: [supabase/phase2_schema.sql](supabase/phase2_schema.sql)
@@ -72,6 +74,7 @@ python -m unittest discover -s tests -p "test_*.py"
 python main.py replay
 python main.py review-stability
 python main.py review-stability --force-refresh-baseline
+python main.py grade-outcomes
 ```
 
 Generated replay and live-slate outputs are written to `reports/`.
@@ -83,4 +86,5 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Sentiment is still intentionally deferred in live mode.
 - Supabase is active through the dual storage path.
 - Apply `supabase/phase3_schema.sql` to complete Phase 3.1 remote persistence.
+- Apply `supabase/phase3_2_schema.sql` to persist outcome-grade history remotely.
 - Phase 3 is now the active backend phase.
