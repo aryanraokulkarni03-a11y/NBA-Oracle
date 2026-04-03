@@ -299,6 +299,300 @@
         }
       ],
       "actual_winner": "Cleveland Cavaliers"
+    },
+    {
+      "game_id": "2026-04-04-chi-ind",
+      "decision_time": "2026-04-04T15:40:00+00:00",
+      "tipoff_time": "2026-04-04T17:40:00+00:00",
+      "away_team": "Chicago Bulls",
+      "home_team": "Indiana Pacers",
+      "market": {
+        "selected_team": "Indiana Pacers",
+        "stake_american": -142,
+        "best_american": -136,
+        "close_american": -148,
+        "consensus_probability": 0.596
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-04T15:34:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.02
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-04T15:10:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.024
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-04T13:20:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.91,
+          "signal_delta": 0.016
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-04T15:22:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.58,
+          "signal_delta": 0.004
+        }
+      ],
+      "actual_winner": "Chicago Bulls"
+    },
+    {
+      "game_id": "2026-04-04-atl-bkn",
+      "decision_time": "2026-04-04T16:05:00+00:00",
+      "tipoff_time": "2026-04-04T18:05:00+00:00",
+      "away_team": "Atlanta Hawks",
+      "home_team": "Brooklyn Nets",
+      "market": {
+        "selected_team": "Brooklyn Nets",
+        "stake_american": 112,
+        "best_american": 118,
+        "close_american": 106,
+        "consensus_probability": 0.486
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-04T15:56:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.011
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-04T15:20:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.015
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-04T14:40:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.9,
+          "signal_delta": 0.009
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-04T15:30:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.62,
+          "signal_delta": 0.003
+        }
+      ],
+      "actual_winner": "Atlanta Hawks"
+    },
+    {
+      "game_id": "2026-04-04-por-gsw",
+      "decision_time": "2026-04-04T17:15:00+00:00",
+      "tipoff_time": "2026-04-04T19:15:00+00:00",
+      "away_team": "Portland Trail Blazers",
+      "home_team": "Golden State Warriors",
+      "market": {
+        "selected_team": "Golden State Warriors",
+        "stake_american": -188,
+        "best_american": -176,
+        "close_american": -190,
+        "consensus_probability": 0.642
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-04T17:10:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.003
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-04T13:00:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": -0.003
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-04T08:00:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.88,
+          "signal_delta": 0.006
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-04T14:00:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.42,
+          "signal_delta": 0.002
+        }
+      ],
+      "actual_winner": "Golden State Warriors"
+    },
+    {
+      "game_id": "2026-04-04-uta-okc",
+      "decision_time": "2026-04-04T16:45:00+00:00",
+      "tipoff_time": "2026-04-04T18:45:00+00:00",
+      "away_team": "Utah Jazz",
+      "home_team": "Oklahoma City Thunder",
+      "market": {
+        "selected_team": "Oklahoma City Thunder",
+        "stake_american": -160,
+        "best_american": -152,
+        "close_american": -166,
+        "consensus_probability": 0.605
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-04T16:37:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.016
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-04T16:10:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.019
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-04T14:00:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.9,
+          "signal_delta": 0.014
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-04T16:15:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.57,
+          "signal_delta": 0.002
+        }
+      ],
+      "actual_winner": "Utah Jazz"
+    },
+    {
+      "game_id": "2026-04-04-mem-lac",
+      "decision_time": "2026-04-04T17:00:00+00:00",
+      "tipoff_time": "2026-04-04T19:00:00+00:00",
+      "away_team": "Memphis Grizzlies",
+      "home_team": "Los Angeles Clippers",
+      "market": {
+        "selected_team": "Los Angeles Clippers",
+        "stake_american": -108,
+        "best_american": -103,
+        "close_american": -112,
+        "consensus_probability": 0.531
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-04T16:50:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.01
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-04T16:20:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.013
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-04T15:10:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.9,
+          "signal_delta": 0.008
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-04T16:30:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.6,
+          "signal_delta": 0.002
+        }
+      ],
+      "actual_winner": "Los Angeles Clippers"
+    },
+    {
+      "game_id": "2026-04-04-cha-det",
+      "decision_time": "2026-04-04T15:55:00+00:00",
+      "tipoff_time": "2026-04-04T17:55:00+00:00",
+      "away_team": "Charlotte Hornets",
+      "home_team": "Detroit Pistons",
+      "market": {
+        "selected_team": "Detroit Pistons",
+        "stake_american": 105,
+        "best_american": 112,
+        "close_american": 100,
+        "consensus_probability": 0.49
+      },
+      "sources": [
+        {
+          "name": "odds_api_primary",
+          "kind": "odds",
+          "source_time": "2026-04-04T15:48:00+00:00",
+          "source_version": "odds-v1",
+          "trust": 0.95,
+          "signal_delta": 0.01
+        },
+        {
+          "name": "official_injury_report",
+          "kind": "injury",
+          "source_time": "2026-04-04T15:20:00+00:00",
+          "source_version": "injury-v1",
+          "trust": 0.98,
+          "signal_delta": 0.014
+        },
+        {
+          "name": "team_stats_snapshot",
+          "kind": "stats",
+          "source_time": "2026-04-04T14:10:00+00:00",
+          "source_version": "stats-v1",
+          "trust": 0.9,
+          "signal_delta": 0.008
+        },
+        {
+          "name": "reddit_sentiment",
+          "kind": "sentiment",
+          "source_time": "2026-04-04T15:32:00+00:00",
+          "source_version": "reddit-v1",
+          "trust": 0.61,
+          "signal_delta": 0.002
+        }
+      ],
+      "actual_winner": "Charlotte Hornets"
     }
   ]
 }

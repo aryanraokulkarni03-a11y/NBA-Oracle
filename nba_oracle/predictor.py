@@ -72,6 +72,8 @@ def evaluate_game(game: GameSnapshot) -> PredictionResult:
         selected_team=game.market.selected_team,
         decision=decision,
         stake_american=game.market.stake_american,
+        best_american=game.market.best_american,
+        close_american=game.market.close_american,
         model_probability=round(model_probability, 4),
         stake_probability=round(stake_probability, 4),
         best_probability=round(best_probability, 4),

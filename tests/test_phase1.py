@@ -22,12 +22,26 @@ class Phase1Tests(unittest.TestCase):
         self.assertEqual(first.bet_count, second.bet_count)
         self.assertEqual(first.roi, second.roi)
         self.assertEqual(first.skip_reasons, second.skip_reasons)
+        self.assertEqual(
+            first.calibration_assessment.status,
+            second.calibration_assessment.status,
+        )
 
     def test_predictor_returns_skip_when_price_gap_is_bad(self) -> None:
-        game = load_game_snapshots(DEFAULT_FIXTURE_PATH)[4]
+        game = next(
+            item for item in load_game_snapshots(DEFAULT_FIXTURE_PATH)
+            if item.game_id == "2026-04-03-dal-min"
+        )
         result = evaluate_game(game)
         self.assertEqual(result.decision, "SKIP")
         self.assertIn("stake_price_not_competitive", result.reasons)
+
+    def test_replay_calibration_gate_passes_on_default_fixture(self) -> None:
+        report = run_replay(DEFAULT_FIXTURE_PATH)
+        self.assertTrue(report.phase1_ready)
+        self.assertEqual(report.calibration_assessment.status, "PASS")
+        self.assertGreaterEqual(report.calibration_assessment.actionable_count, 6)
+        self.assertGreaterEqual(len(report.source_audit), 4)
 
     def test_future_source_time_is_rejected(self) -> None:
         payload = json.loads(DEFAULT_FIXTURE_PATH.read_text(encoding="utf-8"))

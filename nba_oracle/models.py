@@ -80,6 +80,7 @@ class GameSnapshot:
 @dataclass(frozen=True)
 class SourceScore:
     name: str
+    kind: str
     freshness: float
     trust: float
     quality: float
@@ -93,6 +94,8 @@ class PredictionResult:
     selected_team: str
     decision: str
     stake_american: int
+    best_american: int
+    close_american: int
     model_probability: float
     stake_probability: float
     best_probability: float

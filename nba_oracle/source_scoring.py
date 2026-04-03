@@ -17,6 +17,7 @@ def score_source(source: SourceSnapshot, decision_time: datetime) -> SourceScore
     quality = round(freshness * source.trust, 4)
     return SourceScore(
         name=source.name,
+        kind=source.kind,
         freshness=round(freshness, 4),
         trust=source.trust,
         quality=quality,
@@ -39,4 +40,3 @@ def aggregate_signal_delta(scores: tuple[SourceScore, ...]) -> float:
     if normalizer == 0:
         return 0.0
     return round(weighted_sum / normalizer, 4)
-

@@ -57,10 +57,14 @@ Check that the report includes:
 - BET count
 - LEAN count
 - SKIP count
+- Phase 1 readiness
+- calibration gate status
 - hit rate
 - ROI
 - CLV
 - calibration bins
+- source audit summary
+- Stake vs best vs close market comparison
 - skip reasons
 
 ## What the current build contains
@@ -78,4 +82,3 @@ Check that the report includes:
 - Telegram delivery
 - FastAPI service layer
 - LLM explanation layer
-
