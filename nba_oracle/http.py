@@ -54,6 +54,8 @@ def request_json(
         json_body=json_body,
         timeout=timeout,
     )
+    if not body.strip():
+        return {}, response_headers
     return json.loads(body), response_headers
 
 

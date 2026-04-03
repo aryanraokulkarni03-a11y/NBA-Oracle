@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 from nba_oracle.assembly.live_snapshot_builder import build_live_snapshots
 from nba_oracle.config import DEFAULT_LIVE_BUNDLE_PATH
+from nba_oracle.http import request_json
 from nba_oracle.models import ProviderRecord, ProviderResponse
 from nba_oracle.live_reporting import write_live_json_report, write_live_markdown_report
 from nba_oracle.providers.injuries import InjuryProvider
@@ -220,6 +221,13 @@ class Phase2Tests(unittest.TestCase):
         self.assertIn("Reference book", markdown)
         self.assertIn("Edge vs reference", markdown)
         self.assertIn("reference_bookmaker", payload["predictions"][0])
+
+    def test_request_json_allows_empty_success_body(self) -> None:
+        with patch("nba_oracle.http.request_text", return_value=("", {"content-length": "0"})):
+            payload, headers = request_json("https://example.com")
+
+        self.assertEqual(payload, {})
+        self.assertEqual(headers["content-length"], "0")
 
 
 if __name__ == "__main__":
