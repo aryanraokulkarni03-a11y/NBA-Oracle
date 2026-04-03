@@ -28,6 +28,15 @@ Phase 3 is now in progress:
 - analyst-containment checks, disagreement logging, and model-review bookkeeping
 - official outcome-grading command that backfills finished winners into stored live predictions
 
+Phase 4A is now in progress:
+- FastAPI operating-core app and protected route layer
+- auth bootstrap command plus token-based operator access
+- scheduler/meta-scheduler run path
+- Telegram and Gmail delivery services
+- explicit project-local runtime bootstrap path
+- learning-review execution path
+- runtime job, notification, and learning-review persistence
+
 ## Repo Structure
 
 ```text
@@ -59,8 +68,10 @@ nba-oracle/
 - Phase 3.1 hardening plan: [docs/plans/implementation/phase-3-1.md](docs/plans/implementation/phase-3-1.md)
 - Phase 4 restructure: [docs/plans/implementation/phase-4.md](docs/plans/implementation/phase-4.md)
 - Phase 4A operating core plan: [docs/plans/implementation/phase-4a.md](docs/plans/implementation/phase-4a.md)
+- Phase 4A runbook: [docs/runbooks/phase-4a.md](docs/runbooks/phase-4a.md)
 - Phase 4B dashboard plan: [docs/plans/implementation/phase-4b.md](docs/plans/implementation/phase-4b.md)
 - Phase 4C integration plan: [docs/plans/implementation/phase-4c.md](docs/plans/implementation/phase-4c.md)
+- Supabase Phase 4A schema: [supabase/phase4a_schema.sql](supabase/phase4a_schema.sql)
 - Supabase Phase 3 schema: [supabase/phase3_schema.sql](supabase/phase3_schema.sql)
 - Phase 3 outcome-grading schema: [supabase/phase3_2_schema.sql](supabase/phase3_2_schema.sql)
 - Phase 1 runbook: [docs/runbooks/phase-1.md](docs/runbooks/phase-1.md)
@@ -75,10 +86,13 @@ nba-oracle/
 ```powershell
 python main.py validate-fixture
 python -m unittest discover -s tests -p "test_*.py"
+python main.py bootstrap-runtime
 python main.py replay
 python main.py review-stability
 python main.py review-stability --force-refresh-baseline
 python main.py grade-outcomes
+python main.py run-scheduler-once
+python main.py review-learning
 ```
 
 Generated replay and live-slate outputs are written to `reports/`.
@@ -91,4 +105,5 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Supabase is active through the dual storage path.
 - Apply `supabase/phase3_schema.sql` to complete Phase 3.1 remote persistence.
 - Apply `supabase/phase3_2_schema.sql` to persist outcome-grade history remotely.
-- Phase 3 is the active backend phase, and Phase 4 is now split into 4A, 4B, and 4C for cleaner execution.
+- Apply `supabase/phase4a_schema.sql` to persist Phase 4A runtime jobs, notification events, and learning reviews remotely.
+- Phase 4A is the active operating-core phase, and Phase 4 remains split into 4A, 4B, and 4C for cleaner execution.

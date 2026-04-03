@@ -1,22 +1,30 @@
 from __future__ import annotations
 
 import argparse
+import getpass
 from datetime import datetime
 from pathlib import Path
 
-from nba_oracle.config import DEFAULT_FIXTURE_PATH, DEFAULT_JSON_REPORT_PATH, DEFAULT_LIVE_BUNDLE_PATH, RUNTIME_DIR
+from nba_oracle.auth import generate_secret_key, hash_password
+from nba_oracle.config import DEFAULT_FIXTURE_PATH, DEFAULT_JSON_REPORT_PATH, DEFAULT_LIVE_BUNDLE_PATH, ROOT_DIR, RUNTIME_DIR
+from nba_oracle.env import upsert_dotenv_values
+from nba_oracle.learning.review import write_learning_json_report, write_learning_markdown_report
+from nba_oracle.learning.trainer import run_learning_review
 from nba_oracle.live_reporting import write_live_json_report, write_live_markdown_report
+from nba_oracle.notifications.gmail import send_gmail_message
+from nba_oracle.notifications.telegram import handle_telegram_command, send_live_digest, send_telegram_message
 from nba_oracle.outcomes.reporting import write_outcome_json_report, write_outcome_markdown_report
 from nba_oracle.reporting import write_json_report, write_markdown_report
 from nba_oracle.replay import run_replay
 from nba_oracle.runs.build_live_slate import build_live_slate
 from nba_oracle.runs.grade_outcomes import grade_outcomes
 from nba_oracle.runs.review_stability import review_stability
+from nba_oracle.runtime.meta_scheduler import run_scheduler_once
 from nba_oracle.snapshots import load_game_snapshots
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="NBA Oracle Phase 1 CLI")
+    parser = argparse.ArgumentParser(description="NBA Oracle backend CLI")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
     replay = subparsers.add_parser("replay", help="Run Phase 1 replay on a fixture slate")
@@ -131,6 +139,84 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Optional rollback reason if the review is recording a rollback event",
     )
+
+    learning = subparsers.add_parser(
+        "review-learning",
+        help="Run the Phase 4A learning review workflow",
+    )
+    learning.add_argument(
+        "--runtime-dir",
+        type=Path,
+        default=RUNTIME_DIR,
+        help="Path to the runtime directory that contains live runs",
+    )
+
+    auth = subparsers.add_parser(
+        "bootstrap-auth",
+        help="Interactively create the dashboard password hash and API secret in .env",
+    )
+
+    serve = subparsers.add_parser(
+        "serve-api",
+        help="Run the Phase 4A FastAPI server",
+    )
+    serve.add_argument("--host", type=str, default=None, help="Override API host")
+    serve.add_argument("--port", type=int, default=None, help="Override API port")
+
+    scheduler = subparsers.add_parser(
+        "run-scheduler-once",
+        help="Evaluate the 4A runtime scheduler and execute due jobs once",
+    )
+    scheduler.add_argument("--force", action="store_true", help="Run every scheduler job once regardless of due state")
+
+    telegram = subparsers.add_parser(
+        "notify-telegram-test",
+        help="Send a Telegram test notification",
+    )
+    telegram.add_argument(
+        "--message",
+        type=str,
+        default="NBA Oracle Telegram test notification",
+        help="Message body to send",
+    )
+
+    gmail = subparsers.add_parser(
+        "notify-gmail-test",
+        help="Send a Gmail test notification",
+    )
+    gmail.add_argument(
+        "--subject",
+        type=str,
+        default="NBA Oracle Gmail test",
+        help="Email subject line",
+    )
+    gmail.add_argument(
+        "--message",
+        type=str,
+        default="NBA Oracle Gmail delivery path is healthy.",
+        help="Email body to send",
+    )
+
+    telegram_command = subparsers.add_parser(
+        "telegram-command",
+        help="Preview or send a Telegram command-style response",
+    )
+    telegram_command.add_argument(
+        "--text",
+        type=str,
+        required=True,
+        help="Telegram command text like /health or /picks",
+    )
+    telegram_command.add_argument(
+        "--send",
+        action="store_true",
+        help="Send the generated command response to Telegram instead of only printing it",
+    )
+
+    bootstrap_runtime = subparsers.add_parser(
+        "bootstrap-runtime",
+        help="Install Phase 4A runtime dependencies into the project-local package cache",
+    )
     return parser
 
 
@@ -198,6 +284,84 @@ def main() -> None:
         print(f"Timing status: {result.timing.status}")
         print(f"Analyst containment: {result.readiness.analyst.status}")
         print(f"Model review status: {result.model_registry.review_status}")
+        return
+
+    if args.command == "review-learning":
+        result = run_learning_review(runtime_dir=args.runtime_dir)
+        md_path = write_learning_markdown_report(result)
+        json_path = write_learning_json_report(result)
+        print(f"Learning review complete. Markdown report: {md_path}")
+        print(f"Learning review complete. JSON report: {json_path}")
+        print(f"Status: {result.status}")
+        print(f"Candidate model version: {result.candidate_model_version}")
+        return
+
+    if args.command == "bootstrap-auth":
+        password = getpass.getpass("Enter dashboard password: ")
+        confirm = getpass.getpass("Confirm dashboard password: ")
+        if not password:
+            raise SystemExit("password_cannot_be_empty")
+        if password != confirm:
+            raise SystemExit("passwords_do_not_match")
+        env_path = upsert_dotenv_values(
+            {
+                "ORACLE_PASSWORD_HASH": hash_password(password),
+                "ORACLE_SECRET_KEY": generate_secret_key(),
+            }
+        )
+        print(f"Auth bootstrap complete. Updated env file: {env_path}")
+        return
+
+    if args.command == "serve-api":
+        import uvicorn
+
+        from nba_oracle.api.app import build_app
+        from nba_oracle.config import ORACLE_API_HOST, ORACLE_API_PORT
+
+        uvicorn.run(
+            build_app(),
+            host=args.host or ORACLE_API_HOST,
+            port=args.port or ORACLE_API_PORT,
+        )
+        return
+
+    if args.command == "run-scheduler-once":
+        result = run_scheduler_once(force=bool(args.force))
+        print(f"Scheduler run complete. Executed jobs: {len(result['executed_jobs'])}")
+        print(result)
+        return
+
+    if args.command == "notify-telegram-test":
+        event_id = send_telegram_message(args.message, event_type="telegram_test")
+        print(f"Telegram notification sent. Event id: {event_id}")
+        return
+
+    if args.command == "notify-gmail-test":
+        event_id = send_gmail_message(args.subject, args.message, event_type="gmail_test")
+        print(f"Gmail notification sent. Event id: {event_id}")
+        return
+
+    if args.command == "telegram-command":
+        message = handle_telegram_command(args.text)
+        if args.send:
+            event_id = send_telegram_message(message, event_type="telegram_command")
+            print(f"Telegram command response sent. Event id: {event_id}")
+        else:
+            print(message)
+        return
+
+    if args.command == "bootstrap-runtime":
+        import subprocess
+        import sys
+
+        target = ROOT_DIR / ".python_packages"
+        target.mkdir(parents=True, exist_ok=True)
+        packages = ["fastapi", "uvicorn", "bcrypt", "PyJWT", "httpx"]
+        subprocess.run(
+            [sys.executable, "-m", "pip", "install", "--target", str(target), *packages],
+            check=True,
+        )
+        print(f"Runtime bootstrap complete. Installed packages into {target}")
         return
 
     parser.error("Unknown command")

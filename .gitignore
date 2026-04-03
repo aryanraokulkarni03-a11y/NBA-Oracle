@@ -4,6 +4,10 @@ __pycache__/
 .venv/
 .env
 .pytest_cache/
+.python_packages/
 reports/
+data/auth/
+data/learning/
 data/runtime/
+data/runtime_state/
 data/stability/

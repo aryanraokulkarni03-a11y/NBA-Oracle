@@ -47,3 +47,28 @@ def get_env_value(name: str, default: str | None = None) -> str | None:
     if value in {None, ""}:
         return default
     return str(value).strip()
+
+
+def upsert_dotenv_values(values: dict[str, str], env_path: Path | None = None) -> Path:
+    target = env_path or (Path(__file__).resolve().parent.parent / ".env")
+    existing: dict[str, str] = {}
+    order: list[str] = []
+    if target.exists():
+        for raw_line in target.read_text(encoding="utf-8").splitlines():
+            line = raw_line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, value = line.split("=", 1)
+            key = key.strip()
+            existing[key] = value.strip()
+            order.append(key)
+
+    for key, value in values.items():
+        if key not in order:
+            order.append(key)
+        existing[key] = value
+
+    rendered = [f"{key}={existing[key]}" for key in order]
+    target.write_text("\n".join(rendered) + "\n", encoding="utf-8")
+    _load_dotenv.cache_clear()
+    return target

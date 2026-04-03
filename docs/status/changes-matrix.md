@@ -32,6 +32,8 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 3.1 execution | Complete in code | Baseline refresh rules, ROI/CLV/calibration drift, timing-event logs, evidence-backed market locks, analyst disagreement logging, model-review bookkeeping, and Supabase schema draft landed. | A much more trustworthy Phase 3 review workflow | Apply the Phase 3 schema and gather more graded live evidence |
 | Outcome grading workflow | Complete in code | A dedicated `grade-outcomes` command now fetches official final results, backfills `actual_winner` into stored live runs, emits reports, and persists grading artifacts. | Real outcome accumulation for Phase 3 drift and retraining evidence | Apply the outcome-grade schema remotely and keep running it after games finish |
 | Phase 4 restructuring | Complete | The final product pass is now split into 4A operating core, 4B dashboard, and 4C final integration hardening. | Cleaner execution order with less frontend rework and safer final integration | Execute 4A first, then 4B, then 4C |
+| Phase 4A operating core execution | In progress | FastAPI app, auth bootstrap, protected backend routes, scheduler/meta-scheduler, Telegram/Gmail delivery services, learning execution, and Phase 4A runtime persistence are now in code. | A real backend contract for the future dashboard and operator workflow | Live notification tests, auth bootstrap verification, and final 4A hardening |
+| Phase 4A.1 hardening | Complete in code | Rate limiting is enforced, learning thresholds are aligned, the scheduler uses a real two-hour target window, Telegram command-style handling exists, and runtime bootstrap is explicit. | Safer 4A closeout and more reproducible setup | Final manual re-verification, then move toward Phase 4B |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
 ## Current Implementation Delta
@@ -44,17 +46,20 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Stats | NBA metrics fetch path | Rest, travel, and broader pregame context |
 | Sentiment | Deferred placeholder path | Real Reddit-first live adapter |
 | Storage | Local runtime persistence plus verified dual Supabase path, with Phase 3.1 dual-storage code ready and outcome-grade dual persistence implemented | Apply the outcome-grade schema remotely |
-| CLI | Bundle mode, `--live` mode, and enhanced `review-stability` with refresh/analyst/review options | Scheduler/operator workflow integration |
+| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, and delivery test commands | Auto-start runtime and final 4A polish |
 
 ## Latest Verified Commands
 
 ```powershell
 python -m unittest discover -s tests -p "test_*.py"
+python main.py bootstrap-runtime
 python main.py build-live-slate
 python main.py build-live-slate --live
 python main.py review-stability
 python main.py review-stability --force-refresh-baseline
 python main.py grade-outcomes
+python main.py run-scheduler-once
+python main.py serve-api
 ```
 
 ## Current Best Reading Order
@@ -64,8 +69,8 @@ python main.py grade-outcomes
 3. [phase-3-1.md](../plans/implementation/phase-3-1.md)
 4. [phase-4.md](../plans/implementation/phase-4.md)
 5. [phase-4a.md](../plans/implementation/phase-4a.md)
-6. [phase-4b.md](../plans/implementation/phase-4b.md)
-7. [phase-4c.md](../plans/implementation/phase-4c.md)
-8. [phase-3.md](../runbooks/phase-3.md)
-9. [phase-2.md](../runbooks/phase-2.md)
+6. [phase-4a.md](../runbooks/phase-4a.md)
+7. [phase-4b.md](../plans/implementation/phase-4b.md)
+8. [phase-4c.md](../plans/implementation/phase-4c.md)
+9. [phase-3.md](../runbooks/phase-3.md)
 10. [master-spec.md](../spec/master-spec.md)
