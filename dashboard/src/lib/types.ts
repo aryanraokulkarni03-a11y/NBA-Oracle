@@ -112,6 +112,9 @@ export type ProviderRecord = {
 
 export type Prediction = {
   game_id?: string;
+  matchup_label?: string;
+  away_team?: string;
+  home_team?: string;
   selected_team?: string;
   decision?: "BET" | "LEAN" | "SKIP" | string;
   reference_bookmaker?: string | null;

@@ -1,4 +1,4 @@
-import { formatProviderMeaning, formatProviderName } from "../lib/explain";
+import { formatProviderMeaning, formatProviderName, formatProviderVersion } from "../lib/explain";
 import { formatDateTime, formatPercent, toHeadline } from "../lib/format";
 import type { ProviderRecord } from "../lib/types";
 import { StatusPill } from "./StatusPill";
@@ -18,7 +18,7 @@ export function ProviderList({ providers }: { providers: ProviderRecord[] }) {
           <div className="provider-card__meta">
             <span>Trust {formatPercent(provider.trust)}</span>
             <span>{provider.record_count ?? 0} records</span>
-            <span>{provider.source_version ?? "n/a"}</span>
+            <span>{formatProviderVersion(provider.source_version)}</span>
           </div>
           <p className="provider-card__time">{formatDateTime(provider.source_time)}</p>
           <p className="provider-card__meaning">{formatProviderMeaning(provider.error, provider.degraded, provider.success)}</p>

@@ -43,6 +43,14 @@ const PROVIDER_ERRORS: Record<string, string> = {
   live_mode_not_supported: "This provider is not available in live mode.",
 };
 
+const PROVIDER_VERSIONS: Record<string, string> = {
+  "scoreboard-v1+odds-fallback-v1": "Official schedule with odds fallback",
+  "the-odds-api-v4": "The Odds API v4",
+  "espn-injuries-v1": "ESPN injury parser",
+  "teamestimatedmetrics-v1": "NBA estimated team metrics",
+  "live-v1": "Live sentiment bridge",
+};
+
 const REASON_EXPLANATIONS: Record<string, string> = {
   source_quality_below_threshold: "The supporting inputs were not strong enough to trust a bet.",
   edge_too_small: "The model does not have enough advantage over the market price.",
@@ -77,7 +85,9 @@ export function formatProviderMeaning(error?: string | null, degraded?: boolean,
     return PROVIDER_ERRORS[error];
   }
   if (error) {
-    return titleCase(error.replace(/:/g, " "));
+    return degraded
+      ? "This source only partially contributed, and the backend reported a non-standard fallback condition."
+      : "This source did not complete cleanly for the current run, so its data should be treated cautiously.";
   }
   if (!success) {
     return "This source failed for the current run, so its input should not be trusted.";
@@ -86,6 +96,13 @@ export function formatProviderMeaning(error?: string | null, degraded?: boolean,
     return "This source still contributed, but with fallback or weaker-than-ideal data quality.";
   }
   return "This source contributed normally to the current run.";
+}
+
+export function formatProviderVersion(value?: string | null) {
+  if (!value) {
+    return "Version details unavailable";
+  }
+  return PROVIDER_VERSIONS[value] ?? "Internal provider build available in runtime logs";
 }
 
 export function formatPredictionReasons(reasons?: string[]) {
