@@ -31,6 +31,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 3.1 hardening plan | Complete | A one-shot closeout plan now targets the remaining Phase 3 gaps directly. | Precise Phase 3 bug-fix and hardening pass | Execute the Phase 3.1 code changes |
 | Phase 3.1 execution | Complete in code | Baseline refresh rules, ROI/CLV/calibration drift, timing-event logs, evidence-backed market locks, analyst disagreement logging, model-review bookkeeping, and Supabase schema draft landed. | A much more trustworthy Phase 3 review workflow | Apply the Phase 3 schema and gather more graded live evidence |
 | Outcome grading workflow | Complete in code | A dedicated `grade-outcomes` command now fetches official final results, backfills `actual_winner` into stored live runs, emits reports, and persists grading artifacts. | Real outcome accumulation for Phase 3 drift and retraining evidence | Apply the outcome-grade schema remotely and keep running it after games finish |
+| Phase 4 restructuring | Complete | The final product pass is now split into 4A operating core, 4B dashboard, and 4C final integration hardening. | Cleaner execution order with less frontend rework and safer final integration | Execute 4A first, then 4B, then 4C |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
 ## Current Implementation Delta
@@ -61,6 +62,10 @@ python main.py grade-outcomes
 1. [project-status-matrix.md](./project-status-matrix.md)
 2. [phase-3.md](../plans/implementation/phase-3.md)
 3. [phase-3-1.md](../plans/implementation/phase-3-1.md)
-4. [phase-3.md](../runbooks/phase-3.md)
-5. [phase-2.md](../runbooks/phase-2.md)
-6. [master-spec.md](../spec/master-spec.md)
+4. [phase-4.md](../plans/implementation/phase-4.md)
+5. [phase-4a.md](../plans/implementation/phase-4a.md)
+6. [phase-4b.md](../plans/implementation/phase-4b.md)
+7. [phase-4c.md](../plans/implementation/phase-4c.md)
+8. [phase-3.md](../runbooks/phase-3.md)
+9. [phase-2.md](../runbooks/phase-2.md)
+10. [master-spec.md](../spec/master-spec.md)

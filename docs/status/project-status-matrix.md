@@ -19,9 +19,9 @@ Use this as the operational checkpoint before starting a new phase.
 | Scheduler and orchestration | Not started | No meta-scheduler or analysis pipeline runner exists yet. |
 | LLM analyst layer | Not started | No live analyst-only explanation layer exists yet. |
 | Telegram and notifications | Not started | No bot or Gmail delivery flow is built yet. |
-| Dashboard and auth | Not started | No FastAPI dashboard backend or frontend exists yet. |
-| Learning engine | Not started | No learner, pattern miner, or retraining loop exists yet. |
-| Deployment hardening | Not started | No boot-time service or long-running local runtime exists yet. |
+| Dashboard and auth | Planned | Phase 4B now defines the dashboard/auth surface, but no code exists yet. |
+| Learning engine | Planned | Phase 4A now defines the first full learning-loop execution path, but no code exists yet. |
+| Deployment hardening | Planned | Phase 4A and 4C now define the runtime/deployment story, but no code exists yet. |
 
 ## Current Checkpoint
 
@@ -29,7 +29,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|
 | Where are we now? | Phase 3.1 code is in place, and the new closeout loop is accumulating official graded outcomes into stored live runs so drift can mature beyond `insufficient_outcomes`. |
 | What is production-ready today? | Phase 1 replay/validation plus Phase 2 live provider execution, dual persistence, and live prediction assembly with graceful degradation. |
-| What is the biggest unfinished backend item? | Phase 3 stability work: drift control, retraining discipline, and market-scope hardening. |
+| What is the biggest unfinished backend item? | Phase 4A operating core: API, auth, scheduler/runtime, delivery channels, and learning execution. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. Delivery, persistent storage, scheduler runtime, and final operating flows are still missing. |
 | What manual closeout is still required? | Apply [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql) in Supabase to persist outcome-grade history remotely, then keep running `grade-outcomes` after games finish. |
@@ -76,7 +76,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 1.1: Hardening | Complete | Calibration gate, source audit output, and status reporting are in place. |
 | Phase 2: Signal Quality Layer | Complete | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built and verified on a real pregame run. |
 | Phase 3: Stability Layer | In progress | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
-| Phase 4: Output / Operating Layer | Not started | Delivery, dashboard, auth, and live operations are untouched. |
+| Phase 4: Output / Operating Layer | Planned | The final product pass is now split into 4A operating core, 4B dashboard, and 4C integration hardening. |
 
 ## Recent Changes Summary
 
@@ -92,6 +92,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 3 stability review | In progress | `review-stability` now creates or refreshes a saved baseline, reviews recent live runs, emits markdown/JSON health reports, writes a model-review registry, and can record analyst disagreements. |
 | Phase 3.1 hardening pass | Complete in code | ROI/CLV/calibration drift, baseline refresh discipline, timing-event logging, evidence-backed market locks, analyst disagreement logging, and review bookkeeping landed. |
 | Outcome grading workflow | Complete in code | `grade-outcomes` now fetches official NBA finals, backfills `actual_winner`, writes grading reports, and stores run-level outcome artifacts. |
+| Phase 4 restructuring | Complete | The final product pass is now split into 4A, 4B, and 4C so backend/runtime, frontend, and integration can be executed in the right order. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
@@ -128,9 +129,12 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Keep the Phase 3 evidence loop moving:
+Close the remaining Phase 3 evidence loop, then execute Phase 4 in order:
 - apply [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql)
 - run `python main.py grade-outcomes` after games finish
-- then re-run `python main.py review-stability --force-refresh-baseline`
+- re-run `python main.py review-stability --force-refresh-baseline`
+- start with [phase-4a.md](../plans/implementation/phase-4a.md)
+- then [phase-4b.md](../plans/implementation/phase-4b.md)
+- finish with [phase-4c.md](../plans/implementation/phase-4c.md)
 
 Keep the Phase 1 replay flow intact as the acceptance gate for every new provider added.

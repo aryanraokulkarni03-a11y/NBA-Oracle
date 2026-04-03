@@ -57,6 +57,10 @@ nba-oracle/
 - Phase 3 implementation plan: [docs/plans/implementation/phase-3.md](docs/plans/implementation/phase-3.md)
 - Phase 3 runbook: [docs/runbooks/phase-3.md](docs/runbooks/phase-3.md)
 - Phase 3.1 hardening plan: [docs/plans/implementation/phase-3-1.md](docs/plans/implementation/phase-3-1.md)
+- Phase 4 restructure: [docs/plans/implementation/phase-4.md](docs/plans/implementation/phase-4.md)
+- Phase 4A operating core plan: [docs/plans/implementation/phase-4a.md](docs/plans/implementation/phase-4a.md)
+- Phase 4B dashboard plan: [docs/plans/implementation/phase-4b.md](docs/plans/implementation/phase-4b.md)
+- Phase 4C integration plan: [docs/plans/implementation/phase-4c.md](docs/plans/implementation/phase-4c.md)
 - Supabase Phase 3 schema: [supabase/phase3_schema.sql](supabase/phase3_schema.sql)
 - Phase 3 outcome-grading schema: [supabase/phase3_2_schema.sql](supabase/phase3_2_schema.sql)
 - Phase 1 runbook: [docs/runbooks/phase-1.md](docs/runbooks/phase-1.md)
@@ -87,4 +91,4 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Supabase is active through the dual storage path.
 - Apply `supabase/phase3_schema.sql` to complete Phase 3.1 remote persistence.
 - Apply `supabase/phase3_2_schema.sql` to persist outcome-grade history remotely.
-- Phase 3 is now the active backend phase.
+- Phase 3 is the active backend phase, and Phase 4 is now split into 4A, 4B, and 4C for cleaner execution.
