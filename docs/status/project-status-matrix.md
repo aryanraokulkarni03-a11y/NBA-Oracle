@@ -23,6 +23,16 @@ Use this as the operational checkpoint before starting a new phase.
 | Learning engine | Not started | No learner, pattern miner, or retraining loop exists yet. |
 | Deployment hardening | Not started | No boot-time service or long-running local runtime exists yet. |
 
+## Current Checkpoint
+
+| Question | Answer |
+|---|---|
+| Where are we now? | Late Phase 2, with real live-provider wiring in place but no permanent database wiring yet. |
+| What is production-ready today? | Phase 1 replay/validation and Phase 2 local-plus-live provider execution with graceful degradation. |
+| What is the biggest unfinished backend item? | Supabase-backed persistence and stronger provider hardening. |
+| Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
+| Can it place real bets end-to-end today? | No. Delivery, persistent storage, scheduler runtime, and final operating flows are still missing. |
+
 ## Build Matrix
 
 | Spec Area | Current Status | Implemented Assets | Remaining Work |
@@ -65,6 +75,18 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 3: Stability Layer | Not started | Drift control, retraining discipline, and market scope hardening are still ahead. |
 | Phase 4: Output / Operating Layer | Not started | Delivery, dashboard, auth, and live operations are untouched. |
 
+## Recent Changes Summary
+
+| Change Area | Status | What Landed |
+|---|---|---|
+| Phase 1 validation core | Complete | Replay engine, no-bet logic, calibration reporting, and audit reports are fully working. |
+| Phase 1.1 hardening | Complete | Calibration acceptance logic, richer report outputs, and stronger replay readiness checks are in place. |
+| Phase 2 scaffold | Complete | Provider contracts, live-slate assembly, local runtime storage, sample bundle, and tests landed. |
+| Phase 2 live provider wiring | In progress | Real schedule, odds, stats, and ESPN injury fetch paths now exist behind the provider interfaces. |
+| Phase 2 live execution mode | In progress | `--live` mode runs against upstreams and handles no-slate days without cascading failure. |
+| Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
+| Supabase | Ready to wire | Credentials are prepared, but the storage layer is still local-only in code. |
+
 ## Last Verified State
 
 - Fixture validation passes.
@@ -75,6 +97,16 @@ Use this as the operational checkpoint before starting a new phase.
 - `python main.py build-live-slate` succeeds against the sample live bundle.
 - `python main.py build-live-slate --live` completes and handles a no-slate day without cascading provider failure.
 - GitHub and local `main` are in sync.
+
+## Active Backend Assets
+
+| Area | Primary Files |
+|---|---|
+| Validation core | [predictor.py](../../nba_oracle/predictor.py), [replay.py](../../nba_oracle/replay.py), [reporting.py](../../nba_oracle/reporting.py) |
+| Live provider layer | [schedule.py](../../nba_oracle/providers/schedule.py), [odds.py](../../nba_oracle/providers/odds.py), [injuries.py](../../nba_oracle/providers/injuries.py), [stats.py](../../nba_oracle/providers/stats.py), [sentiment.py](../../nba_oracle/providers/sentiment.py) |
+| Live run orchestration | [build_live_slate.py](../../nba_oracle/runs/build_live_slate.py), [live_snapshot_builder.py](../../nba_oracle/assembly/live_snapshot_builder.py), [cli.py](../../nba_oracle/cli.py) |
+| Runtime persistence | [repository.py](../../nba_oracle/storage/repository.py) |
+| Config and env | [config.py](../../nba_oracle/config.py), [env.py](../../nba_oracle/env.py), [http.py](../../nba_oracle/http.py), [teams.py](../../nba_oracle/teams.py) |
 
 ## Next Recommended Step
 

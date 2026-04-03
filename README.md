@@ -39,6 +39,7 @@ nba-oracle/
 
 - Full master spec: [docs/spec/master-spec.md](docs/spec/master-spec.md)
 - Project status matrix: [docs/status/project-status-matrix.md](docs/status/project-status-matrix.md)
+- Changes matrix: [docs/status/changes-matrix.md](docs/status/changes-matrix.md)
 - Phase 1 implementation plan: [docs/plans/implementation/phase-1.md](docs/plans/implementation/phase-1.md)
 - Phase 2 implementation plan: [docs/plans/implementation/phase-2.md](docs/plans/implementation/phase-2.md)
 - Phase 1 runbook: [docs/runbooks/phase-1.md](docs/runbooks/phase-1.md)
