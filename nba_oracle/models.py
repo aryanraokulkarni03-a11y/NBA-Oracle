@@ -60,7 +60,7 @@ class GameSnapshot:
     home_team: str
     market: MarketSnapshot
     sources: tuple[SourceSnapshot, ...]
-    actual_winner: str
+    actual_winner: str | None = None
 
     @classmethod
     def from_dict(cls, payload: dict[str, Any]) -> "GameSnapshot":
@@ -73,7 +73,7 @@ class GameSnapshot:
             home_team=payload["home_team"],
             market=MarketSnapshot.from_dict(payload["market"]),
             sources=sources,
-            actual_winner=payload["actual_winner"],
+            actual_winner=payload.get("actual_winner"),
         )
 
 
@@ -113,4 +113,39 @@ class PredictionResult:
 
     @property
     def won(self) -> bool:
-        return self.selected_team == self.actual_winner
+        return self.actual_winner is not None and self.selected_team == self.actual_winner
+
+
+@dataclass(frozen=True)
+class ProviderRecord:
+    game_id: str
+    data: dict[str, Any]
+
+
+@dataclass(frozen=True)
+class ProviderResponse:
+    name: str
+    kind: str
+    source_time: datetime
+    source_version: str
+    trust: float
+    success: bool
+    degraded: bool
+    records: tuple[ProviderRecord, ...]
+    raw_payload: dict[str, Any]
+    error: str | None = None
+
+    @property
+    def record_map(self) -> dict[str, dict[str, Any]]:
+        return {record.game_id: record.data for record in self.records}
+
+
+@dataclass(frozen=True)
+class LiveRunResult:
+    run_id: str
+    decision_time: datetime
+    storage_mode: str
+    providers: tuple[ProviderResponse, ...]
+    snapshots: tuple[GameSnapshot, ...]
+    predictions: tuple[PredictionResult, ...]
+    stored_paths: tuple[str, ...]

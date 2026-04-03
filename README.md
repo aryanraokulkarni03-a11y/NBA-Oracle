@@ -11,7 +11,11 @@ Phase 1 is complete locally:
 - calibration, source-quality, and market-discipline reporting
 - test coverage for the validation core
 
-Phase 2 is the next major build target.
+Phase 2 has started:
+- provider adapter scaffold
+- live-slate assembly path
+- local durable storage for provider outputs, snapshots, and predictions
+- sample live-style bundle execution through the Phase 1 predictor
 
 ## Repo Structure
 
@@ -36,7 +40,9 @@ nba-oracle/
 - Full master spec: [docs/spec/master-spec.md](docs/spec/master-spec.md)
 - Project status matrix: [docs/status/project-status-matrix.md](docs/status/project-status-matrix.md)
 - Phase 1 implementation plan: [docs/plans/implementation/phase-1.md](docs/plans/implementation/phase-1.md)
+- Phase 2 implementation plan: [docs/plans/implementation/phase-2.md](docs/plans/implementation/phase-2.md)
 - Phase 1 runbook: [docs/runbooks/phase-1.md](docs/runbooks/phase-1.md)
+- Phase 2 runbook: [docs/runbooks/phase-2.md](docs/runbooks/phase-2.md)
 - Problems tracker: [docs/plans/problems-plan.md](docs/plans/problems-plan.md)
 - FTW solutions plan: [docs/plans/ftw-plan.md](docs/plans/ftw-plan.md)
 - Research report: [docs/research/prediction-systems-and-public-sentiment-signals.md](docs/research/prediction-systems-and-public-sentiment-signals.md)

@@ -1,0 +1,156 @@
+{
+  "meta": {
+    "run_id": "phase2-sample-run-001",
+    "decision_time": "2026-04-05T15:30:00+00:00"
+  },
+  "schedule": {
+    "provider": "nba_schedule_bundle",
+    "source_time": "2026-04-05T15:00:00+00:00",
+    "source_version": "schedule-v1",
+    "trust": 0.99,
+    "success": true,
+    "degraded": false,
+    "records": [
+      {
+        "game_id": "2026-04-05-bos-nyk",
+        "away_team": "Boston Celtics",
+        "home_team": "New York Knicks",
+        "tipoff_time": "2026-04-05T17:30:00+00:00"
+      },
+      {
+        "game_id": "2026-04-05-lal-phx",
+        "away_team": "Los Angeles Lakers",
+        "home_team": "Phoenix Suns",
+        "tipoff_time": "2026-04-05T18:00:00+00:00"
+      },
+      {
+        "game_id": "2026-04-05-den-sac",
+        "away_team": "Denver Nuggets",
+        "home_team": "Sacramento Kings",
+        "tipoff_time": "2026-04-05T18:30:00+00:00"
+      }
+    ]
+  },
+  "odds": {
+    "provider": "the_odds_api_bundle",
+    "source_time": "2026-04-05T15:22:00+00:00",
+    "source_version": "odds-v1",
+    "trust": 0.95,
+    "success": true,
+    "degraded": false,
+    "records": [
+      {
+        "game_id": "2026-04-05-bos-nyk",
+        "selected_team": "Boston Celtics",
+        "stake_american": -142,
+        "best_american": -136,
+        "close_american": -148,
+        "consensus_probability": 0.592,
+        "signal_delta": 0.018,
+        "line_move": "toward_boston"
+      },
+      {
+        "game_id": "2026-04-05-lal-phx",
+        "selected_team": "Phoenix Suns",
+        "stake_american": 118,
+        "best_american": 125,
+        "close_american": 110,
+        "consensus_probability": 0.476,
+        "signal_delta": 0.011,
+        "line_move": "toward_phoenix"
+      },
+      {
+        "game_id": "2026-04-05-den-sac",
+        "selected_team": "Denver Nuggets",
+        "stake_american": -112,
+        "best_american": -105,
+        "close_american": -118,
+        "consensus_probability": 0.527,
+        "signal_delta": 0.01,
+        "line_move": "stable"
+      }
+    ]
+  },
+  "injuries": {
+    "provider": "espn_nba_api_bundle",
+    "source_time": "2026-04-05T15:10:00+00:00",
+    "source_version": "injury-v1",
+    "trust": 0.98,
+    "success": true,
+    "degraded": false,
+    "records": [
+      {
+        "game_id": "2026-04-05-bos-nyk",
+        "signal_delta": 0.021,
+        "summary": "Knicks starting guard questionable",
+        "confirmation_level": "official"
+      },
+      {
+        "game_id": "2026-04-05-lal-phx",
+        "signal_delta": 0.028,
+        "summary": "Lakers frontcourt injury downgrade",
+        "confirmation_level": "official"
+      },
+      {
+        "game_id": "2026-04-05-den-sac",
+        "signal_delta": 0.012,
+        "summary": "Denver rotation intact",
+        "confirmation_level": "official"
+      }
+    ]
+  },
+  "stats": {
+    "provider": "nba_api_bundle",
+    "source_time": "2026-04-05T13:30:00+00:00",
+    "source_version": "stats-v1",
+    "trust": 0.91,
+    "success": true,
+    "degraded": false,
+    "records": [
+      {
+        "game_id": "2026-04-05-bos-nyk",
+        "signal_delta": 0.016,
+        "summary": "Boston recent form and efficiency edge",
+        "rest_edge": 1
+      },
+      {
+        "game_id": "2026-04-05-lal-phx",
+        "signal_delta": 0.01,
+        "summary": "Phoenix pace and half-court edge",
+        "rest_edge": 0
+      },
+      {
+        "game_id": "2026-04-05-den-sac",
+        "signal_delta": 0.007,
+        "summary": "Denver net rating edge",
+        "rest_edge": 0
+      }
+    ]
+  },
+  "sentiment": {
+    "provider": "reddit_bundle",
+    "source_time": "2026-04-05T15:05:00+00:00",
+    "source_version": "sentiment-v1",
+    "trust": 0.6,
+    "success": true,
+    "degraded": false,
+    "records": [
+      {
+        "game_id": "2026-04-05-bos-nyk",
+        "signal_delta": 0.004,
+        "summary": "Reddit leaning Boston"
+      },
+      {
+        "game_id": "2026-04-05-lal-phx",
+        "signal_delta": 0.003,
+        "summary": "Reddit reacting to Lakers injury concerns"
+      },
+      {
+        "game_id": "2026-04-05-den-sac",
+        "signal_delta": -0.001,
+        "summary": "Mixed community read"
+      }
+    ]
+  }
+}
+
