@@ -6,7 +6,7 @@ import { Icon } from "./Icons";
 type NavItem = {
   to: string;
   label: string;
-  icon: "overview" | "today" | "performance" | "stability" | "learning" | "providers" | "operations";
+  icon: "overview" | "today" | "performance" | "stability" | "learning" | "providers" | "operations" | "guide";
   end?: boolean;
 };
 
@@ -17,6 +17,7 @@ const NAV_ITEMS: NavItem[] = [
   { to: "/stability", label: "Stability", icon: "stability" },
   { to: "/learning", label: "Learning", icon: "learning" },
   { to: "/providers", label: "Providers", icon: "providers" },
+  { to: "/guide", label: "Guide", icon: "guide" },
   { to: "/operations", label: "Operations", icon: "operations" },
 ];
 

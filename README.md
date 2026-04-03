@@ -135,4 +135,4 @@ Generated replay and live-slate outputs are written to `reports/`.
 - The preferred final deployment shape is `Vercel` for the dashboard, `Cloudflare Tunnel` for public access to the local backend/runtime, and `Supabase` for persistence.
 - Phase 4C now adds startup sanity, deployment artifacts, recovery runbooks, and hosted API support.
 - Supabase schema files now enable RLS by default for all Oracle tables in `public`.
-- Phase 5 is planned as the interpretation and operator-confidence pass for human-readable explanations, metric education, and the in-product guide page.
+- Phase 5 is now in progress as the interpretation and operator-confidence pass for human-readable explanations, metric education, and the in-product guide page.

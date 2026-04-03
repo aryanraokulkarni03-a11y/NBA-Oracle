@@ -18,7 +18,7 @@ export function ProvidersPage() {
       <PageHeader
         eyebrow="Providers"
         title="Source and runtime health"
-        description="Source health, fallback usage, and runtime service state without flattening everything into a false all-clear."
+        description="Source health, fallback usage, and what degraded inputs actually mean for operator confidence."
         icon="providers"
       />
       <ScreenState isLoading={providers.isLoading || health.isLoading} error={providers.error || health.error}>

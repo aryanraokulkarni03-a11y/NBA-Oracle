@@ -1,4 +1,5 @@
-import { formatDateTime, formatPercent } from "../lib/format";
+import { formatProviderMeaning, formatProviderName } from "../lib/explain";
+import { formatDateTime, formatPercent, toHeadline } from "../lib/format";
 import type { ProviderRecord } from "../lib/types";
 import { StatusPill } from "./StatusPill";
 
@@ -9,8 +10,8 @@ export function ProviderList({ providers }: { providers: ProviderRecord[] }) {
         <article key={`${provider.kind}-${provider.name}`} className="provider-card">
           <div className="provider-card__top">
             <div>
-              <p className="eyebrow">{provider.kind ?? "provider"}</p>
-              <h3>{provider.name ?? "Unknown provider"}</h3>
+              <p className="eyebrow">{toHeadline(provider.kind ?? "provider")}</p>
+              <h3>{formatProviderName(provider.name)}</h3>
             </div>
             <StatusPill value={provider.success ? (provider.degraded ? "degraded" : "healthy") : "failed"} />
           </div>
@@ -20,7 +21,7 @@ export function ProviderList({ providers }: { providers: ProviderRecord[] }) {
             <span>{provider.source_version ?? "n/a"}</span>
           </div>
           <p className="provider-card__time">{formatDateTime(provider.source_time)}</p>
-          {provider.error ? <p className="provider-card__error">{provider.error}</p> : null}
+          <p className="provider-card__meaning">{formatProviderMeaning(provider.error, provider.degraded, provider.success)}</p>
         </article>
       ))}
     </div>

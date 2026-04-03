@@ -40,6 +40,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 4C execution start | Complete | Startup sanity, hosted CORS/API support, deployment artifacts, delivery history surfacing, dashboard-wide refresh, browser/operator verification, and final deployment/recovery runbooks are now built and verified. | Real end-to-end closeout work instead of only planning | Keep the local backend/tunnel alive and continue accumulating evidence |
 | Supabase RLS hardening | Complete | Oracle tables in `public` now have RLS enabled in the live project, and all repo schema files now enable RLS by default for future setups. | Secure hosted operation without public-table exposure | None for the current deployment shape |
 | Phase 5 planning | Complete | The next pass is now defined around human-readable translations, metric explanations, dashboard guidance, and operator-confidence polish. | A clean final product-understanding pass after infrastructure completion | Execute the Phase 5 dashboard clarity work |
+| Phase 5 execution start | In progress | The dashboard now has a Guide route, shared explanation mappings, human-readable reasons, bookmaker/provider naming cleanup, and inline metric explanations. | The product is moving from technically correct to operator-readable | Browser verification and final copy polish |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
 ## Current Implementation Delta

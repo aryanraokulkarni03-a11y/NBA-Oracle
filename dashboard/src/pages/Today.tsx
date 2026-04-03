@@ -15,7 +15,7 @@ export function TodayPage() {
       <PageHeader
         eyebrow="Today"
         title="Live slate"
-        description="Current calls, reference pricing, and the reasons behind each decision."
+        description="Current calls, value signals, and plain-language reasons behind each decision."
         icon="today"
         actions={
           <button type="button" className="button button--secondary" onClick={() => void refresh()}>

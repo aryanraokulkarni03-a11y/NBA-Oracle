@@ -77,7 +77,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 2: Signal Quality Layer | Complete | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built and verified on a real pregame run. |
 | Phase 3: Stability Layer | Complete for current scope | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
 | Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
-| Phase 5: Interpretation and Guidance | Planned | The next pass will convert raw dashboard internals into operator-friendly explanations and add an in-product guide page. |
+| Phase 5: Interpretation and Guidance | In progress | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and the in-product guide page are now landing in the dashboard. |
 
 ## Recent Changes Summary
 
@@ -100,6 +100,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4C final one-shot plan | Complete | The last remaining pass is now rewritten around the real unfinished seams: startup, scheduler truth, dashboard/API refresh consistency, delivery verification, recovery, hosted deployment, and end-to-end closeout. |
 | Phase 4C execution start | Complete | Startup sanity, hosted API/CORS support, notification history in health, deployment artifacts, recovery runbooks, dashboard-wide runtime refresh, and hosted verification are landed. |
 | Phase 5 planning | Complete | The next pass now targets human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and a first-class guide page. |
+| Phase 5 execution start | In progress | Shared translation helpers, inline metric explanations, provider/bookmaker naming cleanup, and the new Guide route/page are now in code and building successfully. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 

@@ -1,8 +1,32 @@
+import {
+  explainMetric,
+  formatBookmakerName,
+  formatPredictionReasons,
+  summarizePrediction,
+} from "../lib/explain";
 import { formatAmericanOdds, formatDateTime, formatPercent } from "../lib/format";
 import type { Prediction } from "../lib/types";
 import { StatusPill } from "./StatusPill";
 
+type MetricItemProps = {
+  label: string;
+  value: string;
+  note: string;
+};
+
+function MetricItem({ label, value, note }: MetricItemProps) {
+  return (
+    <div className="metric-item">
+      <span>{label}</span>
+      <strong>{value}</strong>
+      <small>{note}</small>
+    </div>
+  );
+}
+
 export function PredictionCard({ prediction }: { prediction: Prediction }) {
+  const reasonLines = formatPredictionReasons(prediction.reasons);
+
   return (
     <article className="prediction-card">
       <header className="prediction-card__header">
@@ -13,36 +37,45 @@ export function PredictionCard({ prediction }: { prediction: Prediction }) {
         <StatusPill value={prediction.decision} />
       </header>
       <div className="prediction-card__grid">
-        <div>
-          <span>EV</span>
-          <strong>{formatPercent(prediction.expected_value)}</strong>
-        </div>
-        <div>
-          <span>Edge</span>
-          <strong>{formatPercent(prediction.edge_vs_stake)}</strong>
-        </div>
-        <div>
-          <span>Reference</span>
-          <strong>{formatAmericanOdds(prediction.stake_american)}</strong>
-        </div>
-        <div>
-          <span>Best</span>
-          <strong>{formatAmericanOdds(prediction.best_american)}</strong>
-        </div>
-        <div>
-          <span>Model</span>
-          <strong>{formatPercent(prediction.model_probability)}</strong>
-        </div>
-        <div>
-          <span>Market time</span>
-          <strong>{formatDateTime(prediction.market_timestamp)}</strong>
-        </div>
+        <MetricItem
+          label="EV"
+          value={formatPercent(prediction.expected_value)}
+          note={explainMetric("EV", prediction)}
+        />
+        <MetricItem
+          label="Edge"
+          value={formatPercent(prediction.edge_vs_stake)}
+          note={explainMetric("Edge", prediction)}
+        />
+        <MetricItem
+          label="Reference"
+          value={formatAmericanOdds(prediction.stake_american)}
+          note={explainMetric("Reference", prediction)}
+        />
+        <MetricItem
+          label="Best"
+          value={formatAmericanOdds(prediction.best_american)}
+          note={explainMetric("Best", prediction)}
+        />
+        <MetricItem
+          label="Model"
+          value={formatPercent(prediction.model_probability)}
+          note={explainMetric("Model", prediction)}
+        />
+        <MetricItem
+          label="Market time"
+          value={formatDateTime(prediction.market_timestamp)}
+          note={explainMetric("Market time", prediction)}
+        />
       </div>
       <div className="prediction-card__footer">
-        <p className="prediction-card__reasons">
-          {(prediction.reasons ?? []).length > 0 ? (prediction.reasons ?? []).join(" • ") : "No reasons reported."}
-        </p>
-        <p className="prediction-card__bookmaker">{prediction.reference_bookmaker ?? "reference source unavailable"}</p>
+        <p className="prediction-card__insight">{summarizePrediction(prediction)}</p>
+        <ul className="reason-list prediction-card__reason-list">
+          {reasonLines.map((reason) => (
+            <li key={reason}>{reason}</li>
+          ))}
+        </ul>
+        <p className="prediction-card__bookmaker">Reference book: {formatBookmakerName(prediction.reference_bookmaker)}</p>
       </div>
     </article>
   );

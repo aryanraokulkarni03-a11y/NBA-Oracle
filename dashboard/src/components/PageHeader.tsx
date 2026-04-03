@@ -6,7 +6,7 @@ type PageHeaderProps = {
   title: string;
   description: string;
   actions?: ReactNode;
-  icon?: "overview" | "today" | "performance" | "stability" | "learning" | "providers" | "operations";
+  icon?: "overview" | "today" | "performance" | "stability" | "learning" | "providers" | "operations" | "guide";
 };
 
 export function PageHeader({ eyebrow, title, description, actions, icon }: PageHeaderProps) {
