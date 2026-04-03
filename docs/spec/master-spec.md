@@ -1000,6 +1000,10 @@ NBA Oracle is a **research-first betting intelligence system**. Its job is to tu
 - The reasoning stays explainable enough that a human can audit it quickly.
 - The system becomes better from feedback instead of drifting into noise.
 
+### Reference checkpoint
+
+For a fast view of what is already implemented versus what is still only specified, use [project-status-matrix.md](../status/project-status-matrix.md).
+
 ### Design principles
 
 - **Edge over volume**: fewer, better bets beat more action.
