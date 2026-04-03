@@ -37,7 +37,7 @@ def build_startup_sanity_report() -> dict[str, Any]:
     checks.append(
         _check(
             "deployment_target",
-            "healthy" if ORACLE_DEPLOYMENT_TARGET == "vercel-render-supabase" else "warning",
+            "healthy" if ORACLE_DEPLOYMENT_TARGET == "vercel-cloudflare-supabase" else "warning",
             f"target={ORACLE_DEPLOYMENT_TARGET}",
         )
     )

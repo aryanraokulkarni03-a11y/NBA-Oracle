@@ -120,7 +120,7 @@ python main.py serve-api
 
 Symptoms:
 - dashboard loads but data panels fail
-- Vercel frontend cannot reach hosted backend
+- Vercel frontend cannot reach the tunneled backend
 
 Recovery:
 1. Confirm backend health at `/api/health`
@@ -155,7 +155,7 @@ Then confirm:
 
 ## Fallback Truth Rule
 
-If hosted deployment is unavailable:
+If Cloudflare Tunnel or hosted frontend access is unavailable:
 - keep using the local backend
 - keep using the local dashboard manually
 - do not hide degraded or fallback state

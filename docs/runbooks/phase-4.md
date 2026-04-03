@@ -75,12 +75,12 @@ Verify in the browser:
 
 Deployment target:
 - `Vercel` for frontend
-- `Render` for backend/runtime
+- `Cloudflare Tunnel` for public access to the local backend/runtime
 - `Supabase` for persistence
 
 Verify:
 1. hosted frontend loads
-2. hosted frontend can reach backend
+2. hosted frontend can reach the tunneled backend
 3. backend health is live
 4. one operator action works from the hosted UI
 5. scheduler cadence records a runtime job

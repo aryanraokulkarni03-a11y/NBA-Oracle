@@ -43,14 +43,14 @@ Phase 4B is now in progress:
 - overview, today, performance, stability, learning, providers, and operations pages
 - inline operator action panels backed by real Phase 4A routes
 - production build path through `dashboard/`
-- planned final hosted target of `Vercel + Render + Supabase`
+- planned final hosted target of `Vercel + Cloudflare Tunnel + Supabase`
 
 Phase 4C is now in progress:
 - startup sanity command
-- CORS + hosted API base support for `Vercel + Render`
+- CORS + hosted API base support for `Vercel + Cloudflare Tunnel`
 - runtime truth now includes startup checks and notification history
 - deployment and recovery runbooks
-- Render blueprint and Vercel SPA rewrite config
+- Cloudflare Tunnel deployment path and Vercel SPA rewrite config
 - dashboard-wide refresh after operator actions
 
 ## Repo Structure
@@ -131,5 +131,5 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Apply `supabase/phase4a_schema.sql` to persist Phase 4A runtime jobs, notification events, and learning reviews remotely.
 - Phase 4B now has a working dashboard scaffold and build path on top of the Phase 4A backend contract.
 - Phase 4 remains split into 4A, 4B, and 4C for cleaner execution.
-- The preferred final deployment shape is `Vercel` for the dashboard, `Render` for backend/runtime, and `Supabase` for persistence.
+- The preferred final deployment shape is `Vercel` for the dashboard, `Cloudflare Tunnel` for public access to the local backend/runtime, and `Supabase` for persistence.
 - Phase 4C now adds startup sanity, deployment artifacts, recovery runbooks, and hosted API support.

@@ -75,15 +75,17 @@ No layer is allowed to lie about state, lag behind the others invisibly, or requ
 Phase 4C will close against this deployment target:
 
 - `Vercel` for the dashboard frontend
-- `Render` for the FastAPI backend, scheduler cadence, and runtime jobs
+- `Cloudflare Tunnel` for secure public access to the local FastAPI backend and runtime
+- local backend/runtime on the operator machine
 - `Supabase` for persistent storage
 
-This is the preferred shape because:
+This is the preferred no-billing shape because:
 - the dashboard benefits from Vercel's frontend workflow and preview model
-- the backend and runtime jobs need a more always-on operating path than a pure function-hosting model
+- the backend and runtime can remain local without forcing paid infrastructure
+- Cloudflare Tunnel provides a more stable free public bridge than disposable tunnels
 - Supabase is already the persistence system of record
 
-Local operation still matters for development and emergency fallback, but the finish line for the product is no longer "works only on one machine." It is "can run reliably as a hosted system with a documented local fallback."
+Local operation is no longer a fallback-only afterthought. It is part of the intended operating model, with Cloudflare Tunnel making the local backend reachable by the hosted frontend.
 
 ## Real Remaining Gaps To Close
 
@@ -95,7 +97,7 @@ This phase is not about inventing major new features. It is about closing the se
 - schema/bootstrap sanity checks at startup
 - run-state consistency across runtime logs, reports, API payloads, and UI
 - clear recovery steps when providers, storage, delivery, or auth fail
-- hosted deployment verification for the chosen production shape
+- hosted deployment verification for the chosen Vercel plus Cloudflare Tunnel shape
 - final acceptance suite and closeout docs
 
 ## Workstreams
@@ -145,7 +147,7 @@ Build and document the real operating path:
 - startup sanity check command
 - backend + dashboard launch flow
 - local Windows Task Scheduler fallback for backend startup and scheduler cadence
-- hosted launch flow for Vercel + Render
+- hosted launch flow for Vercel + Cloudflare Tunnel
 - environment validation before runtime begins
 - restart/reboot behavior
 
@@ -153,7 +155,7 @@ Deliverables:
 - `deployment.md`
 - boot-time checklist
 - startup automation instructions
-- hosted deployment instructions for Vercel frontend and Render backend/runtime
+- hosted deployment instructions for Vercel frontend and Cloudflare Tunnel backend exposure
 
 ### Workstream 5: Recovery and Operator Runbooks
 Write the operator-grade recovery layer:
@@ -209,7 +211,7 @@ Deliverables:
    - local backend start
    - local dashboard start
    - Vercel frontend deployment
-   - Render backend/runtime deployment
+   - Cloudflare Tunnel backend exposure
    - scheduler cadence
    - restart behavior
 3. Recovery runbook for:

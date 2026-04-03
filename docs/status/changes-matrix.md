@@ -37,7 +37,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 4B final planning pass | Complete | The dashboard plan now targets the real 4A API contract, defines the exact pages and operator flows, and adds explicit frontend truth rules for degraded, skip, and insufficient-data states. | Safe UI execution without inventing backend behavior | Execute the React/Vite dashboard build in one pass |
 | Phase 4B dashboard execution start | In progress | The dashboard folder, app shell, auth flow, page set, inline operator controls, and shared Stripe-leaning dark UI system are now built and compile through Vite. | Real browser-facing operator workflow on top of 4A | Browser verification and final 4B polish before 4C |
 | Phase 4C final planning pass | Complete | The final phase is now rewritten as a real integration and hardening closeout around startup, restart, scheduler truth, dashboard/API refresh consistency, delivery verification, recovery, hosted deployment, and final acceptance. | A clean final execution target to finish the product without inventing new major surfaces | Execute the final integration pass end to end |
-| Phase 4C execution start | In progress | Startup sanity, hosted CORS/API support, deployment artifacts, delivery history surfacing, dashboard-wide refresh, and final deployment/recovery runbooks are now built and locally verified. | Real end-to-end closeout work instead of only planning | Hosted deployment, browser verification, and final operator closeout |
+| Phase 4C execution start | In progress | Startup sanity, hosted CORS/API support, deployment artifacts, delivery history surfacing, dashboard-wide refresh, and final deployment/recovery runbooks are now built and locally verified. | Real end-to-end closeout work instead of only planning | Cloudflare Tunnel setup, browser verification, and final operator closeout |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
 ## Current Implementation Delta
@@ -50,7 +50,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Stats | NBA metrics fetch path | Rest, travel, and broader pregame context |
 | Sentiment | Deferred placeholder path | Real Reddit-first live adapter |
 | Storage | Local runtime persistence plus verified dual Supabase path, with Phase 3.1 dual-storage code ready and outcome-grade dual persistence implemented | Apply the outcome-grade schema remotely |
-| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, delivery test commands, and new `startup-sanity` | Hosted deployment and final 4C polish |
+| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, delivery test commands, and new `startup-sanity` | Cloudflare Tunnel setup and final 4C polish |
 | Dashboard | React/Vite scaffold, top-nav shell, authenticated pages, operator action cards, shared CSS system, hosted API-base support, and dashboard-wide runtime refresh | Final browser verification, Vercel deployment, and hosted UI closeout |
 
 ## Latest Verified Commands

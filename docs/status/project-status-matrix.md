@@ -21,18 +21,18 @@ Use this as the operational checkpoint before starting a new phase.
 | Telegram and notifications | In progress | Telegram and Gmail service code, digests, command-style handling, and notification history surfacing now exist. |
 | Dashboard and auth | In progress | Phase 4A has auth bootstrap and protected API routes, Phase 4B has the real React/Vite dashboard, and Phase 4C now adds hosted API support plus dashboard-wide refresh after operator actions. |
 | Learning engine | In progress | Phase 4A learning review execution and persistence now exist. |
-| Deployment hardening | In progress | API serve command, scheduler-once path, explicit runtime bootstrap, and the final hosted target of Vercel + Render + Supabase are now defined; production hardening is still ahead. |
+| Deployment hardening | In progress | API serve command, scheduler-once path, explicit runtime bootstrap, and the final hosted target of Vercel + Cloudflare Tunnel + Supabase are now defined; production hardening is still ahead. |
 
 ## Current Checkpoint
 
 | Question | Answer |
 |---|---|
-| Where are we now? | Phase 4A is built, Phase 4B is built in code, and Phase 4C is now in progress against the hosted target of Vercel + Render + Supabase. |
+| Where are we now? | Phase 4A is built, Phase 4B is built in code, and Phase 4C is now in progress against the hosted target of Vercel + Cloudflare Tunnel + Supabase. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, the Phase 4A backend operating core, the compiled Phase 4B dashboard layer, and the 4C startup/deployment truth layer. |
 | What is the biggest unfinished product item? | Final hosted verification, startup/restart hardening, and operator recovery flow across every product surface. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. Delivery, persistent storage, scheduler runtime, and final operating flows are still missing. |
-| What manual closeout is still required? | Set `ORACLE_PUBLIC_API_BASE_URL`, deploy the dashboard to Vercel, deploy backend/runtime to Render, and run hosted Telegram/Gmail/browser verification. |
+| What manual closeout is still required? | Set `ORACLE_PUBLIC_API_BASE_URL`, expose the backend through Cloudflare Tunnel, deploy the dashboard to Vercel, and run hosted Telegram/Gmail/browser verification. |
 
 ## Build Matrix
 
@@ -66,7 +66,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Dashboard backend and frontend | In progress | Phase 4A backend APIs, auth, and operator routes are real, the React/Vite dashboard scaffold/pages/operator flows now exist, and 4C adds hosted API base support plus cross-page refresh after operator actions | Final browser-level verification, Vercel deployment, and hosted UI validation |
 | Auth and security layer | In progress | [app.py](../../nba_oracle/api/app.py), [dependencies.py](../../nba_oracle/api/dependencies.py), [auth.py](../../nba_oracle/auth.py), [security.py](../../nba_oracle/security.py), [setup_auth.py](../../setup_auth.py) now include hosted CORS support | Add final hosted-session verification and operator auth workflows |
 | Learning engine and pattern miner | In progress | [trainer.py](../../nba_oracle/learning/trainer.py), [weights.py](../../nba_oracle/learning/weights.py), [patterns.py](../../nba_oracle/learning/patterns.py), [review.py](../../nba_oracle/learning/review.py) | Accumulate more graded evidence and harden promotion workflow |
-| Scheduler and deployment flow | In progress | [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [state.py](../../nba_oracle/runtime/state.py), [cli.py](../../nba_oracle/cli.py), [startup.py](../../nba_oracle/runtime/startup.py), [render.yaml](../../render.yaml), [vercel.json](../../dashboard/vercel.json) | Deploy to Render/Vercel, verify cadence, and document final hosted recovery |
+| Scheduler and deployment flow | In progress | [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [state.py](../../nba_oracle/runtime/state.py), [cli.py](../../nba_oracle/cli.py), [startup.py](../../nba_oracle/runtime/startup.py), [vercel.json](../../dashboard/vercel.json) | Expose the backend with Cloudflare Tunnel, verify cadence, and document final hosted recovery |
 
 ## Phase Status
 
@@ -118,7 +118,7 @@ Use this as the operational checkpoint before starting a new phase.
 - `python main.py run-scheduler-once` now executes due runtime jobs successfully.
 - `python main.py serve-api` boots the Phase 4A FastAPI server successfully.
 - `npm.cmd run build` now compiles the Phase 4B dashboard successfully.
-- Phase 4C now closes against `Vercel + Render + Supabase` as the deployment target.
+- Phase 4C now closes against `Vercel + Cloudflare Tunnel + Supabase` as the deployment target.
 - `python main.py startup-sanity` now succeeds and reports hosted/local readiness.
 - GitHub and local `main` are in sync.
 
@@ -133,7 +133,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Outcome grading | [grade_outcomes.py](../../nba_oracle/runs/grade_outcomes.py), [fetcher.py](../../nba_oracle/outcomes/fetcher.py), [persistence.py](../../nba_oracle/outcomes/persistence.py), [reporting.py](../../nba_oracle/outcomes/reporting.py) |
 | Phase 4A operating core | [app.py](../../nba_oracle/api/app.py), [dependencies.py](../../nba_oracle/api/dependencies.py), [auth.py](../../nba_oracle/auth.py), [security.py](../../nba_oracle/security.py), [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [telegram.py](../../nba_oracle/notifications/telegram.py), [gmail.py](../../nba_oracle/notifications/gmail.py), [trainer.py](../../nba_oracle/learning/trainer.py) |
 | Phase 4B dashboard | [App.tsx](../../dashboard/src/App.tsx), [AppShell.tsx](../../dashboard/src/components/AppShell.tsx), [Dashboard.tsx](../../dashboard/src/pages/Dashboard.tsx), [Today.tsx](../../dashboard/src/pages/Today.tsx), [Operations.tsx](../../dashboard/src/pages/Operations.tsx), [index.css](../../dashboard/src/styles/index.css) |
-| Phase 4C startup and deployment | [startup.py](../../nba_oracle/runtime/startup.py), [deployment.md](../runbooks/deployment.md), [recovery.md](../runbooks/recovery.md), [phase-4.md](../runbooks/phase-4.md), [render.yaml](../../render.yaml), [vercel.json](../../dashboard/vercel.json) |
+| Phase 4C startup and deployment | [startup.py](../../nba_oracle/runtime/startup.py), [deployment.md](../runbooks/deployment.md), [recovery.md](../runbooks/recovery.md), [phase-4.md](../runbooks/phase-4.md), [vercel.json](../../dashboard/vercel.json) |
 | Phase 3.1 remote schema | [phase3_schema.sql](../../supabase/phase3_schema.sql) |
 | Outcome remote schema | [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql) |
 | Phase 4A remote schema | [phase4a_schema.sql](../../supabase/phase4a_schema.sql) |
@@ -145,8 +145,8 @@ Use this as the operational checkpoint before starting a new phase.
 
 Move into Phase 4C:
 - set `ORACLE_PUBLIC_API_BASE_URL`
+- expose backend/runtime with Cloudflare Tunnel
 - deploy `dashboard/` to Vercel
-- deploy backend/runtime to Render using [render.yaml](../../render.yaml)
 - run hosted browser verification using [phase-4b.md](../runbooks/phase-4b.md)
 - run the final product checklist in [phase-4.md](../runbooks/phase-4.md)
 - use [deployment.md](../runbooks/deployment.md) and [recovery.md](../runbooks/recovery.md) for closeout

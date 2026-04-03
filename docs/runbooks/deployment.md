@@ -1,13 +1,14 @@
 # NBA Oracle Deployment Runbook
 
 ## Purpose
-Use this runbook to deploy NBA Oracle in the final hosted shape:
+Use this runbook to deploy NBA Oracle in the final no-billing hosted shape:
 
 - `Vercel` for the dashboard
-- `Render` for the FastAPI backend and scheduler cadence
+- `Cloudflare Tunnel` for public access to the local FastAPI backend
+- local backend/runtime on your machine
 - `Supabase` for persistence
 
-Local startup remains the fallback path for development and emergency recovery.
+Local startup remains the real runtime path. Cloudflare Tunnel exposes it publicly so the hosted dashboard can reach it.
 
 ## Hosted Target
 
@@ -17,16 +18,15 @@ Local startup remains the fallback path for development and emergency recovery.
 - Build command: `npm.cmd run build`
 - Output directory: `dist`
 - Required frontend env:
-  - `VITE_API_BASE_URL=https://your-render-api-host`
+  - `VITE_API_BASE_URL=https://your-cloudflare-tunnel-host`
 
 ### Backend
-- Host: `Render`
+- Host: local machine
 - Runtime: `Python`
-- Build command: `pip install .`
 - Start command:
 
 ```powershell
-python main.py serve-api --host 0.0.0.0 --port $PORT
+python main.py serve-api --host 127.0.0.1 --port 8000
 ```
 
 - Required backend env:
@@ -42,26 +42,18 @@ python main.py serve-api --host 0.0.0.0 --port $PORT
   - `GMAIL_RECIPIENT`
   - `ORACLE_ALLOWED_ORIGINS`
   - `ORACLE_PUBLIC_API_BASE_URL`
-  - `ORACLE_DEPLOYMENT_TARGET=vercel-render-supabase`
+  - `ORACLE_DEPLOYMENT_TARGET=vercel-cloudflare-supabase`
 
-### Scheduler
-- Host: `Render Cron`
-- Command:
-
-```powershell
-python main.py run-scheduler-once
-```
-
-- Recommended cadence:
-  - every `30` minutes
+### Public Tunnel
+- Host: `Cloudflare Tunnel`
+- Purpose: expose the local backend to the public Vercel dashboard over HTTPS
 
 ## Repo Artifacts
 
-- Render blueprint: [render.yaml](/C:/Users/HP/OneDrive/Documents/NBA/render.yaml)
 - Vercel SPA rewrite config: [vercel.json](/C:/Users/HP/OneDrive/Documents/NBA/dashboard/vercel.json)
 - Frontend env template: [dashboard/.env.example](/C:/Users/HP/OneDrive/Documents/NBA/dashboard/.env.example)
 
-## Local Fallback Startup
+## Local Runtime Startup
 
 From the repo root:
 
@@ -71,7 +63,7 @@ python main.py startup-sanity
 python main.py serve-api
 ```
 
-From `dashboard/`:
+From `dashboard/` for local fallback UI:
 
 ```powershell
 npm.cmd install
@@ -97,18 +89,28 @@ cd dashboard
 npm.cmd run build
 ```
 
+## Cloudflare Tunnel Shape
+
+Target backend:
+- `http://127.0.0.1:8000`
+
+After the tunnel is created, use its public HTTPS hostname for:
+- `ORACLE_PUBLIC_API_BASE_URL`
+- `ORACLE_ALLOWED_ORIGINS`
+- Vercel `VITE_API_BASE_URL`
+
 ## Post-Deploy Checks
 
-1. Confirm backend health:
+1. Confirm local backend health:
    - `GET /api/health`
-2. Confirm login works:
-   - `POST /api/auth/login`
-3. Confirm dashboard loads and can reach the hosted backend.
-4. Confirm one operator action completes and the dashboard refreshes.
-5. Confirm:
+2. Confirm Cloudflare Tunnel reaches the backend.
+3. Confirm dashboard loads from Vercel and can reach the tunneled backend.
+4. Confirm login works.
+5. Confirm one operator action completes and the dashboard refreshes.
+6. Confirm:
    - Telegram test delivery
    - Gmail test delivery
-6. Confirm the next scheduler cadence records a runtime job.
+7. Confirm the next scheduler cadence records a runtime job.
 
 ## Local Auto-Start Fallback
 
@@ -116,14 +118,14 @@ Recommended local fallback policy:
 - backend auto-start on `login`
 - dashboard stays `manual`
 
-If hosted deployment is unavailable, use Windows Task Scheduler to run:
+If the tunnel is down, keep using:
 
 ```powershell
 cd C:\Users\HP\OneDrive\Documents\NBA
 python main.py serve-api
 ```
 
-and keep the dashboard manual:
+and use the dashboard locally:
 
 ```powershell
 cd C:\Users\HP\OneDrive\Documents\NBA\dashboard
