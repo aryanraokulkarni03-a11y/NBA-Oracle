@@ -16,23 +16,23 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 1 validation core | Done | Replay engine, gates, reporting, and tests are built. |
 | Live provider integrations | Done | Real schedule, odds, injuries, and stats fetch paths exist with bundle fallback and live verification. |
 | Supabase persistence | Done | Dual local-plus-Supabase storage is active and verified in live runs. |
-| Scheduler and orchestration | In progress | A first meta-scheduler and runtime job runner now exist through the CLI, and Phase 4C now adds startup sanity plus hosted deployment artifacts. |
+| Scheduler and orchestration | Done | Meta-scheduler, runtime job runner, startup sanity, and hosted/local operating checks now exist and have been verified through the dashboard and CLI. |
 | LLM analyst layer | Not started | No live analyst-only explanation layer exists yet. |
-| Telegram and notifications | In progress | Telegram and Gmail service code, digests, command-style handling, and notification history surfacing now exist. |
-| Dashboard and auth | In progress | Phase 4A has auth bootstrap and protected API routes, Phase 4B has the real React/Vite dashboard, and Phase 4C now adds hosted API support plus dashboard-wide refresh after operator actions. |
-| Learning engine | In progress | Phase 4A learning review execution and persistence now exist. |
-| Deployment hardening | In progress | API serve command, scheduler-once path, explicit runtime bootstrap, and the final hosted target of Vercel + Cloudflare Tunnel + Supabase are now defined; production hardening is still ahead. |
+| Telegram and notifications | Done | Telegram and Gmail service code, digests, command-style handling, test sends, and notification history surfacing are wired and verified. |
+| Dashboard and auth | Done | Auth bootstrap, protected API routes, the React/Vite dashboard, and hosted Vercel connectivity are all verified. |
+| Learning engine | Done for current scope | Learning review execution and persistence exist and behave honestly when evidence is insufficient. |
+| Deployment hardening | Done for chosen deployment shape | Startup sanity, recovery docs, Vercel frontend hosting, Cloudflare Tunnel backend exposure, and Supabase persistence are all verified. |
 
 ## Current Checkpoint
 
 | Question | Answer |
 |---|---|
-| Where are we now? | Phase 4A is built, Phase 4B is built in code, and Phase 4C is now in progress against the hosted target of Vercel + Cloudflare Tunnel + Supabase. |
-| What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, the Phase 4A backend operating core, the compiled Phase 4B dashboard layer, and the 4C startup/deployment truth layer. |
-| What is the biggest unfinished product item? | Final hosted verification, startup/restart hardening, and operator recovery flow across every product surface. |
+| Where are we now? | The full project is now operating end to end against the chosen deployment shape of Vercel + local backend over Cloudflare Tunnel + Supabase. |
+| What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
+| What is the biggest unfinished product item? | Evidence depth, not platform wiring: drift and learning will improve as more graded outcomes accumulate. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
-| Can it place real bets end-to-end today? | No. Delivery, persistent storage, scheduler runtime, and final operating flows are still missing. |
-| What manual closeout is still required? | Set `ORACLE_PUBLIC_API_BASE_URL`, expose the backend through Cloudflare Tunnel, deploy the dashboard to Vercel, and run hosted Telegram/Gmail/browser verification. |
+| Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
+| What manual closeout is still required? | Keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live, and keep grading outcomes as games finish. |
 
 ## Build Matrix
 
@@ -56,17 +56,17 @@ Use this as the operational checkpoint before starting a new phase.
 | Stats ingestion | Done | [stats.py](../../nba_oracle/providers/stats.py) calls NBA estimated metrics with bundle fallback | Add richer pregame context later |
 | Sentiment ingestion | Done for Phase 2 scope | [sentiment.py](../../nba_oracle/providers/sentiment.py) remains intentionally optional and safely deferred in live mode | Add real Reddit integration in a later phase |
 | Context builder | Done | [live_snapshot_builder.py](../../nba_oracle/assembly/live_snapshot_builder.py) merges real or bundle providers with placeholder fallback for degraded non-market sources | Expand context richness later |
-| Stability review layer | In progress | [baseline.py](../../nba_oracle/stability/baseline.py), [drift.py](../../nba_oracle/stability/drift.py), [timing.py](../../nba_oracle/stability/timing.py), [readiness.py](../../nba_oracle/stability/readiness.py), [reporting.py](../../nba_oracle/stability/reporting.py), [review_stability.py](../../nba_oracle/runs/review_stability.py), [catalog.py](../../nba_oracle/models_registry/catalog.py), [persistence.py](../../nba_oracle/stability/persistence.py) | Continue accumulating graded evidence through the new outcome-grading workflow |
+| Stability review layer | Done for current scope | [baseline.py](../../nba_oracle/stability/baseline.py), [drift.py](../../nba_oracle/stability/drift.py), [timing.py](../../nba_oracle/stability/timing.py), [readiness.py](../../nba_oracle/stability/readiness.py), [reporting.py](../../nba_oracle/stability/reporting.py), [review_stability.py](../../nba_oracle/runs/review_stability.py), [catalog.py](../../nba_oracle/models_registry/catalog.py), [persistence.py](../../nba_oracle/stability/persistence.py) | Continue accumulating graded evidence through the outcome-grading workflow |
 | Outcome accumulation | Done for local workflow | [grade_outcomes.py](../../nba_oracle/runs/grade_outcomes.py), [fetcher.py](../../nba_oracle/outcomes/fetcher.py), [persistence.py](../../nba_oracle/outcomes/persistence.py), [reporting.py](../../nba_oracle/outcomes/reporting.py) | Apply remote outcome schema and keep running it after games finish |
 | LLM analyst engine | Not started | None | Add analyst-only explanation layer |
 | Telegram delivery | In progress | [telegram.py](../../nba_oracle/notifications/telegram.py), [formatters.py](../../nba_oracle/notifications/formatters.py), [cli.py](../../nba_oracle/cli.py) | Run live delivery tests and add richer command handling |
 | Gmail notifications | In progress | [gmail.py](../../nba_oracle/notifications/gmail.py), [formatters.py](../../nba_oracle/notifications/formatters.py), [cli.py](../../nba_oracle/cli.py) | Run live delivery tests and add richer summary formatting |
 | Supabase schema and client wiring | Done | [repository.py](../../nba_oracle/storage/repository.py), [phase2_schema.sql](../../supabase/phase2_schema.sql) | Expand schema in later phases as needed |
 | Pick logging and results tracking | Done for Phase 2 scope | [repository.py](../../nba_oracle/storage/repository.py) stores locally and remotely, and live verification has succeeded | Extend result tracking in later phases |
-| Dashboard backend and frontend | In progress | Phase 4A backend APIs, auth, and operator routes are real, the React/Vite dashboard scaffold/pages/operator flows now exist, and 4C adds hosted API base support plus cross-page refresh after operator actions | Final browser-level verification, Vercel deployment, and hosted UI validation |
-| Auth and security layer | In progress | [app.py](../../nba_oracle/api/app.py), [dependencies.py](../../nba_oracle/api/dependencies.py), [auth.py](../../nba_oracle/auth.py), [security.py](../../nba_oracle/security.py), [setup_auth.py](../../setup_auth.py) now include hosted CORS support | Add final hosted-session verification and operator auth workflows |
-| Learning engine and pattern miner | In progress | [trainer.py](../../nba_oracle/learning/trainer.py), [weights.py](../../nba_oracle/learning/weights.py), [patterns.py](../../nba_oracle/learning/patterns.py), [review.py](../../nba_oracle/learning/review.py) | Accumulate more graded evidence and harden promotion workflow |
-| Scheduler and deployment flow | In progress | [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [state.py](../../nba_oracle/runtime/state.py), [cli.py](../../nba_oracle/cli.py), [startup.py](../../nba_oracle/runtime/startup.py), [vercel.json](../../dashboard/vercel.json) | Expose the backend with Cloudflare Tunnel, verify cadence, and document final hosted recovery |
+| Dashboard backend and frontend | Done | Phase 4A backend APIs, auth, and operator routes are real, the React/Vite dashboard is hosted on Vercel, and 4C hosted/API refresh support is verified | Keep UI polish synced with backend truth later |
+| Auth and security layer | Done for current scope | [app.py](../../nba_oracle/api/app.py), [dependencies.py](../../nba_oracle/api/dependencies.py), [auth.py](../../nba_oracle/auth.py), [security.py](../../nba_oracle/security.py), [setup_auth.py](../../setup_auth.py) include hosted CORS support and verified login flow | Add richer session management later only if needed |
+| Learning engine and pattern miner | Done for current scope | [trainer.py](../../nba_oracle/learning/trainer.py), [weights.py](../../nba_oracle/learning/weights.py), [patterns.py](../../nba_oracle/learning/patterns.py), [review.py](../../nba_oracle/learning/review.py) | Accumulate more graded evidence and harden promotion workflow |
+| Scheduler and deployment flow | Done for current scope | [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [state.py](../../nba_oracle/runtime/state.py), [cli.py](../../nba_oracle/cli.py), [startup.py](../../nba_oracle/runtime/startup.py), [vercel.json](../../dashboard/vercel.json) | Keep local backend uptime and tunnel stability when operating hosted |
 
 ## Phase Status
 
@@ -75,8 +75,8 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 1: Validation Core | Complete | The model can replay frozen slates, gate decisions, and produce audit reports. |
 | Phase 1.1: Hardening | Complete | Calibration gate, source audit output, and status reporting are in place. |
 | Phase 2: Signal Quality Layer | Complete | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built and verified on a real pregame run. |
-| Phase 3: Stability Layer | In progress | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
-| Phase 4: Output / Operating Layer | In progress | Phase 4A operating core is built, Phase 4B dashboard is built in code, and Phase 4C now has active code/runbook/deployment work landed but still needs hosted closeout. |
+| Phase 3: Stability Layer | Complete for current scope | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
+| Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
 
 ## Recent Changes Summary
 
@@ -93,11 +93,11 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 3.1 hardening pass | Complete in code | ROI/CLV/calibration drift, baseline refresh discipline, timing-event logging, evidence-backed market locks, analyst disagreement logging, and review bookkeeping landed. |
 | Outcome grading workflow | Complete in code | `grade-outcomes` now fetches official NBA finals, backfills `actual_winner`, writes grading reports, and stores run-level outcome artifacts. |
 | Phase 4 restructuring | Complete | The final product pass is now split into 4A, 4B, and 4C so backend/runtime, frontend, and integration can be executed in the right order. |
-| Phase 4A operating core | In progress | Auth bootstrap, protected API routes, scheduler/meta-scheduler, Telegram/Gmail services, Telegram command-style handling, explicit runtime bootstrap, learning review execution, and Phase 4A runtime persistence have landed in code. |
+| Phase 4A operating core | Complete | Auth bootstrap, protected API routes, scheduler/meta-scheduler, Telegram/Gmail services, Telegram command-style handling, explicit runtime bootstrap, learning review execution, and Phase 4A runtime persistence are landed and verified. |
 | Phase 4B final plan | Complete | The dashboard pass is now rewritten against the actual 4A route contract, page-by-page frontend truth rules, and explicit operator flows. |
-| Phase 4B dashboard execution | In progress | The dashboard folder, app shell, authenticated pages, shared UI system, and operator action panels now exist and compile successfully through `npm.cmd run build`. |
+| Phase 4B dashboard execution | Complete | The dashboard folder, app shell, authenticated pages, shared UI system, operator action panels, and hosted Vercel deployment are working. |
 | Phase 4C final one-shot plan | Complete | The last remaining pass is now rewritten around the real unfinished seams: startup, scheduler truth, dashboard/API refresh consistency, delivery verification, recovery, hosted deployment, and end-to-end closeout. |
-| Phase 4C execution start | In progress | Startup sanity, hosted API/CORS support, notification history in health, deployment artifacts, recovery runbooks, and dashboard-wide runtime refresh are now in code and verified locally. |
+| Phase 4C execution start | Complete | Startup sanity, hosted API/CORS support, notification history in health, deployment artifacts, recovery runbooks, dashboard-wide runtime refresh, and hosted verification are landed. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
@@ -120,6 +120,8 @@ Use this as the operational checkpoint before starting a new phase.
 - `npm.cmd run build` now compiles the Phase 4B dashboard successfully.
 - Phase 4C now closes against `Vercel + Cloudflare Tunnel + Supabase` as the deployment target.
 - `python main.py startup-sanity` now succeeds and reports hosted/local readiness.
+- Hosted Vercel frontend, public Cloudflare health endpoint, and dashboard operator actions have now been manually verified.
+- Supabase RLS has been enabled on all Oracle public tables, and schema files now enforce that by default.
 - GitHub and local `main` are in sync.
 
 ## Active Backend Assets
@@ -143,12 +145,9 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Move into Phase 4C:
-- set `ORACLE_PUBLIC_API_BASE_URL`
-- expose backend/runtime with Cloudflare Tunnel
-- deploy `dashboard/` to Vercel
-- run hosted browser verification using [phase-4b.md](../runbooks/phase-4b.md)
-- run the final product checklist in [phase-4.md](../runbooks/phase-4.md)
-- use [deployment.md](../runbooks/deployment.md) and [recovery.md](../runbooks/recovery.md) for closeout
-
-Keep the Phase 1 replay flow intact as the acceptance gate for every new provider added.
+Operate the finished system and keep evidence accumulating:
+- keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live
+- run `python main.py build-live-slate --live` on slate days
+- run `python main.py grade-outcomes` after games finish
+- run `python main.py review-stability` and `python main.py review-learning` as evidence grows
+- keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change

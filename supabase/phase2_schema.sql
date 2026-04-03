@@ -68,3 +68,8 @@ create index if not exists idx_phase2_snapshots_run_id
 
 create index if not exists idx_phase2_predictions_run_id
     on phase2_predictions (run_id);
+
+alter table if exists phase2_runs enable row level security;
+alter table if exists phase2_provider_runs enable row level security;
+alter table if exists phase2_snapshots enable row level security;
+alter table if exists phase2_predictions enable row level security;

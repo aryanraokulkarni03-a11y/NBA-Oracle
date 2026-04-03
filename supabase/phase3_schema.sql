@@ -57,3 +57,9 @@ create index if not exists idx_phase3_timing_events_review_id
 
 create index if not exists idx_phase3_analyst_logs_review_id
     on phase3_analyst_logs (review_id);
+
+alter table if exists phase3_baselines enable row level security;
+alter table if exists phase3_reviews enable row level security;
+alter table if exists phase3_timing_events enable row level security;
+alter table if exists phase3_analyst_logs enable row level security;
+alter table if exists phase3_model_reviews enable row level security;

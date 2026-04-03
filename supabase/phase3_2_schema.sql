@@ -21,3 +21,5 @@ create index if not exists idx_phase3_outcome_grades_run_id
 
 create index if not exists idx_phase3_outcome_grades_graded_at
     on phase3_outcome_grades (graded_at);
+
+alter table if exists phase3_outcome_grades enable row level security;

@@ -19,7 +19,7 @@ Phase 2 is complete:
 - Phase 2.2 schedule fallback derives the upcoming slate from odds when the official live scoreboard is stale
 - real live verification has produced non-zero snapshots and predictions with no `supabase_error:...`
 
-Phase 3 is now in progress:
+Phase 3 is complete for the current system scope and now operating in evidence-accumulation mode:
 - baseline-backed stability review command
 - automatic baseline refresh on incompatible replay/config/model metadata
 - ROI, CLV, and calibration-aware drift assessment
@@ -28,7 +28,7 @@ Phase 3 is now in progress:
 - analyst-containment checks, disagreement logging, and model-review bookkeeping
 - official outcome-grading command that backfills finished winners into stored live predictions
 
-Phase 4A is now in progress:
+Phase 4A is complete:
 - FastAPI operating-core app and protected route layer
 - auth bootstrap command plus token-based operator access
 - scheduler/meta-scheduler run path
@@ -37,21 +37,22 @@ Phase 4A is now in progress:
 - learning-review execution path
 - runtime job, notification, and learning-review persistence
 
-Phase 4B is now in progress:
+Phase 4B is complete:
 - React/Vite dashboard scaffold
 - authenticated top-nav operator shell
 - overview, today, performance, stability, learning, providers, and operations pages
 - inline operator action panels backed by real Phase 4A routes
 - production build path through `dashboard/`
-- planned final hosted target of `Vercel + Cloudflare Tunnel + Supabase`
+- hosted frontend path on `Vercel`
 
-Phase 4C is now in progress:
+Phase 4C is complete for the chosen deployment shape:
 - startup sanity command
 - CORS + hosted API base support for `Vercel + Cloudflare Tunnel`
 - runtime truth now includes startup checks and notification history
 - deployment and recovery runbooks
 - Cloudflare Tunnel deployment path and Vercel SPA rewrite config
 - dashboard-wide refresh after operator actions
+- hosted verification through `Vercel + Cloudflare Tunnel + Supabase`
 
 ## Repo Structure
 
@@ -133,3 +134,4 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Phase 4 remains split into 4A, 4B, and 4C for cleaner execution.
 - The preferred final deployment shape is `Vercel` for the dashboard, `Cloudflare Tunnel` for public access to the local backend/runtime, and `Supabase` for persistence.
 - Phase 4C now adds startup sanity, deployment artifacts, recovery runbooks, and hosted API support.
+- Supabase schema files now enable RLS by default for all Oracle tables in `public`.

@@ -33,3 +33,7 @@ create table if not exists phase4_learning_reviews (
 
 create index if not exists phase4_learning_reviews_created_idx
   on phase4_learning_reviews (created_at desc);
+
+alter table if exists phase4_runtime_jobs enable row level security;
+alter table if exists phase4_notification_events enable row level security;
+alter table if exists phase4_learning_reviews enable row level security;
