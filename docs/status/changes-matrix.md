@@ -34,6 +34,8 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 4 restructuring | Complete | The final product pass is now split into 4A operating core, 4B dashboard, and 4C final integration hardening. | Cleaner execution order with less frontend rework and safer final integration | Execute 4A first, then 4B, then 4C |
 | Phase 4A operating core execution | In progress | FastAPI app, auth bootstrap, protected backend routes, scheduler/meta-scheduler, Telegram/Gmail delivery services, learning execution, and Phase 4A runtime persistence are now in code. | A real backend contract for the future dashboard and operator workflow | Live notification tests, auth bootstrap verification, and final 4A hardening |
 | Phase 4A.1 hardening | Complete in code | Rate limiting is enforced, learning thresholds are aligned, the scheduler uses a real two-hour target window, Telegram command-style handling exists, and runtime bootstrap is explicit. | Safer 4A closeout and more reproducible setup | Final manual re-verification, then move toward Phase 4B |
+| Phase 4B final planning pass | Complete | The dashboard plan now targets the real 4A API contract, defines the exact pages and operator flows, and adds explicit frontend truth rules for degraded, skip, and insufficient-data states. | Safe UI execution without inventing backend behavior | Execute the React/Vite dashboard build in one pass |
+| Phase 4B dashboard execution start | In progress | The dashboard folder, app shell, auth flow, page set, inline operator controls, and shared Stripe-leaning dark UI system are now built and compile through Vite. | Real browser-facing operator workflow on top of 4A | Browser verification and final 4B polish before 4C |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
 ## Current Implementation Delta
@@ -46,7 +48,8 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Stats | NBA metrics fetch path | Rest, travel, and broader pregame context |
 | Sentiment | Deferred placeholder path | Real Reddit-first live adapter |
 | Storage | Local runtime persistence plus verified dual Supabase path, with Phase 3.1 dual-storage code ready and outcome-grade dual persistence implemented | Apply the outcome-grade schema remotely |
-| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, and delivery test commands | Auto-start runtime and final 4A polish |
+| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, and delivery test commands | Auto-start runtime and final 4C polish |
+| Dashboard | React/Vite scaffold, top-nav shell, authenticated pages, operator action cards, and shared CSS system | Browser verification, UI hardening, and final 4C integration |
 
 ## Latest Verified Commands
 
@@ -71,6 +74,7 @@ python main.py serve-api
 5. [phase-4a.md](../plans/implementation/phase-4a.md)
 6. [phase-4a.md](../runbooks/phase-4a.md)
 7. [phase-4b.md](../plans/implementation/phase-4b.md)
-8. [phase-4c.md](../plans/implementation/phase-4c.md)
-9. [phase-3.md](../runbooks/phase-3.md)
-10. [master-spec.md](../spec/master-spec.md)
+8. [phase-4b.md](../runbooks/phase-4b.md)
+9. [phase-4c.md](../plans/implementation/phase-4c.md)
+10. [phase-3.md](../runbooks/phase-3.md)
+11. [master-spec.md](../spec/master-spec.md)

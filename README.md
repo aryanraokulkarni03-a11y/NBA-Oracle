@@ -37,6 +37,13 @@ Phase 4A is now in progress:
 - learning-review execution path
 - runtime job, notification, and learning-review persistence
 
+Phase 4B is now in progress:
+- React/Vite dashboard scaffold
+- authenticated top-nav operator shell
+- overview, today, performance, stability, learning, providers, and operations pages
+- inline operator action panels backed by real Phase 4A routes
+- production build path through `dashboard/`
+
 ## Repo Structure
 
 ```text
@@ -70,6 +77,7 @@ nba-oracle/
 - Phase 4A operating core plan: [docs/plans/implementation/phase-4a.md](docs/plans/implementation/phase-4a.md)
 - Phase 4A runbook: [docs/runbooks/phase-4a.md](docs/runbooks/phase-4a.md)
 - Phase 4B dashboard plan: [docs/plans/implementation/phase-4b.md](docs/plans/implementation/phase-4b.md)
+- Phase 4B runbook: [docs/runbooks/phase-4b.md](docs/runbooks/phase-4b.md)
 - Phase 4C integration plan: [docs/plans/implementation/phase-4c.md](docs/plans/implementation/phase-4c.md)
 - Supabase Phase 4A schema: [supabase/phase4a_schema.sql](supabase/phase4a_schema.sql)
 - Supabase Phase 3 schema: [supabase/phase3_schema.sql](supabase/phase3_schema.sql)
@@ -93,6 +101,8 @@ python main.py review-stability --force-refresh-baseline
 python main.py grade-outcomes
 python main.py run-scheduler-once
 python main.py review-learning
+cd dashboard
+npm.cmd run build
 ```
 
 Generated replay and live-slate outputs are written to `reports/`.
@@ -106,4 +116,5 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Apply `supabase/phase3_schema.sql` to complete Phase 3.1 remote persistence.
 - Apply `supabase/phase3_2_schema.sql` to persist outcome-grade history remotely.
 - Apply `supabase/phase4a_schema.sql` to persist Phase 4A runtime jobs, notification events, and learning reviews remotely.
-- Phase 4A is the active operating-core phase, and Phase 4 remains split into 4A, 4B, and 4C for cleaner execution.
+- Phase 4B now has a working dashboard scaffold and build path on top of the Phase 4A backend contract.
+- Phase 4 remains split into 4A, 4B, and 4C for cleaner execution.
