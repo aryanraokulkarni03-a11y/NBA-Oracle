@@ -47,6 +47,7 @@ DEFAULT_STORAGE_MODE = "local"
 DEFAULT_ODDS_PROVIDER = "the_odds_api"
 DEFAULT_INJURY_PROVIDER = "espn_nba_api"
 DEFAULT_SENTIMENT_PROVIDER = "reddit_only"
+DEFAULT_ALLOWED_ORIGINS = "http://127.0.0.1:3000,http://localhost:3000"
 
 
 def _env_int(name: str, default: int) -> int:
@@ -61,6 +62,11 @@ def _env_bool(name: str, default: bool) -> bool:
     if raw_value in {None, ""}:
         return default
     return str(raw_value).strip().lower() in {"1", "true", "yes", "on"}
+
+
+def _env_list(name: str, default: str) -> tuple[str, ...]:
+    raw_value = get_env_value(name, default) or default
+    return tuple(item.strip() for item in raw_value.split(",") if item.strip())
 
 ODDS_API_KEY = get_env_value("ODDS_API_KEY")
 SUPABASE_URL = get_env_value("SUPABASE_URL")
@@ -120,6 +126,12 @@ ORACLE_API_HOST = get_env_value("ORACLE_API_HOST", "127.0.0.1") or "127.0.0.1"
 ORACLE_API_PORT = _env_int("ORACLE_API_PORT", 8000)
 ORACLE_DASHBOARD_PORT = _env_int("ORACLE_DASHBOARD_PORT", 3000)
 ORACLE_TIMEZONE = get_env_value("ORACLE_TIMEZONE", "Asia/Calcutta") or "Asia/Calcutta"
+ORACLE_ALLOWED_ORIGINS = _env_list("ORACLE_ALLOWED_ORIGINS", DEFAULT_ALLOWED_ORIGINS)
+ORACLE_PUBLIC_API_BASE_URL = get_env_value("ORACLE_PUBLIC_API_BASE_URL", "") or ""
+ORACLE_DEPLOYMENT_TARGET = get_env_value("ORACLE_DEPLOYMENT_TARGET", "vercel-render-supabase") or "vercel-render-supabase"
+ORACLE_LOCAL_AUTOSTART_MODE = get_env_value("ORACLE_LOCAL_AUTOSTART_MODE", "login") or "login"
+ORACLE_LOCAL_DASHBOARD_BEHAVIOR = get_env_value("ORACLE_LOCAL_DASHBOARD_BEHAVIOR", "manual") or "manual"
+ORACLE_FAILURE_ALERT_POLICY = get_env_value("ORACLE_FAILURE_ALERT_POLICY", "telegram-primary") or "telegram-primary"
 ORACLE_PASSWORD_HASH = get_env_value("ORACLE_PASSWORD_HASH")
 ORACLE_SECRET_KEY = get_env_value("ORACLE_SECRET_KEY")
 ORACLE_TOKEN_TTL_MINUTES = _env_int("ORACLE_TOKEN_TTL_MINUTES", 60 * 24)

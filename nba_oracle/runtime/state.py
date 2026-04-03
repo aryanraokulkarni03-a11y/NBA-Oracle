@@ -150,6 +150,19 @@ def record_learning_review(payload: dict[str, Any]) -> str:
     return review_id
 
 
+def load_notification_events(limit: int = 10) -> list[dict[str, Any]]:
+    ensure_runtime_state_dir()
+    if not NOTIFICATION_EVENTS_PATH.exists():
+        return []
+    try:
+        payload = json.loads(NOTIFICATION_EVENTS_PATH.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return []
+    if not isinstance(payload, list):
+        return []
+    return [item for item in payload[:limit] if isinstance(item, dict)]
+
+
 def _append_json_record(path: Path, payload: dict[str, Any]) -> None:
     ensure_runtime_state_dir()
     if path.exists():

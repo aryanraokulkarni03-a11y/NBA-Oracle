@@ -66,5 +66,5 @@ export function formatCompactId(value?: string | null, head = 12, tail = 6) {
   if (value.length <= head + tail + 1) {
     return value;
   }
-  return `${value.slice(0, head)}…${value.slice(-tail)}`;
+  return `${value.slice(0, head)}...${value.slice(-tail)}`;
 }

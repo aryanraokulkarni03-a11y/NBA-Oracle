@@ -20,6 +20,7 @@ from nba_oracle.runs.build_live_slate import build_live_slate
 from nba_oracle.runs.grade_outcomes import grade_outcomes
 from nba_oracle.runs.review_stability import review_stability
 from nba_oracle.runtime.meta_scheduler import run_scheduler_once
+from nba_oracle.runtime.startup import build_startup_sanity_report
 from nba_oracle.snapshots import load_game_snapshots
 
 
@@ -217,6 +218,10 @@ def build_parser() -> argparse.ArgumentParser:
         "bootstrap-runtime",
         help="Install Phase 4A runtime dependencies into the project-local package cache",
     )
+    subparsers.add_parser(
+        "startup-sanity",
+        help="Run the Phase 4C startup and deployment sanity checks",
+    )
     return parser
 
 
@@ -362,6 +367,15 @@ def main() -> None:
             check=True,
         )
         print(f"Runtime bootstrap complete. Installed packages into {target}")
+        return
+
+    if args.command == "startup-sanity":
+        report = build_startup_sanity_report()
+        print(f"Startup sanity complete. Status: {report['status']}")
+        print(f"Failed checks: {report['failed_count']}")
+        print(f"Warning checks: {report['warning_count']}")
+        for item in report["checks"]:
+            print(f"- {item['name']}: {item['status']} ({item['detail']})")
         return
 
     parser.error("Unknown command")

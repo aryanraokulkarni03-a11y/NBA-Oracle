@@ -23,6 +23,8 @@ export function DashboardPage() {
   const bets = predictions.filter((item) => item.decision === "BET").length;
   const leans = predictions.filter((item) => item.decision === "LEAN").length;
   const skips = predictions.filter((item) => item.decision === "SKIP").length;
+  const startup = health.data?.startup;
+  const notificationEvents = health.data?.notifications?.latest_events ?? [];
 
   return (
     <div className="page-stack">
@@ -74,6 +76,14 @@ export function DashboardPage() {
                 <span>Gmail</span>
                 <StatusPill value={health.data?.services?.gmail_configured ? "healthy" : "not_configured"} />
               </div>
+              <div className="summary-grid__item">
+                <span>Startup status</span>
+                <StatusPill value={startup?.status} />
+              </div>
+              <div className="summary-grid__item">
+                <span>Deployment</span>
+                <strong>{health.data?.deployment?.target ?? "n/a"}</strong>
+              </div>
             </div>
           </Panel>
           <Panel title="Live slate summary" subtitle="This view reflects only the latest stored prediction run.">
@@ -118,8 +128,44 @@ export function DashboardPage() {
               </div>
             </div>
           </Panel>
+          <Panel title="Startup and delivery" subtitle="4C keeps startup readiness and notification truth visible in the main overview.">
+            <div className="list-stack">
+              <div className="list-row">
+                <span>Startup warnings</span>
+                <strong>{startup?.warning_count ?? 0}</strong>
+              </div>
+              <div className="list-row">
+                <span>Startup failures</span>
+                <strong>{startup?.failed_count ?? 0}</strong>
+              </div>
+              <div className="list-row">
+                <span>Public API</span>
+                <strong>{startup?.deployment?.public_api_base_url ?? "local proxy"}</strong>
+              </div>
+              {notificationEvents.slice(0, 2).map((event) => (
+                <div className="list-row" key={event.event_id}>
+                  <span>{formatReadableText(event.event_type ?? event.channel ?? "notification")}</span>
+                  <strong>
+                    {(event.channel ?? "channel").toUpperCase()} | {event.success ? "Success" : "Failed"}
+                  </strong>
+                </div>
+              ))}
+            </div>
+          </Panel>
+        </section>
+        <section className="panel-grid panel-grid--two">
           <Panel title="Providers" subtitle="Source quality stays visible in the primary surface.">
             <ProviderList providers={(providers.data?.providers ?? []).slice(0, 3)} />
+          </Panel>
+          <Panel title="Startup checks" subtitle="Hosted readiness is explicit instead of being left to manual memory.">
+            <div className="list-stack">
+              {(startup?.checks ?? []).slice(0, 4).map((check) => (
+                <div className="list-row" key={check.name}>
+                  <span>{formatReadableText(check.name)}</span>
+                  <strong>{formatReadableText(check.status)}</strong>
+                </div>
+              ))}
+            </div>
           </Panel>
         </section>
       </ScreenState>

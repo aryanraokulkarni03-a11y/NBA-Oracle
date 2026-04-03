@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { dispatchRuntimeRefresh } from "../lib/runtimeSync";
 
 type OperatorActionCardProps = {
   title: string;
@@ -21,6 +22,7 @@ export function OperatorActionCard({ title, description, confirmLabel, onRun }: 
       const payload = await onRun();
       setResult(JSON.stringify(payload, null, 2));
       setArmed(false);
+      dispatchRuntimeRefresh(title);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "unknown_error");
     } finally {

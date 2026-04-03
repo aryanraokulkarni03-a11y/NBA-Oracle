@@ -30,6 +30,8 @@ export function ProvidersPage() {
                 { label: "Predictions", value: health.data?.latest_live?.prediction_count ?? 0 },
                 { label: "Storage", value: health.data?.latest_live?.storage_mode ?? "n/a" },
                 { label: "Runtime updated", value: formatDateTime(health.data?.runtime_state?.updated_at) },
+                { label: "Deployment", value: health.data?.deployment?.target ?? "n/a" },
+                { label: "Startup", value: <StatusPill value={health.data?.startup?.status} /> },
                 { label: "Telegram", value: <StatusPill value={health.data?.services?.telegram_configured ? "healthy" : "not_configured"} /> },
                 { label: "Gmail", value: <StatusPill value={health.data?.services?.gmail_configured ? "healthy" : "not_configured"} /> },
               ]}

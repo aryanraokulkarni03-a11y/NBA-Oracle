@@ -31,14 +31,47 @@ export type HealthSnapshot = {
     port?: number;
     timezone?: string;
   };
+  deployment?: {
+    target?: string;
+  };
   services?: {
     telegram_configured?: boolean;
     gmail_configured?: boolean;
+  };
+  startup?: {
+    created_at?: string;
+    status?: string;
+    failed_count?: number;
+    warning_count?: number;
+    deployment?: {
+      target?: string;
+      public_api_base_url?: string | null;
+      allowed_origins?: string[];
+      local_autostart_mode?: string;
+      local_dashboard_behavior?: string;
+      failure_alert_policy?: string;
+    };
+    checks?: Array<{
+      name?: string;
+      status?: string;
+      detail?: string;
+    }>;
   };
   runtime_state?: {
     updated_at?: string | null;
     last_jobs?: Record<string, RuntimeJob>;
     job_history?: RuntimeJobHistoryItem[];
+  };
+  notifications?: {
+    latest_events?: Array<{
+      event_id?: string;
+      channel?: string;
+      event_type?: string;
+      success?: boolean;
+      destination?: string;
+      created_at?: string;
+      detail?: Record<string, unknown>;
+    }>;
   };
   latest_live?: {
     run_id?: string | null;

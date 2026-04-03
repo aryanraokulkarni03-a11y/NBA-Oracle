@@ -45,6 +45,14 @@ Phase 4B is now in progress:
 - production build path through `dashboard/`
 - planned final hosted target of `Vercel + Render + Supabase`
 
+Phase 4C is now in progress:
+- startup sanity command
+- CORS + hosted API base support for `Vercel + Render`
+- runtime truth now includes startup checks and notification history
+- deployment and recovery runbooks
+- Render blueprint and Vercel SPA rewrite config
+- dashboard-wide refresh after operator actions
+
 ## Repo Structure
 
 ```text
@@ -80,6 +88,9 @@ nba-oracle/
 - Phase 4B dashboard plan: [docs/plans/implementation/phase-4b.md](docs/plans/implementation/phase-4b.md)
 - Phase 4B runbook: [docs/runbooks/phase-4b.md](docs/runbooks/phase-4b.md)
 - Phase 4C integration plan: [docs/plans/implementation/phase-4c.md](docs/plans/implementation/phase-4c.md)
+- Deployment runbook: [docs/runbooks/deployment.md](docs/runbooks/deployment.md)
+- Recovery runbook: [docs/runbooks/recovery.md](docs/runbooks/recovery.md)
+- Phase 4 closeout runbook: [docs/runbooks/phase-4.md](docs/runbooks/phase-4.md)
 - Supabase Phase 4A schema: [supabase/phase4a_schema.sql](supabase/phase4a_schema.sql)
 - Supabase Phase 3 schema: [supabase/phase3_schema.sql](supabase/phase3_schema.sql)
 - Phase 3 outcome-grading schema: [supabase/phase3_2_schema.sql](supabase/phase3_2_schema.sql)
@@ -96,6 +107,7 @@ nba-oracle/
 python main.py validate-fixture
 python -m unittest discover -s tests -p "test_*.py"
 python main.py bootstrap-runtime
+python main.py startup-sanity
 python main.py replay
 python main.py review-stability
 python main.py review-stability --force-refresh-baseline
@@ -120,3 +132,4 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Phase 4B now has a working dashboard scaffold and build path on top of the Phase 4A backend contract.
 - Phase 4 remains split into 4A, 4B, and 4C for cleaner execution.
 - The preferred final deployment shape is `Vercel` for the dashboard, `Render` for backend/runtime, and `Supabase` for persistence.
+- Phase 4C now adds startup sanity, deployment artifacts, recovery runbooks, and hosted API support.

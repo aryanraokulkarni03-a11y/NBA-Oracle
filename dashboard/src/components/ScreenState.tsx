@@ -11,10 +11,16 @@ export function ScreenState({
   children: ReactNode;
 }) {
   if (isLoading) {
-    return <div className="screen-state">Loading dashboard state…</div>;
+    return <div className="screen-state">Loading dashboard state...</div>;
   }
   if (error) {
-    return <div className="screen-state screen-state--error">{formatReadableText(error)}</div>;
+    return (
+      <div className="screen-state screen-state--error">
+        {error.startsWith("rate_limited")
+          ? "Too many requests are in flight. Give the dashboard a moment, then refresh."
+          : formatReadableText(error)}
+      </div>
+    );
   }
   return <>{children}</>;
 }

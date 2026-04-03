@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
+from nba_oracle.config import ORACLE_ALLOWED_ORIGINS
 from nba_oracle.api.routes import auth, health, learning, operator, picks, providers, stability, today
 
 
@@ -12,13 +14,20 @@ def build_app() -> FastAPI:
         version="0.4.0",
         summary="Operating core for the NBA Oracle backend.",
     )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=list(ORACLE_ALLOWED_ORIGINS),
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
     @app.get("/")
     def root() -> dict[str, object]:
         return {
             "name": "NBA Oracle",
-            "phase": "4A",
-            "status": "operating_core",
+            "phase": "4C",
+            "status": "integration_hardening",
             "docs": {
                 "health": "/api/health",
                 "today": "/api/today",

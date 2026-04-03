@@ -24,6 +24,15 @@ export class ApiError extends Error {
 
 type JsonBody = Record<string, unknown> | undefined;
 
+const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL as string | undefined)?.trim() ?? "";
+
+function withApiBase(path: string) {
+  if (!API_BASE_URL) {
+    return path;
+  }
+  return `${API_BASE_URL.replace(/\/$/, "")}${path}`;
+}
+
 async function request<T>(path: string, init: RequestInit = {}, token?: string | null): Promise<T> {
   const headers = new Headers(init.headers ?? {});
   headers.set("Accept", "application/json");
@@ -34,14 +43,17 @@ async function request<T>(path: string, init: RequestInit = {}, token?: string |
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  const response = await fetch(path, { ...init, headers });
+  const response = await fetch(withApiBase(path), { ...init, headers });
   const text = await response.text();
   const payload = text ? (JSON.parse(text) as T | ApiErrorPayload) : ({} as T);
 
   if (!response.ok) {
+    const retryAfter = response.headers.get("Retry-After");
     const detail =
       typeof payload === "object" && payload && "detail" in payload && typeof payload.detail === "string"
         ? payload.detail
+        : response.status === 429
+          ? `rate_limited${retryAfter ? `_retry_after_${retryAfter}s` : ""}`
         : `request_failed_${response.status}`;
     throw new ApiError(response.status, detail);
   }

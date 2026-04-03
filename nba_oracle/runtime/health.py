@@ -14,11 +14,13 @@ from nba_oracle.config import (
     GMAIL_SENDER,
     ORACLE_API_HOST,
     ORACLE_API_PORT,
+    ORACLE_DEPLOYMENT_TARGET,
     ORACLE_TIMEZONE,
     TELEGRAM_BOT_TOKEN,
     TELEGRAM_CHAT_ID,
 )
-from nba_oracle.runtime.state import load_runtime_state
+from nba_oracle.runtime.startup import build_startup_sanity_report
+from nba_oracle.runtime.state import load_notification_events, load_runtime_state
 
 
 def build_health_snapshot() -> dict[str, Any]:
@@ -33,11 +35,18 @@ def build_health_snapshot() -> dict[str, Any]:
             "port": ORACLE_API_PORT,
             "timezone": ORACLE_TIMEZONE,
         },
+        "deployment": {
+            "target": ORACLE_DEPLOYMENT_TARGET,
+        },
         "services": {
             "telegram_configured": bool(TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID),
             "gmail_configured": bool(GMAIL_SENDER and GMAIL_APP_PASSWORD and GMAIL_RECIPIENT),
         },
+        "startup": build_startup_sanity_report(),
         "runtime_state": runtime_state,
+        "notifications": {
+            "latest_events": load_notification_events(limit=5),
+        },
         "latest_live": {
             "run_id": live.get("run_id"),
             "prediction_count": len(live.get("predictions", [])),

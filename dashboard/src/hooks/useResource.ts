@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState, type Dispatch, type SetStateA
 
 import { ApiError } from "../lib/api";
 import { useAuth } from "../lib/auth";
+import { RUNTIME_REFRESH_EVENT } from "../lib/runtimeSync";
 
 type ResourceState<T> = {
   data: T | null;
@@ -48,6 +49,15 @@ export function useResource<T>(loader: (token: string) => Promise<T>, enabled = 
 
   useEffect(() => {
     void refresh();
+  }, [refresh]);
+
+  useEffect(() => {
+    function handleRuntimeRefresh() {
+      void refresh();
+    }
+
+    window.addEventListener(RUNTIME_REFRESH_EVENT, handleRuntimeRefresh);
+    return () => window.removeEventListener(RUNTIME_REFRESH_EVENT, handleRuntimeRefresh);
   }, [refresh]);
 
   return { data, isLoading, error, refresh, setData };

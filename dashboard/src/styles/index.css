@@ -553,6 +553,11 @@ a {
   gap: 0.9rem;
 }
 
+.list-stack {
+  display: grid;
+  gap: 0.55rem;
+}
+
 .key-value-list__row,
 .list-row {
   display: flex;
