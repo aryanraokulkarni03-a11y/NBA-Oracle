@@ -29,7 +29,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|
 | Where are we now? | The full project is now operating end to end against the chosen deployment shape of Vercel + local backend over Cloudflare Tunnel + Supabase. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
-| What is the biggest unfinished product item? | Evidence depth, not platform wiring: drift and learning will improve as more graded outcomes accumulate. |
+| What is the biggest unfinished product item? | Product comprehension: the system works, but the dashboard still needs a final explanation and guidance pass for operators. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
 | What manual closeout is still required? | Keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live, and keep grading outcomes as games finish. |
@@ -77,6 +77,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 2: Signal Quality Layer | Complete | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built and verified on a real pregame run. |
 | Phase 3: Stability Layer | Complete for current scope | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
 | Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
+| Phase 5: Interpretation and Guidance | Planned | The next pass will convert raw dashboard internals into operator-friendly explanations and add an in-product guide page. |
 
 ## Recent Changes Summary
 
@@ -98,6 +99,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4B dashboard execution | Complete | The dashboard folder, app shell, authenticated pages, shared UI system, operator action panels, and hosted Vercel deployment are working. |
 | Phase 4C final one-shot plan | Complete | The last remaining pass is now rewritten around the real unfinished seams: startup, scheduler truth, dashboard/API refresh consistency, delivery verification, recovery, hosted deployment, and end-to-end closeout. |
 | Phase 4C execution start | Complete | Startup sanity, hosted API/CORS support, notification history in health, deployment artifacts, recovery runbooks, dashboard-wide runtime refresh, and hosted verification are landed. |
+| Phase 5 planning | Complete | The next pass now targets human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and a first-class guide page. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
@@ -145,9 +147,10 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Operate the finished system and keep evidence accumulating:
+Operate the finished system, keep evidence accumulating, and begin Phase 5:
 - keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live
 - run `python main.py build-live-slate --live` on slate days
 - run `python main.py grade-outcomes` after games finish
 - run `python main.py review-stability` and `python main.py review-learning` as evidence grows
+- execute the Phase 5 clarity/help pass through [phase-5.md](../plans/implementation/phase-5.md)
 - keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change
