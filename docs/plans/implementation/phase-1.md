@@ -7,9 +7,9 @@ This phase exists because the README and planning docs agree on one thing: the s
 
 ## Source of Truth
 This plan is derived from:
-- [README.md](./README.md)
-- [problems plan.md](./problems%20plan.md)
-- [ftw plan.md](./ftw%20plan.md)
+- [master-spec.md](../../spec/master-spec.md)
+- [problems-plan.md](../problems-plan.md)
+- [ftw-plan.md](../ftw-plan.md)
 
 ## Phase 1 Goal
 Build the smallest possible validation layer that can answer this question:

@@ -1,7 +1,7 @@
 # NBA Oracle FTW Plan
 
 ## Purpose
-This file captures the strongest practical fixes for the blockers in `problems plan.md`.
+This file captures the strongest practical fixes for the blockers in `problems-plan.md`.
 
 ## Batch 1 Summary
 This batch turns the five blockers into the core money-making doctrine:

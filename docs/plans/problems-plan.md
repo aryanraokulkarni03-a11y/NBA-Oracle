@@ -98,7 +98,7 @@ This batch focuses on the next five blockers that decide whether the model can s
 - The system needs a hard separation between explanation and decision so the model cannot talk itself into a weak bet.
 
 ## What This File Is For
-Each problem above must be solved one-by-one, then moved into the FTW plan file as a concrete fix path.
+Each problem above must be solved one-by-one, then moved into `ftw-plan.md` as a concrete fix path.
 
 ## Evidence Notes
 - NBA betting research shows that opening injuries can create edges, but closing lines often absorb that information by tip-off, so the model must care about timing and CLV more than raw confidence.
