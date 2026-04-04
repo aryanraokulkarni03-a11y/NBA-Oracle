@@ -65,6 +65,7 @@ Phase 6 is now planned as the runtime-convenience pass:
 - recurring scheduler automation
 - simpler daily operator workflow
 - tunnel/runtime reliability polish
+- evidence-loop reliability hardening for postgame grading
 
 Phase 7 is now planned as the intelligence-upgrade pass:
 - market-as-prior architecture
@@ -160,4 +161,5 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Supabase schema files now enable RLS by default for all Oracle tables in `public`.
 - Phase 5 is now in progress as the interpretation and operator-confidence pass for human-readable explanations, metric education, and the in-product guide page.
 - Phase 6 is now planned as the operator-convenience and automation pass for hosted startup, recurring scheduler execution, and cleaner runtime operations.
+- Phase 6 also now explicitly covers evidence-loop hardening, including resilient outcome fetching and filtering synthetic runtime artifacts out of live grading summaries.
 - Phase 7 is now planned as the intelligence-layer upgrade for stronger pregame NBA moneyline judgment.

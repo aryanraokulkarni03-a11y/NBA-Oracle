@@ -42,6 +42,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Phase 5 planning | Complete | The next pass is now defined around human-readable translations, metric explanations, dashboard guidance, and operator-confidence polish. | A clean final product-understanding pass after infrastructure completion | Execute the Phase 5 dashboard clarity work |
 | Phase 5 execution start | In progress | The dashboard now has a Guide route, shared explanation mappings, human-readable reasons, bookmaker/provider naming cleanup, and inline metric explanations. | The product is moving from technically correct to operator-readable | Browser verification and final copy polish |
 | Phase 6 planning | Complete | The runtime-convenience pass is now defined around a single hosted-mode launcher, recurring scheduler automation, operator workflow cleanup, and tunnel/runtime reliability polish. | A clean source of truth for making daily operation easier and more automatic | Execute the Phase 6 ops and runbook work |
+| Outcome grading reliability audit | Complete | Official outcome fetches now retry and fall back to the lighter NBA live scoreboard when the heavier endpoint stalls, and synthetic runtime runs are ignored during grading summaries. | A trustworthy daily evidence loop for postgame grading and later stability/learning reviews | Reflect the hardening in Phase 6 docs and automate the scheduler path later |
 | Phase 7 planning | Complete | The next model-quality pass is now defined around market-as-prior probability design, stronger lineup and injury interpretation, timing-aware judgment, uncertainty-aware bet gating, and segmented moneyline evaluation. | A clean source of truth for upgrading the intelligence layer without random complexity | Execute the Phase 7 backend/model work after the current comprehension pass settles |
 | Sentiment deferral | Intentional | Reddit/X live sentiment remains off by design in current live mode. | Keeps Phase 2 stable while core providers mature | Add Reddit-first sentiment later |
 
@@ -55,7 +56,7 @@ Pair it with [project-status-matrix.md](./project-status-matrix.md):
 | Stats | NBA metrics fetch path | Rest, travel, and broader pregame context |
 | Sentiment | Deferred placeholder path | Real Reddit-first live adapter |
 | Storage | Local runtime persistence plus verified dual Supabase path, with Phase 3.1 dual-storage code ready and outcome-grade dual persistence implemented | Apply the outcome-grade schema remotely |
-| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, delivery test commands, and `startup-sanity` | Keep running live/operator workflows over time |
+| CLI | Bundle mode, `--live` mode, enhanced `review-stability`, hardened `grade-outcomes`, `review-learning`, `serve-api`, `run-scheduler-once`, `bootstrap-auth`, delivery test commands, and `startup-sanity` | Keep running live/operator workflows over time |
 | Dashboard | React/Vite scaffold, top-nav shell, authenticated pages, operator action cards, shared CSS system, hosted API-base support, and dashboard-wide runtime refresh | Keep UI polish synced with backend truth later |
 
 ## Latest Verified Commands
