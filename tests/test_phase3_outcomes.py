@@ -145,6 +145,108 @@ class Phase3OutcomeTests(unittest.TestCase):
         self.assertEqual(outcomes[0].source_name, "nba_scoreboard_live")
         self.assertEqual(outcomes[0].actual_winner, "Boston Celtics")
 
+    def test_grade_outcomes_ignores_synthetic_test_runs(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            runtime_dir = Path(tmp_dir) / "runtime"
+
+            real_run_dir = runtime_dir / "live-20260403T120000Z"
+            real_run_dir.mkdir(parents=True)
+            real_snapshots_payload = {
+                "snapshots": [
+                    {
+                        "game_id": "2026-04-03-chi-bos",
+                        "decision_time": "2026-04-03T12:00:00+00:00",
+                        "tipoff_time": "2026-04-03T23:30:00+00:00",
+                        "away_team": "Chicago Bulls",
+                        "home_team": "Boston Celtics",
+                        "sources": [
+                            {"source_version": "the-odds-api-v4"},
+                            {"source_version": "espn-injuries-v1"},
+                        ],
+                        "actual_winner": None,
+                    }
+                ]
+            }
+            real_predictions_payload = {
+                "predictions": [
+                    {
+                        "game_id": "2026-04-03-chi-bos",
+                        "selected_team": "Boston Celtics",
+                        "decision": "BET",
+                        "actual_winner": None,
+                    }
+                ]
+            }
+            (real_run_dir / "snapshots.json").write_text(json.dumps(real_snapshots_payload, indent=2), encoding="utf-8")
+            (real_run_dir / "predictions.json").write_text(json.dumps(real_predictions_payload, indent=2), encoding="utf-8")
+
+            synthetic_run_dir = runtime_dir / "live-20260405T153000Z"
+            synthetic_run_dir.mkdir(parents=True)
+            synthetic_snapshots_payload = {
+                "snapshots": [
+                    {
+                        "game_id": "2026-04-05-bos-nyk",
+                        "decision_time": "2026-04-05T15:30:00+00:00",
+                        "tipoff_time": "2026-04-05T17:30:00+00:00",
+                        "away_team": "Boston Celtics",
+                        "home_team": "New York Knicks",
+                        "sources": [
+                            {"source_version": "test-v1"},
+                            {"source_version": "test-v1"},
+                        ],
+                        "actual_winner": None,
+                    }
+                ]
+            }
+            synthetic_predictions_payload = {
+                "predictions": [
+                    {
+                        "game_id": "2026-04-05-bos-nyk",
+                        "selected_team": "Boston Celtics",
+                        "decision": "LEAN",
+                        "actual_winner": None,
+                    }
+                ]
+            }
+            (synthetic_run_dir / "snapshots.json").write_text(
+                json.dumps(synthetic_snapshots_payload, indent=2),
+                encoding="utf-8",
+            )
+            (synthetic_run_dir / "predictions.json").write_text(
+                json.dumps(synthetic_predictions_payload, indent=2),
+                encoding="utf-8",
+            )
+
+            outcome = OfficialOutcome(
+                game_id="2026-04-03-chi-bos",
+                game_date=datetime(2026, 4, 3, tzinfo=timezone.utc).date(),
+                away_team="Chicago Bulls",
+                home_team="Boston Celtics",
+                away_score=102,
+                home_score=111,
+                actual_winner="Boston Celtics",
+                game_status="Final",
+                source_name="nba_scoreboard_v2",
+                source_version="scoreboardv2-v1",
+                source_time=datetime(2026, 4, 4, 4, 0, tzinfo=timezone.utc),
+            )
+
+            with patch(
+                "nba_oracle.runs.grade_outcomes.fetch_official_outcomes",
+                return_value=(outcome,),
+            ), patch(
+                "nba_oracle.runs.grade_outcomes.build_outcome_repository",
+                return_value=LocalOutcomeRepository(root=runtime_dir),
+            ):
+                result = grade_outcomes(
+                    runtime_dir=runtime_dir,
+                    as_of=datetime(2026, 4, 4, 6, 0, tzinfo=timezone.utc),
+                )
+
+            self.assertEqual(result.evaluated_runs, 2)
+            self.assertEqual(result.newly_graded, 1)
+            self.assertEqual(result.pending_unfinished, 0)
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -30,6 +30,8 @@ def grade_outcomes(
         run_state = _load_run_state(run_dir)
         if run_state is None:
             continue
+        if _is_synthetic_run_state(run_state):
+            continue
 
         eligible_records: list[dict[str, object]] = []
         for snapshot, prediction in run_state["pairs"]:
@@ -188,3 +190,25 @@ def _load_official_outcomes(dates_needed: set[date]) -> dict[str, OfficialOutcom
         for outcome in fetch_official_outcomes(game_date):
             outcomes_by_game_id[outcome.game_id] = outcome
     return outcomes_by_game_id
+
+
+def _is_synthetic_run_state(run_state: dict[str, object]) -> bool:
+    snapshots_payload = run_state.get("snapshots_payload", {})
+    snapshots = snapshots_payload.get("snapshots", []) if isinstance(snapshots_payload, dict) else []
+    source_versions: set[str] = set()
+    for snapshot in snapshots:
+        if not isinstance(snapshot, dict):
+            continue
+        sources = snapshot.get("sources", [])
+        if not isinstance(sources, list):
+            continue
+        for source in sources:
+            if not isinstance(source, dict):
+                continue
+            version = str(source.get("source_version") or "").strip().lower()
+            if version:
+                source_versions.add(version)
+
+    if not source_versions:
+        return False
+    return all("test" in version or "sample" in version for version in source_versions)
