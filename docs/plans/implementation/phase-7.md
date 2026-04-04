@@ -24,6 +24,8 @@ The goal is to improve:
 - injury and lineup interpretation
 - timing discipline
 - uncertainty handling
+- forward-looking slate usefulness
+- outcome visibility inside the existing dashboard
 
 ## Source of Truth
 This plan is derived from:
@@ -56,6 +58,7 @@ Phase 7 should make the system better at:
 3. recognizing when the edge is early, stale, or gone
 4. separating model confidence from betting confidence
 5. learning from graded outcomes without becoming reckless
+6. showing the operator both upcoming opportunities and recent prediction truth more clearly
 
 ## What Phase 7 Must Respect
 
@@ -73,6 +76,8 @@ Phase 7 should make the system better at:
 - timing and line-movement intelligence
 - uncertainty-aware bet gating
 - decision-quality upgrades for `BET`, `LEAN`, and `SKIP`
+- future-slate prediction support so the dashboard can surface next-day pregame opportunities instead of only the current run snapshot
+- Performance-page enhancement for predicted-vs-actual result visibility, accuracy, and decision-outcome tracking without adding a new page
 - calibration by meaningful moneyline buckets
 - improved learning features for review-only candidate generation
 - doc and runbook updates for the upgraded intelligence path
@@ -129,6 +134,24 @@ That means the system needs to get better at separating:
 The review-only learning loop is cautious, which is good.
 
 But it still needs better features and better segment-level evaluation before it can propose meaningfully stronger candidate behavior.
+
+### Problem 6: The current Today view is too tied to the latest run snapshot
+The operator often wants two distinct things:
+- actionable games that have not started yet
+- visibility into the next day’s pregame opportunities before tipoff day arrives
+
+The current workflow is still too narrow because it mainly reflects the latest stored run, not a more operator-friendly forward-looking slate view.
+
+### Problem 7: Performance truth exists in the backend, but not strongly enough in the dashboard
+The system already grades outcomes and stores `actual_winner`.
+
+But the dashboard still lacks a strong built-in surface for:
+- predicted side vs actual winner
+- won/lost outcome
+- accuracy by decision type
+- recent model truth on graded games
+
+This should be solved inside the existing Performance page, not by adding another top-level page.
 
 ## Workstreams
 
@@ -221,6 +244,33 @@ Deliverables:
 - more useful pattern mining
 - stronger future retraining discipline
 
+### Workstream 8: Forward-Looking Slate Intelligence
+Extend the pregame workflow so the operator can see upcoming opportunities beyond only the immediate latest run.
+
+Target behavior:
+- Today should remain operator-useful for games that have not completed
+- the system should be able to generate and surface next-day pregame predictions ahead of time
+- future-game visibility should support planning without pretending tomorrow's lines are final
+
+Deliverables:
+- next-day pregame prediction support
+- cleaner actionable-slate logic for Today
+- clearer distinction between current actionable games and future-look planning
+
+### Workstream 9: Performance Truth Surface Upgrade
+Enhance the existing Performance page instead of adding a new route.
+
+Target additions:
+- predicted side vs actual winner
+- won/lost result
+- graded-decision accuracy summaries
+- BET / LEAN / SKIP outcome visibility where meaningful
+
+Deliverables:
+- stronger predicted-vs-actual table or summary on Performance
+- accuracy and hit-rate visibility from already graded evidence
+- no separate new page for this feature
+
 ## Recommended Implementation Areas
 
 - `nba_oracle/predictor.py`
@@ -233,6 +283,11 @@ Deliverables:
 - `nba_oracle/learning/patterns.py`
 - `nba_oracle/stability/drift.py`
 - `nba_oracle/stability/baseline.py`
+- `nba_oracle/api/routes/today.py`
+- `nba_oracle/api/routes/picks.py`
+- `dashboard/src/pages/Today.tsx`
+- `dashboard/src/pages/Performance.tsx`
+- `dashboard/src/lib/types.ts`
 - `tests/`
 
 ## Concrete Deliverables
@@ -244,8 +299,10 @@ Deliverables:
 5. uncertainty-aware gating behavior
 6. segmented calibration and evaluation outputs
 7. upgraded learning-review feature inputs
-8. test updates and validation checkpoints
-9. doc and runbook updates explaining the new intelligence path
+8. next-day pregame prediction support for the dashboard
+9. Performance-page predicted-vs-actual accuracy surface
+10. test updates and validation checkpoints
+11. doc and runbook updates explaining the new intelligence path
 
 ## Acceptance Criteria
 Phase 7 is acceptable only if:
@@ -256,7 +313,9 @@ Phase 7 is acceptable only if:
 4. `BET`, `LEAN`, and `SKIP` become more selective for the right reasons, not simply more aggressive.
 5. Evaluation improves in meaningful moneyline buckets, not only in global averages.
 6. The learning layer gains stronger review features without becoming auto-promotional.
-7. Replayability, reporting, and operator trust remain intact.
+7. The dashboard can surface next-day pregame opportunities without confusing them with completed games.
+8. The Performance page shows predicted-vs-actual truth and useful accuracy signals without adding a new page.
+9. Replayability, reporting, and operator trust remain intact.
 
 ## Final Exit Rule
 Do not call Phase 7 complete until:
@@ -264,4 +323,6 @@ Do not call Phase 7 complete until:
 1. the intelligence layer is measurably stronger at pregame moneyline decisioning
 2. the system still behaves honestly under uncertainty
 3. stronger features improve model judgment without breaking the discipline layer
-4. the docs clearly explain how the upgraded intelligence now works
+4. upcoming-slate visibility is more useful than the current latest-run-only behavior
+5. prediction accuracy and graded-outcome truth are visible in the existing Performance surface
+6. the docs clearly explain how the upgraded intelligence now works

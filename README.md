@@ -79,6 +79,8 @@ Phase 7 is now planned as the intelligence-upgrade pass:
 - timing and line-movement intelligence
 - uncertainty-aware bet gating
 - segmented evaluation for NBA moneylines
+- next-day pregame prediction visibility
+- predicted-vs-actual performance truth inside the existing Performance page
 
 ## Repo Structure
 
