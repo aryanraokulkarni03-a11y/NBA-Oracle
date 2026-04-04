@@ -41,17 +41,18 @@ def write_live_markdown_report(
     lines.append("")
     lines.append(
         "| Game | Team | Decision | Model prob | Reference book | Reference line | Best line | Close line | "
-        "Reference prob | Best prob | Close prob | EV | Edge vs reference | Source quality | Reasons |"
+        "Reference prob | Best prob | Close prob | Market prior | Timing adj | Uncertainty | Segment | EV | Edge vs reference | Source quality | Reasons |"
     )
     lines.append(
-        "|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|"
+        "|---|---|---|---:|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|---:|---:|---|"
     )
     for prediction in result.predictions:
         lines.append(
             f"| {prediction.game_id} | {prediction.selected_team} | {prediction.decision} | "
             f"{prediction.model_probability:.2%} | {prediction.reference_bookmaker} | {prediction.stake_american} | {prediction.best_american} | "
             f"{prediction.close_american} | {prediction.stake_probability:.2%} | {prediction.best_probability:.2%} | "
-            f"{prediction.close_probability:.2%} | {prediction.expected_value:.2%} | {prediction.edge_vs_stake:.2%} | "
+            f"{prediction.close_probability:.2%} | {prediction.market_prior_probability:.2%} | {prediction.timing_adjustment:.2%} | "
+            f"{prediction.uncertainty:.2%} | {prediction.market_segment} | {prediction.expected_value:.2%} | {prediction.edge_vs_stake:.2%} | "
             f"{prediction.source_quality:.2%} | {', '.join(prediction.reasons)} |"
         )
     lines.append("")
@@ -98,6 +99,11 @@ def write_live_json_report(
                 "opening_american": item.opening_american,
                 "market_timestamp": item.market_timestamp.isoformat() if item.market_timestamp else None,
                 "model_probability": item.model_probability,
+                "market_prior_probability": item.market_prior_probability,
+                "source_adjustment": item.source_adjustment,
+                "timing_adjustment": item.timing_adjustment,
+                "uncertainty": item.uncertainty,
+                "market_segment": item.market_segment,
                 "stake_probability": item.stake_probability,
                 "best_probability": item.best_probability,
                 "close_probability": item.close_probability,

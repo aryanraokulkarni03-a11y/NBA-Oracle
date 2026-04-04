@@ -40,3 +40,13 @@ def aggregate_signal_delta(scores: tuple[SourceScore, ...]) -> float:
     if normalizer == 0:
         return 0.0
     return round(weighted_sum / normalizer, 4)
+
+
+def calculate_signal_disagreement(scores: tuple[SourceScore, ...]) -> float:
+    if len(scores) <= 1:
+        return 0.0
+    weighted_signals = [score.signal_delta * max(score.quality, 0.1) for score in scores]
+    high = max(weighted_signals)
+    low = min(weighted_signals)
+    disagreement = abs(high - low)
+    return round(min(disagreement / 0.08, 1.0), 4)

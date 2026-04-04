@@ -62,6 +62,9 @@ const REASON_EXPLANATIONS: Record<string, string> = {
   stake_price_not_competitive: "The reference price was worse than the best price available in the market snapshot.",
   negative_expected_value: "The price is not mathematically worth taking even if the side is likely to win.",
   edge_is_real_but_not_strong: "There may be some value here, but not enough to qualify as a full bet.",
+  high_uncertainty_context: "The setup carries too much uncertainty to trust a stronger action signal right now.",
+  stale_market_context: "The market snapshot looks stale enough that the system downgraded confidence.",
+  heavy_favorite_price_risk: "The team may be strong, but expensive favorite pricing makes the bet easier to overpay for.",
   all_gates_passed: "The model, price, and source-quality checks all cleared the full bet gate.",
 };
 

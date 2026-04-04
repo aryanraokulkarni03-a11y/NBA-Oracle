@@ -119,6 +119,11 @@ class PredictionResult:
     reference_bookmaker: str = "reference"
     market_timestamp: datetime | None = None
     opening_american: int | None = None
+    market_prior_probability: float = 0.0
+    source_adjustment: float = 0.0
+    timing_adjustment: float = 0.0
+    uncertainty: float = 0.0
+    market_segment: str = "unknown"
 
     @property
     def is_active(self) -> bool:

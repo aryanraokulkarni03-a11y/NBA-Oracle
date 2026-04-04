@@ -17,6 +17,21 @@ def derive_candidate_weights(predictions: list[dict[str, object]]) -> list[dict[
             totals[kind] += direction * signal_delta * max(quality, 0.1)
             counts[kind] += 1
 
+        market_prior = float(prediction.get("market_prior_probability", 0.0))
+        model_probability = float(prediction.get("model_probability", 0.0))
+        timing_adjustment = float(prediction.get("timing_adjustment", 0.0))
+        source_adjustment = float(prediction.get("source_adjustment", 0.0))
+        uncertainty = float(prediction.get("uncertainty", 0.0))
+
+        totals["market_prior"] += direction * abs(model_probability - market_prior)
+        counts["market_prior"] += 1
+        totals["timing"] += direction * abs(timing_adjustment)
+        counts["timing"] += 1
+        totals["uncertainty"] += direction * max(0.0, 0.6 - uncertainty)
+        counts["uncertainty"] += 1
+        totals["source_adjustment"] += direction * abs(source_adjustment)
+        counts["source_adjustment"] += 1
+
     if not totals:
         return []
 

@@ -82,7 +82,9 @@ class InjuryProvider(BundleProvider):
 
             selected_summary = _summarize_team(sections.get(selected_team, []))
             opponent_summary = _summarize_team(sections.get(opponent_team, []))
-            signal_delta = max(min((opponent_summary["severity"] - selected_summary["severity"]) * 0.015, 0.04), -0.04)
+            impact_gap = float(opponent_summary["impact_score"]) - float(selected_summary["impact_score"])
+            major_gap = int(opponent_summary["major_flags"]) - int(selected_summary["major_flags"])
+            signal_delta = max(min((impact_gap * 0.012) + (major_gap * 0.006), 0.055), -0.055)
 
             records.append(
                 ProviderRecord(
@@ -91,8 +93,8 @@ class InjuryProvider(BundleProvider):
                         "game_id": schedule_row["game_id"],
                         "signal_delta": round(signal_delta, 4),
                         "summary": (
-                            f"{selected_team} injury load {selected_summary['major_flags']} major flags "
-                            f"vs {opponent_team} {opponent_summary['major_flags']} major flags"
+                            f"{selected_team} injury impact {selected_summary['impact_score']:.2f} "
+                            f"vs {opponent_team} {opponent_summary['impact_score']:.2f}"
                         ),
                         "confirmation_level": "reported",
                         "update_timestamp": decision_time.isoformat(),
@@ -100,6 +102,13 @@ class InjuryProvider(BundleProvider):
                         "opponent_team_player_statuses": opponent_summary["player_statuses"],
                         "selected_team_flags": selected_summary["total_flags"],
                         "opponent_team_flags": opponent_summary["total_flags"],
+                        "selected_team_major_flags": selected_summary["major_flags"],
+                        "opponent_team_major_flags": opponent_summary["major_flags"],
+                        "selected_team_impact_score": round(float(selected_summary["impact_score"]), 3),
+                        "opponent_team_impact_score": round(float(opponent_summary["impact_score"]), 3),
+                        "impact_gap": round(impact_gap, 3),
+                        "selected_team_top_weight": round(float(selected_summary["top_weight"]), 3),
+                        "opponent_team_top_weight": round(float(opponent_summary["top_weight"]), 3),
                     },
                 )
             )
@@ -149,6 +158,7 @@ def _summarize_team(lines: list[str]) -> dict[str, float | int | list[dict[str, 
     severity = 0.0
     total_flags = 0
     major_flags = 0
+    weighted_top_flags = 0.0
     player_statuses: list[dict[str, str]] = []
     for index, line in enumerate(lines):
         normalized = line.lower()
@@ -159,16 +169,20 @@ def _summarize_team(lines: list[str]) -> dict[str, float | int | list[dict[str, 
         severity += weight
         if weight >= STATUS_WEIGHTS["questionable"]:
             major_flags += 1
+        weighted_top_flags = max(weighted_top_flags, weight)
         player_statuses.append(
             {
                 "player": _guess_player_name(lines, index),
                 "status": normalized,
             }
         )
+    impact_score = severity + (major_flags * 0.35) + (weighted_top_flags * 0.6)
     return {
         "severity": severity,
         "total_flags": total_flags,
         "major_flags": major_flags,
+        "top_weight": weighted_top_flags,
+        "impact_score": impact_score,
         "player_statuses": player_statuses,
     }
 

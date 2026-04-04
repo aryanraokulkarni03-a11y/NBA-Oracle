@@ -111,10 +111,40 @@ class StatsProvider(BundleProvider):
             selected_stats = away_stats if selected_team == away_team else home_stats
             opponent_stats = home_stats if selected_team == away_team else away_stats
 
-            net_diff = _to_float(selected_stats.get("E_NET_RATING")) - _to_float(opponent_stats.get("E_NET_RATING"))
-            win_pct_diff = _to_float(selected_stats.get("W_PCT")) - _to_float(opponent_stats.get("W_PCT"))
-            pace_diff = _to_float(selected_stats.get("E_PACE")) - _to_float(opponent_stats.get("E_PACE"))
-            signal_delta = max(min((net_diff * 0.0018) + (win_pct_diff * 0.05) + (pace_diff * 0.0004), 0.03), -0.03)
+            selected_net = _to_float(selected_stats.get("E_NET_RATING"))
+            opponent_net = _to_float(opponent_stats.get("E_NET_RATING"))
+            selected_win_pct = _to_float(selected_stats.get("W_PCT"))
+            opponent_win_pct = _to_float(opponent_stats.get("W_PCT"))
+            selected_pace = _to_float(selected_stats.get("E_PACE"))
+            opponent_pace = _to_float(opponent_stats.get("E_PACE"))
+            selected_offense = _to_float(selected_stats.get("E_OFF_RATING"))
+            opponent_offense = _to_float(opponent_stats.get("E_OFF_RATING"))
+            selected_defense = _to_float(selected_stats.get("E_DEF_RATING"))
+            opponent_defense = _to_float(opponent_stats.get("E_DEF_RATING"))
+
+            net_diff = selected_net - opponent_net
+            win_pct_diff = selected_win_pct - opponent_win_pct
+            pace_diff = selected_pace - opponent_pace
+            off_rating_diff = selected_offense - opponent_offense
+            defense_edge = opponent_defense - selected_defense
+            team_strength_score = (
+                (net_diff * 0.55)
+                + (win_pct_diff * 20)
+                + (off_rating_diff * 0.12)
+                + (defense_edge * 0.14)
+                + (pace_diff * 0.03)
+            )
+            signal_delta = max(
+                min(
+                    (net_diff * 0.0015)
+                    + (win_pct_diff * 0.055)
+                    + (off_rating_diff * 0.0005)
+                    + (defense_edge * 0.0006)
+                    + (pace_diff * 0.0002),
+                    0.04,
+                ),
+                -0.04,
+            )
 
             records.append(
                 ProviderRecord(
@@ -124,13 +154,19 @@ class StatsProvider(BundleProvider):
                         "signal_delta": round(signal_delta, 4),
                         "summary": (
                             f"{selected_team} metrics edge: net {net_diff:+.2f}, "
-                            f"win_pct {win_pct_diff:+.3f}, pace {pace_diff:+.2f}"
+                            f"win_pct {win_pct_diff:+.3f}, defense {defense_edge:+.2f}"
                         ),
                         "rest_edge": 0,
-                        "selected_team_net_rating": round(_to_float(selected_stats.get("E_NET_RATING")), 3),
-                        "opponent_net_rating": round(_to_float(opponent_stats.get("E_NET_RATING")), 3),
+                        "selected_team_net_rating": round(selected_net, 3),
+                        "opponent_net_rating": round(opponent_net, 3),
                         "selected_team": selected_team,
                         "opponent_team": opponent_team,
+                        "net_rating_diff": round(net_diff, 3),
+                        "win_pct_diff": round(win_pct_diff, 4),
+                        "pace_diff": round(pace_diff, 3),
+                        "off_rating_diff": round(off_rating_diff, 3),
+                        "defense_edge": round(defense_edge, 3),
+                        "team_strength_score": round(team_strength_score, 3),
                     },
                 )
             )

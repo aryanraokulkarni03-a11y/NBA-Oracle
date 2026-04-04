@@ -78,13 +78,12 @@ Phase 7A is complete for the current scope:
 - predicted-vs-actual performance truth inside the existing Performance page
 - accuracy summary blocks for overall, BET, and LEAN graded calls
 
-Phase 7B is now planned as the intelligence-upgrade pass:
-- market-as-prior architecture
-- stronger lineup and team-strength context
-- injury impact modeling
-- timing and line-movement intelligence
-- uncertainty-aware bet gating
-- segmented evaluation for NBA moneylines
+Phase 7B is complete for the current scope:
+- market-aware prior blending for probability formation
+- richer injury impact and team-strength features
+- timing-aware and uncertainty-aware bet gating
+- segmented moneyline evaluation and learning features
+- report-visible market prior, timing, uncertainty, and segment fields
 
 ## Repo Structure
 
@@ -180,4 +179,4 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Phase 5 is now complete for the current explanation and operator-confidence scope.
 - Phase 6 is now complete for the current operator-convenience and automation scope.
 - Phase 6 also now explicitly covers evidence-loop hardening, including resilient outcome fetching and filtering synthetic runtime artifacts out of live grading summaries.
-- Phase 7A is now complete for the current forecast-visibility scope, and Phase 7B remains the next deeper intelligence pass.
+- Phase 7A and Phase 7B are now complete for the current product and intelligence scope.

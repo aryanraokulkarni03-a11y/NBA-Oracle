@@ -116,6 +116,27 @@ The review-only learning loop needs stronger segment-aware inputs.
 8. test updates and validation checkpoints
 9. doc and runbook updates
 
+## Delivered In The Current Scope
+- market-aware prior blending now anchors decisions instead of relying on consensus alone
+- injury provider now emits impact-oriented metadata, not just broad flag counts
+- stats provider now emits stronger team-strength context including defense and team-strength summaries
+- predictor now decomposes calls into market prior, source adjustment, timing adjustment, and uncertainty
+- decision gating is now uncertainty-aware and segment-aware with slightly more lenient promotion than Phase 7B planning originally assumed
+- learning pattern mining now recognizes market segments and uncertainty buckets
+- learning weight derivation now tracks timing, uncertainty, source adjustment, and market-prior movement
+- replay and live reports now surface the new intelligence fields
+- replay acceptance still passes after the upgrade
+
+## Current Verification
+1. `python -m unittest discover -s tests -p "test_*.py"` passes
+2. `npm run build` passes
+3. default replay still reports `Phase 1 readiness: true`
+4. Phase 7B regression coverage now exists for:
+   - market prior and uncertainty fields
+   - high-uncertainty downgrade behavior
+   - injury impact metadata
+   - segmented learning outputs
+
 ## Acceptance Criteria
 1. Probability logic is more market-aware and less naive.
 2. Injury handling moves beyond broad flag counting.
@@ -126,7 +147,7 @@ The review-only learning loop needs stronger segment-aware inputs.
 7. Replayability, reporting, and operator trust remain intact.
 
 ## Exit Rule
-Do not call Phase 7B complete until:
+Phase 7B is complete for the current scope when:
 1. the intelligence layer is measurably stronger at pregame moneyline decisioning
 2. the system still behaves honestly under uncertainty
 3. stronger features improve model judgment without breaking the discipline layer

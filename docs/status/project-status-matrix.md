@@ -29,7 +29,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|
 | Where are we now? | The full project is now operating end to end with a recommended free daily workflow of local dashboard + local backend + recurring scheduler, while Vercel + Cloudflare Tunnel + Supabase remains the optional hosted-access path. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
-| What is the biggest unfinished product item? | The main remaining product thread is now Phase 7B: the deeper intelligence-upgrade pass after the completed 7A forecast-visibility work. |
+| What is the biggest unfinished product item? | The planned 7A and 7B product/model upgrades are now complete for the current scope, so the next meaningful work is whichever future expansion phase we choose next. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
 | What manual closeout is still required? | No Phase 6 setup gap remains for the current scope. Daily operation is now local-dashboard-first, with hosted Vercel access kept as an optional quick-tunnel path. |
@@ -80,7 +80,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 5: Interpretation and Guidance | Complete for current scope | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, the in-product guide page, page-level operator guidance, and advanced-only technical details are now in the dashboard. |
 | Phase 6: Operations Automation | Complete for current scope | Hosted launcher scripts, recurring scheduler helper scripts, operator workflow runbook, tunnel/runtime recovery guidance, evidence-loop hardening, and the verified Windows scheduler task are now in place; local dashboard mode is the recommended free daily workflow. |
 | Phase 7A: Forecast Visibility | Complete for current scope | Today now prioritizes actionable upcoming games, exposes a next-up lookahead section, and Performance now surfaces predicted-vs-actual truth with graded accuracy summaries. |
-| Phase 7B: Intelligence Upgrade | Planned | Market-as-prior modeling, richer team-strength and injury intelligence, timing-aware pregame judgment, uncertainty-aware gating, and segmented moneyline evaluation are the deeper model-quality pass after 7A. |
+| Phase 7B: Intelligence Upgrade | Complete for current scope | Market-aware prior blending, richer injury and stats context, timing-aware pregame judgment, uncertainty-aware gating, segmented learning features, and report-visible intelligence decomposition are now landed. |
 
 ## Recent Changes Summary
 
@@ -107,6 +107,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 6 execution closeout | Complete | Hosted launcher scripts, recurring scheduler helper scripts, startup sanity checks, verified Windows task scheduling, and local-dashboard-first operator guidance are now landed. |
 | Phase 7 split planning | Complete | Phase 7 is now split into 7A forecast visibility and 7B intelligence upgrade so operator-surface improvements can land before deeper model changes. |
 | Phase 7A forecast visibility execution | Complete | Today now shows actionable upcoming games plus a next-up lookahead, and Performance now includes predicted-vs-actual truth with overall, BET, and LEAN accuracy summaries. |
+| Phase 7B intelligence execution | Complete | Predictor decisions now decompose into market prior, source adjustment, timing adjustment, and uncertainty; provider metadata is richer; learning/report outputs understand segments and uncertainty; replay acceptance still passes. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
@@ -132,6 +133,7 @@ Use this as the operational checkpoint before starting a new phase.
 - `npm.cmd run build` now compiles the Phase 4B dashboard successfully.
 - The final Phase 5 polish build now compiles successfully with clearer Today, Providers, and review-surface guidance.
 - The Phase 7A forecast-visibility pass now compiles successfully with actionable Today sections and predicted-versus-actual truth inside Performance.
+- The Phase 7B intelligence pass now compiles successfully and keeps replay readiness green while surfacing market prior, timing, uncertainty, and segmented-learning behavior.
 - Phase 4C now closes against `Vercel + Cloudflare Tunnel + Supabase` as the deployment target.
 - `python main.py startup-sanity` now succeeds and reports hosted/local readiness.
 - Hosted Vercel frontend, public Cloudflare health endpoint, and dashboard operator actions have now been manually verified.
@@ -161,7 +163,7 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Operate the finished system, keep evidence accumulating, and prepare for Phase 7:
+Operate the finished system, keep evidence accumulating, and use the completed Phase 7 work as the current prediction baseline:
 - use the local dashboard workflow as the default free daily path:
   - `python main.py serve-api`
   - `cd dashboard && npm.cmd run dev`
@@ -172,5 +174,5 @@ Operate the finished system, keep evidence accumulating, and prepare for Phase 7
 - run `python main.py review-stability` and `python main.py review-learning` as evidence grows
 - use [phase-6.md](../plans/implementation/phase-6.md) as the current runtime-automation source of truth
 - use [phase-7a.md](../plans/implementation/phase-7a.md) as the forecast-visibility closeout record
-- use [phase-7b.md](../plans/implementation/phase-7b.md) as the deeper intelligence-upgrade source of truth
+- use [phase-7b.md](../plans/implementation/phase-7b.md) as the closeout record for the current intelligence-upgrade pass
 - keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change
