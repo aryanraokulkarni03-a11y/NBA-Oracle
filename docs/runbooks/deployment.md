@@ -1,14 +1,28 @@
 # NBA Oracle Deployment Runbook
 
 ## Purpose
-Use this runbook to deploy NBA Oracle in the final no-billing hosted shape:
+Use this runbook to deploy NBA Oracle in the final no-billing operating shape:
 
 - `Vercel` for the dashboard
 - `Cloudflare Tunnel` for public access to the local FastAPI backend
 - local backend/runtime on your machine
 - `Supabase` for persistence
 
-Local startup remains the real runtime path. Cloudflare Tunnel exposes it publicly so the hosted dashboard can reach it.
+Local startup remains the real runtime path. Cloudflare Tunnel exposes it publicly so the hosted dashboard can reach it when you explicitly want hosted browser access.
+
+## Recommended Free-First Daily Mode
+
+The recommended daily workflow is local:
+- backend on `http://127.0.0.1:8000`
+- dashboard on `http://localhost:3000`
+- scheduler task running every 30 minutes
+
+Why this is recommended:
+- fully free
+- stable local URL
+- no quick-tunnel rotation loop
+
+Hosted Vercel access remains supported, but should be treated as optional unless you later move to a stable named tunnel.
 
 ## Hosted Target
 
@@ -79,7 +93,7 @@ Phase 6 recurring scheduler setup:
 powershell.exe -ExecutionPolicy Bypass -File .\scripts\register_nba_oracle_scheduler.ps1 -IntervalMinutes 30
 ```
 
-From `dashboard/` for local fallback UI:
+From `dashboard/` for the recommended free local dashboard:
 
 ```powershell
 npm.cmd install
@@ -114,6 +128,10 @@ After the tunnel is created, use its public HTTPS hostname for:
 - `ORACLE_PUBLIC_API_BASE_URL`
 - `ORACLE_ALLOWED_ORIGINS`
 - Vercel `VITE_API_BASE_URL`
+
+Important:
+- quick `trycloudflare.com` tunnels can change URLs across restarts
+- if the URL changes, the hosted dashboard path needs a Vercel env update and redeploy
 
 ## Post-Deploy Checks
 
@@ -154,4 +172,5 @@ npm.cmd run dev
 
 Once the scheduler task is registered:
 - data collection and review can continue even if the hosted dashboard is not open
+- the local dashboard remains the preferred free daily path
 - the hosted dashboard still requires the backend and tunnel when you want browser access

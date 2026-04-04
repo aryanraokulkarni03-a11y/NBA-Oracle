@@ -27,12 +27,12 @@ Use this as the operational checkpoint before starting a new phase.
 
 | Question | Answer |
 |---|---|
-| Where are we now? | The full project is now operating end to end against the chosen deployment shape of Vercel + local backend over Cloudflare Tunnel + Supabase. |
+| Where are we now? | The full project is now operating end to end with a recommended free daily workflow of local dashboard + local backend + recurring scheduler, while Vercel + Cloudflare Tunnel + Supabase remains the optional hosted-access path. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
-| What is the biggest unfinished product item? | Three threads now remain: finish Phase 5 comprehension polish, finish the manual verification/setup edge of Phase 6 operations automation, then execute the Phase 7 intelligence-upgrade pass for stronger pregame moneyline judgment. |
+| What is the biggest unfinished product item? | Two threads now remain: finish Phase 5 comprehension polish, then execute the Phase 7 intelligence-upgrade pass for stronger pregame moneyline judgment. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
-| What manual closeout is still required? | Register and verify the Phase 6 Windows scheduler task, then keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live. |
+| What manual closeout is still required? | No Phase 6 setup gap remains for the current scope. Daily operation is now local-dashboard-first, with hosted Vercel access kept as an optional quick-tunnel path. |
 
 ## Build Matrix
 
@@ -66,7 +66,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Dashboard backend and frontend | Done | Phase 4A backend APIs, auth, and operator routes are real, the React/Vite dashboard is hosted on Vercel, and 4C hosted/API refresh support is verified | Keep UI polish synced with backend truth later |
 | Auth and security layer | Done for current scope | [app.py](../../nba_oracle/api/app.py), [dependencies.py](../../nba_oracle/api/dependencies.py), [auth.py](../../nba_oracle/auth.py), [security.py](../../nba_oracle/security.py), [setup_auth.py](../../setup_auth.py) include hosted CORS support and verified login flow | Add richer session management later only if needed |
 | Learning engine and pattern miner | Done for current scope | [trainer.py](../../nba_oracle/learning/trainer.py), [weights.py](../../nba_oracle/learning/weights.py), [patterns.py](../../nba_oracle/learning/patterns.py), [review.py](../../nba_oracle/learning/review.py) | Accumulate more graded evidence and harden promotion workflow |
-| Scheduler and deployment flow | Done for current scope | [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [state.py](../../nba_oracle/runtime/state.py), [cli.py](../../nba_oracle/cli.py), [startup.py](../../nba_oracle/runtime/startup.py), [vercel.json](../../dashboard/vercel.json) | Keep local backend uptime and tunnel stability when operating hosted |
+| Scheduler and deployment flow | Done for current scope | [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [state.py](../../nba_oracle/runtime/state.py), [cli.py](../../nba_oracle/cli.py), [startup.py](../../nba_oracle/runtime/startup.py), [vercel.json](../../dashboard/vercel.json) | Keep the local backend and local dashboard stable for free daily use; use the tunnel only when hosted access is specifically needed |
 
 ## Phase Status
 
@@ -78,7 +78,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 3: Stability Layer | Complete for current scope | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
 | Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
 | Phase 5: Interpretation and Guidance | In progress | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and the in-product guide page are now landing in the dashboard. |
-| Phase 6: Operations Automation | In progress | Hosted launcher scripts, recurring scheduler helper scripts, operator workflow runbook, tunnel/runtime recovery guidance, and evidence-loop hardening are now in code; the remaining truth step is manual Windows task registration and verification. |
+| Phase 6: Operations Automation | Complete for current scope | Hosted launcher scripts, recurring scheduler helper scripts, operator workflow runbook, tunnel/runtime recovery guidance, evidence-loop hardening, and the verified Windows scheduler task are now in place; local dashboard mode is the recommended free daily workflow. |
 | Phase 7: Intelligence Upgrade | Planned | Market-as-prior modeling, richer team-strength and injury intelligence, timing-aware pregame judgment, uncertainty-aware gating, and segmented moneyline evaluation are the next model-quality pass. |
 
 ## Recent Changes Summary
@@ -103,7 +103,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4C execution start | Complete | Startup sanity, hosted API/CORS support, notification history in health, deployment artifacts, recovery runbooks, dashboard-wide runtime refresh, and hosted verification are landed. |
 | Phase 5 planning | Complete | The next pass now targets human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and a first-class guide page. |
 | Phase 5 execution start | In progress | Shared translation helpers, inline metric explanations, provider/bookmaker naming cleanup, and the new Guide route/page are now in code and building successfully. |
-| Phase 6 execution start | In progress | Hosted launcher scripts, recurring scheduler helper scripts, startup sanity checks, and a Phase 6 operator runbook are now landed. |
+| Phase 6 execution closeout | Complete | Hosted launcher scripts, recurring scheduler helper scripts, startup sanity checks, verified Windows task scheduling, and local-dashboard-first operator guidance are now landed. |
 | Phase 7 planning | Complete | The next model-quality pass is now defined around market-as-prior probability design, stronger lineup/injury intelligence, timing-aware judgment, uncertainty gating, and segmented moneyline evaluation. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
@@ -125,6 +125,7 @@ Use this as the operational checkpoint before starting a new phase.
 - Outcome grading now retries/falls back safely when the primary official NBA endpoint is slow, and synthetic runtime runs no longer inflate live `pending_unfinished` summaries.
 - `python main.py startup-sanity` now reports on the Phase 6 hosted launcher, scheduler runner script, and scheduler task registration state.
 - `python main.py run-scheduler-once` now executes due runtime jobs successfully.
+- The free daily local dashboard workflow on `http://localhost:3000` is now the recommended operating path.
 - `python main.py serve-api` boots the Phase 4A FastAPI server successfully.
 - `npm.cmd run build` now compiles the Phase 4B dashboard successfully.
 - Phase 4C now closes against `Vercel + Cloudflare Tunnel + Supabase` as the deployment target.
@@ -155,13 +156,16 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Operate the finished system, keep evidence accumulating, finish Phase 5, plan/execute Phase 6, and prepare for Phase 7:
-- keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live
+Operate the finished system, keep evidence accumulating, finish Phase 5, and prepare for Phase 7:
+- use the local dashboard workflow as the default free daily path:
+  - `python main.py serve-api`
+  - `cd dashboard && npm.cmd run dev`
+  - open `http://localhost:3000`
+- use the hosted Vercel + Cloudflare Tunnel path only when you specifically want remote browser access
 - run `python main.py build-live-slate --live` on slate days
-- register the Phase 6 scheduler task and verify it through [phase-6.md](../runbooks/phase-6.md)
 - run `python main.py run-scheduler-once` after games finish, or `python main.py grade-outcomes` directly when you want a focused grading pass
 - run `python main.py review-stability` and `python main.py review-learning` as evidence grows
 - execute the Phase 5 clarity/help pass through [phase-5.md](../plans/implementation/phase-5.md)
-- use [phase-6.md](../plans/implementation/phase-6.md) as the next runtime-automation source of truth
+- use [phase-6.md](../plans/implementation/phase-6.md) as the current runtime-automation source of truth
 - use [phase-7.md](../plans/implementation/phase-7.md) as the next intelligence-upgrade source of truth
 - keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change

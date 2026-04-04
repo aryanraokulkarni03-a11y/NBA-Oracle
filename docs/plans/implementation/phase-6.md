@@ -52,9 +52,10 @@ It is grounded in the current runtime path:
 2. Phase 6 is not a frontend redesign.
 3. Phase 6 must improve convenience without hiding operational truth.
 4. The deployment shape remains:
-   - `Vercel` frontend
+   - local dashboard as the recommended free daily workflow
+   - optional `Vercel` frontend for hosted access
    - local backend
-   - `Cloudflare Tunnel`
+   - optional `Cloudflare Tunnel`
    - `Supabase`
 5. The scheduler must run often enough to catch the built-in pregame decision window.
 6. The evidence loop must remain honest about what is graded, what is pending, and what is synthetic.
@@ -65,13 +66,14 @@ It is grounded in the current runtime path:
 Make NBA Oracle operationally smoother and more automatic for normal daily use.
 
 This pass should reduce friction in five areas:
-1. starting the hosted operating stack
+1. starting the real daily operating stack with less friction
 2. keeping the scheduler running on a useful cadence
 3. making the daily operator workflow explicit and easy to follow
-4. handling local-backend-plus-tunnel reality more cleanly
+4. handling local-backend-plus-optional-tunnel reality more cleanly
 5. keeping the postgame evidence loop trustworthy and low-friction
 
 ## In Scope
+- local dashboard daily workflow guidance
 - hosted-mode startup launcher
 - recurring scheduler execution on Windows
 - runbook updates for daily operation
@@ -91,12 +93,12 @@ This pass should reduce friction in five areas:
 
 ## Problems This Final Plan Solves
 
-### Problem 1: Hosted access still takes too many manual steps
-Normal hosted use currently requires:
+### Problem 1: The free daily workflow was not explicit enough
+Normal free usage is more stable through:
 - one backend terminal
-- one Cloudflare tunnel terminal
+- one local dashboard terminal
 
-That is functional, but still too manual for a system that is supposed to be used regularly.
+Hosted access is still functional, but quick tunnels make it a weaker default daily workflow.
 
 ### Problem 2: The scheduler exists, but recurring execution still does not
 The system already knows when jobs are due.
@@ -133,11 +135,12 @@ That means the grading path belongs inside the Phase 6 operating story, not as a
 ## Final One-Shot Execution Order
 Phase 6 should be executed in this order and treated as one pass:
 
-1. create the hosted startup launcher
-2. add recurring scheduler automation
-3. tighten runtime and tunnel recovery guidance
-4. rewrite the daily operator workflow around the real system behavior
-5. verify the full loop:
+1. lock the free-first daily workflow into the docs
+2. create the hosted startup launcher
+3. add recurring scheduler automation
+4. tighten runtime and tunnel recovery guidance
+5. rewrite the daily operator workflow around the real system behavior
+6. verify the full loop:
    - startup
    - scheduler cadence
    - live-slate timing
@@ -149,7 +152,16 @@ Do not split this phase into scattered convenience changes. It should land as on
 
 ## Workstreams
 
-### Workstream 1: Hosted Startup Launcher
+### Workstream 1: Free-First Workflow Clarification
+Document and standardize:
+- backend on `http://127.0.0.1:8000`
+- dashboard on `http://localhost:3000`
+- scheduler task in the background
+
+Expected outcome:
+- the operator treats local dashboard mode as the normal free daily path
+
+### Workstream 2: Hosted Startup Launcher
 Create a single hosted-mode launcher that:
 - starts the backend
 - starts Cloudflare Tunnel
@@ -160,7 +172,7 @@ Required deliverable:
 Expected outcome:
 - hosted usage becomes one simple launch action instead of two separate terminal rituals
 
-### Workstream 2: Recurring Scheduler Automation
+### Workstream 3: Recurring Scheduler Automation
 Set up external recurring execution for:
 
 ```powershell
@@ -183,7 +195,7 @@ Reason:
 Expected outcome:
 - the system keeps collecting, grading, reviewing, and feeding the evidence loop even when the operator does not manually open the dashboard that day
 
-### Workstream 3: Daily Operator Workflow Rewrite
+### Workstream 4: Daily Operator Workflow Rewrite
 Document the real day-to-day operator flow:
 - what must be started
 - what remains running
@@ -200,7 +212,7 @@ The workflow must explicitly separate:
 Expected outcome:
 - a new operator can understand how to use NBA Oracle day to day without guessing
 
-### Workstream 4: Tunnel and Runtime Recovery Polish
+### Workstream 5: Tunnel and Runtime Recovery Polish
 Clarify and harden the reality of the tunnel-backed deployment:
 - quick tunnel URL rotation
 - env-update implications when URLs change
@@ -212,7 +224,7 @@ Expected outcome:
 - fewer operator mistakes during hosted access failures
 - less confusion about when the app is actually reachable
 
-### Workstream 5: Evidence-Loop Operational Hardening
+### Workstream 6: Evidence-Loop Operational Hardening
 Treat the daily grading and review loop as an operations feature, not just a backend command.
 
 Required expectations:
@@ -226,15 +238,16 @@ Expected outcome:
 
 ## Required Deliverables
 
-1. one hosted-mode `.bat` launcher
-2. one documented Windows Task Scheduler setup path for recurring scheduler execution
-3. updated deployment and recovery runbooks
-4. updated daily operator workflow documentation
-5. explicit docs clarifying:
+1. one documented free-first local workflow
+2. one hosted-mode `.bat` launcher
+3. one documented Windows Task Scheduler setup path for recurring scheduler execution
+4. updated deployment and recovery runbooks
+5. updated daily operator workflow documentation
+6. explicit docs clarifying:
    - dashboard open vs backend running
    - backend running vs scheduler recurring
    - predictions stored vs outcomes graded
-6. verified evidence-loop hardening included in the Phase 6 operating story
+7. verified evidence-loop hardening included in the Phase 6 operating story
 
 ## Implementation Areas
 
@@ -264,21 +277,23 @@ This must remain explicit in the docs until Workstream 2 is actually implemented
 ## Acceptance Criteria
 Phase 6 is acceptable only if:
 
-1. The hosted operating stack can be started with one simple launcher.
-2. The scheduler can run on a recurring cadence without manual command entry each time.
-3. It is clear that the dashboard being open does not itself mean the intelligence layer is running.
-4. It is clear that backend uptime alone does not guarantee scheduler execution.
-5. The system can keep collecting, grading, and reviewing data even when the operator is not manually opening the dashboard that day.
-6. The docs explain the daily operating reality cleanly.
-7. Outcome grading remains reliable enough for daily use even when the primary official endpoint is slow.
-8. Synthetic runtime artifacts do not pollute live grading summaries.
+1. The free local dashboard workflow is explicit and easy to follow.
+2. The hosted operating stack can be started with one simple launcher.
+3. The scheduler can run on a recurring cadence without manual command entry each time.
+4. It is clear that the dashboard being open does not itself mean the intelligence layer is running.
+5. It is clear that backend uptime alone does not guarantee scheduler execution.
+6. The system can keep collecting, grading, and reviewing data even when the operator is not manually opening the dashboard that day.
+7. The docs explain the daily operating reality cleanly.
+8. Outcome grading remains reliable enough for daily use even when the primary official endpoint is slow.
+9. Synthetic runtime artifacts do not pollute live grading summaries.
 
 ## Final Exit Rule
 Do not call Phase 6 complete until:
 
 1. startup friction is materially lower
 2. recurring scheduler execution is actually set up and documented
-3. the operator workflow is easier to follow day to day
-4. the hosted runtime path feels operational instead of improvised
-5. the evidence loop is operationally trustworthy for daily postgame use
-6. the repo docs match the real operator workflow exactly
+3. the local free daily workflow is the documented default
+4. the operator workflow is easier to follow day to day
+5. the hosted runtime path feels operational instead of improvised when used
+6. the evidence loop is operationally trustworthy for daily postgame use
+7. the repo docs match the real operator workflow exactly

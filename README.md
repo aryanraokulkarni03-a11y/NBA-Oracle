@@ -60,7 +60,7 @@ Phase 5 is in progress:
 - inline metric explanations
 - in-product guide page and operator-confidence copy pass
 
-Phase 6 is now in progress as the runtime-convenience pass:
+Phase 6 is complete for the current operating scope:
 - single hosted-mode launcher
 - recurring scheduler automation helpers
 - simpler daily operator workflow
@@ -68,6 +68,7 @@ Phase 6 is now in progress as the runtime-convenience pass:
 - evidence-loop reliability hardening for postgame grading
 - final one-shot execution order for the full ops closeout
 - Phase 6 runbook and helper scripts now exist for launcher and scheduler setup
+- free-first local dashboard workflow is now the recommended daily path
 
 Phase 7 is now planned as the intelligence-upgrade pass:
 - market-as-prior architecture
@@ -159,10 +160,14 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Apply `supabase/phase4a_schema.sql` to persist Phase 4A runtime jobs, notification events, and learning reviews remotely.
 - Phase 4B now has a working dashboard scaffold and build path on top of the Phase 4A backend contract.
 - Phase 4 remains split into 4A, 4B, and 4C for cleaner execution.
-- The preferred final deployment shape is `Vercel` for the dashboard, `Cloudflare Tunnel` for public access to the local backend/runtime, and `Supabase` for persistence.
+- The recommended free daily workflow is local dashboard mode:
+  - backend on `http://127.0.0.1:8000`
+  - dashboard on `http://localhost:3000`
+  - recurring scheduler task in the background
+- `Vercel + Cloudflare Tunnel + Supabase` remains a supported hosted-access path, but quick `trycloudflare.com` tunnels are intentionally treated as brittle and optional.
 - Phase 4C now adds startup sanity, deployment artifacts, recovery runbooks, and hosted API support.
 - Supabase schema files now enable RLS by default for all Oracle tables in `public`.
 - Phase 5 is now in progress as the interpretation and operator-confidence pass for human-readable explanations, metric education, and the in-product guide page.
-- Phase 6 is now planned as the operator-convenience and automation pass for hosted startup, recurring scheduler execution, and cleaner runtime operations.
+- Phase 6 is now complete for the current operator-convenience and automation scope.
 - Phase 6 also now explicitly covers evidence-loop hardening, including resilient outcome fetching and filtering synthetic runtime artifacts out of live grading summaries.
 - Phase 7 is now planned as the intelligence-layer upgrade for stronger pregame NBA moneyline judgment.
