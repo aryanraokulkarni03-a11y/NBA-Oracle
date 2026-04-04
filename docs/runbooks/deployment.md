@@ -63,6 +63,22 @@ python main.py startup-sanity
 python main.py serve-api
 ```
 
+Phase 6 hosted launcher:
+
+```powershell
+.\start_hosted_stack.bat
+```
+
+This opens:
+- one API terminal
+- one Cloudflare tunnel terminal
+
+Phase 6 recurring scheduler setup:
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\register_nba_oracle_scheduler.ps1 -IntervalMinutes 30
+```
+
 From `dashboard/` for local fallback UI:
 
 ```powershell
@@ -111,6 +127,8 @@ After the tunnel is created, use its public HTTPS hostname for:
    - Telegram test delivery
    - Gmail test delivery
 7. Confirm the next scheduler cadence records a runtime job.
+8. Confirm the Phase 6 scheduler log updates:
+   - [phase6_scheduler_task.log](/C:/Users/HP/OneDrive/Documents/NBA/data/runtime_state/phase6_scheduler_task.log)
 
 ## Local Auto-Start Fallback
 
@@ -131,3 +149,9 @@ and use the dashboard locally:
 cd C:\Users\HP\OneDrive\Documents\NBA\dashboard
 npm.cmd run dev
 ```
+
+## Phase 6 Daily Ops Note
+
+Once the scheduler task is registered:
+- data collection and review can continue even if the hosted dashboard is not open
+- the hosted dashboard still requires the backend and tunnel when you want browser access

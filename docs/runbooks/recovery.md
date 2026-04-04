@@ -25,6 +25,8 @@ Then check:
 - `GET /api/health`
 - dashboard Overview
 - latest runtime job history
+- `schtasks /Query /TN "NBA Oracle Scheduler" /V /FO LIST`
+- [phase6_scheduler_task.log](/C:/Users/HP/OneDrive/Documents/NBA/data/runtime_state/phase6_scheduler_task.log)
 
 ## Provider Failure
 
@@ -133,6 +135,69 @@ Recovery:
 cd C:\Users\HP\OneDrive\Documents\NBA\dashboard
 npm.cmd run build
 ```
+
+4. If hosted startup was interrupted, relaunch:
+
+```powershell
+cd C:\Users\HP\OneDrive\Documents\NBA
+.\start_hosted_stack.bat
+```
+
+## Scheduler Automation Failure
+
+Symptoms:
+- new runtime jobs stop appearing
+- postgame grading does not happen unless you run commands manually
+- scheduler task history looks stale
+
+Recovery:
+1. Verify the task exists:
+
+```powershell
+schtasks /Query /TN "NBA Oracle Scheduler" /V /FO LIST
+```
+
+2. If missing, re-register it:
+
+```powershell
+cd C:\Users\HP\OneDrive\Documents\NBA
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\register_nba_oracle_scheduler.ps1 -IntervalMinutes 30
+```
+
+3. Inspect:
+- [phase6_scheduler_task.log](/C:/Users/HP/OneDrive/Documents/NBA/data/runtime_state/phase6_scheduler_task.log)
+
+4. Run the bridge manually once:
+
+```powershell
+python main.py run-scheduler-once
+```
+
+## Outcome Grading Failure
+
+Symptoms:
+- finished games remain ungraded
+- `Missing official outcomes` is non-zero
+- stability or learning stays stale because grading did not land
+
+Recovery:
+1. Run:
+
+```powershell
+python main.py grade-outcomes
+```
+
+2. If needed, follow with:
+
+```powershell
+python main.py review-stability
+python main.py review-learning
+```
+
+3. Remember:
+- the grading path now retries slow official fetches
+- it falls back safely when the primary endpoint stalls
+- it ignores synthetic runtime artifacts in live summaries
 
 ## Runtime Loop Recovery
 

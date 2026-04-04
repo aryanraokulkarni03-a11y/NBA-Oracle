@@ -29,10 +29,10 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|
 | Where are we now? | The full project is now operating end to end against the chosen deployment shape of Vercel + local backend over Cloudflare Tunnel + Supabase. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
-| What is the biggest unfinished product item? | Three threads now remain: finish Phase 5 comprehension polish, execute Phase 6 operations automation, then execute the Phase 7 intelligence-upgrade pass for stronger pregame moneyline judgment. |
+| What is the biggest unfinished product item? | Three threads now remain: finish Phase 5 comprehension polish, finish the manual verification/setup edge of Phase 6 operations automation, then execute the Phase 7 intelligence-upgrade pass for stronger pregame moneyline judgment. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
-| What manual closeout is still required? | Keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live, and use `python main.py run-scheduler-once` as the current postgame/manual bridge until Phase 6 automation lands. |
+| What manual closeout is still required? | Register and verify the Phase 6 Windows scheduler task, then keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live. |
 
 ## Build Matrix
 
@@ -78,7 +78,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 3: Stability Layer | Complete for current scope | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
 | Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
 | Phase 5: Interpretation and Guidance | In progress | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and the in-product guide page are now landing in the dashboard. |
-| Phase 6: Operations Automation | Planned | Hosted startup convenience, recurring scheduler execution, operator workflow cleanup, tunnel/runtime reliability polish, and evidence-loop hardening are the next operating pass. |
+| Phase 6: Operations Automation | In progress | Hosted launcher scripts, recurring scheduler helper scripts, operator workflow runbook, tunnel/runtime recovery guidance, and evidence-loop hardening are now in code; the remaining truth step is manual Windows task registration and verification. |
 | Phase 7: Intelligence Upgrade | Planned | Market-as-prior modeling, richer team-strength and injury intelligence, timing-aware pregame judgment, uncertainty-aware gating, and segmented moneyline evaluation are the next model-quality pass. |
 
 ## Recent Changes Summary
@@ -103,7 +103,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4C execution start | Complete | Startup sanity, hosted API/CORS support, notification history in health, deployment artifacts, recovery runbooks, dashboard-wide runtime refresh, and hosted verification are landed. |
 | Phase 5 planning | Complete | The next pass now targets human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and a first-class guide page. |
 | Phase 5 execution start | In progress | Shared translation helpers, inline metric explanations, provider/bookmaker naming cleanup, and the new Guide route/page are now in code and building successfully. |
-| Phase 6 planning | Complete | The runtime-convenience pass is now defined around a single hosted-mode launcher, recurring scheduler automation, operator workflow cleanup, and tunnel reliability guidance. |
+| Phase 6 execution start | In progress | Hosted launcher scripts, recurring scheduler helper scripts, startup sanity checks, and a Phase 6 operator runbook are now landed. |
 | Phase 7 planning | Complete | The next model-quality pass is now defined around market-as-prior probability design, stronger lineup/injury intelligence, timing-aware judgment, uncertainty gating, and segmented moneyline evaluation. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
@@ -123,6 +123,7 @@ Use this as the operational checkpoint before starting a new phase.
 - `python main.py review-stability --force-refresh-baseline` now succeeds and writes baseline-backed Phase 3.1 health reports.
 - `python main.py grade-outcomes` now succeeds and writes Phase 3 outcome-grading reports.
 - Outcome grading now retries/falls back safely when the primary official NBA endpoint is slow, and synthetic runtime runs no longer inflate live `pending_unfinished` summaries.
+- `python main.py startup-sanity` now reports on the Phase 6 hosted launcher, scheduler runner script, and scheduler task registration state.
 - `python main.py run-scheduler-once` now executes due runtime jobs successfully.
 - `python main.py serve-api` boots the Phase 4A FastAPI server successfully.
 - `npm.cmd run build` now compiles the Phase 4B dashboard successfully.
@@ -144,6 +145,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4A operating core | [app.py](../../nba_oracle/api/app.py), [dependencies.py](../../nba_oracle/api/dependencies.py), [auth.py](../../nba_oracle/auth.py), [security.py](../../nba_oracle/security.py), [meta_scheduler.py](../../nba_oracle/runtime/meta_scheduler.py), [jobs.py](../../nba_oracle/runtime/jobs.py), [telegram.py](../../nba_oracle/notifications/telegram.py), [gmail.py](../../nba_oracle/notifications/gmail.py), [trainer.py](../../nba_oracle/learning/trainer.py) |
 | Phase 4B dashboard | [App.tsx](../../dashboard/src/App.tsx), [AppShell.tsx](../../dashboard/src/components/AppShell.tsx), [Dashboard.tsx](../../dashboard/src/pages/Dashboard.tsx), [Today.tsx](../../dashboard/src/pages/Today.tsx), [Operations.tsx](../../dashboard/src/pages/Operations.tsx), [index.css](../../dashboard/src/styles/index.css) |
 | Phase 4C startup and deployment | [startup.py](../../nba_oracle/runtime/startup.py), [deployment.md](../runbooks/deployment.md), [recovery.md](../runbooks/recovery.md), [phase-4.md](../runbooks/phase-4.md), [vercel.json](../../dashboard/vercel.json) |
+| Phase 6 operator tooling | [start_hosted_stack.bat](../../start_hosted_stack.bat), [start_nba_oracle_backend.ps1](../../scripts/start_nba_oracle_backend.ps1), [start_nba_oracle_tunnel.ps1](../../scripts/start_nba_oracle_tunnel.ps1), [run_nba_oracle_scheduler.ps1](../../scripts/run_nba_oracle_scheduler.ps1), [register_nba_oracle_scheduler.ps1](../../scripts/register_nba_oracle_scheduler.ps1), [phase-6.md](../runbooks/phase-6.md) |
 | Phase 3.1 remote schema | [phase3_schema.sql](../../supabase/phase3_schema.sql) |
 | Outcome remote schema | [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql) |
 | Phase 4A remote schema | [phase4a_schema.sql](../../supabase/phase4a_schema.sql) |
@@ -156,6 +158,7 @@ Use this as the operational checkpoint before starting a new phase.
 Operate the finished system, keep evidence accumulating, finish Phase 5, plan/execute Phase 6, and prepare for Phase 7:
 - keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live
 - run `python main.py build-live-slate --live` on slate days
+- register the Phase 6 scheduler task and verify it through [phase-6.md](../runbooks/phase-6.md)
 - run `python main.py run-scheduler-once` after games finish, or `python main.py grade-outcomes` directly when you want a focused grading pass
 - run `python main.py review-stability` and `python main.py review-learning` as evidence grows
 - execute the Phase 5 clarity/help pass through [phase-5.md](../plans/implementation/phase-5.md)

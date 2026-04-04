@@ -60,12 +60,14 @@ Phase 5 is in progress:
 - inline metric explanations
 - in-product guide page and operator-confidence copy pass
 
-Phase 6 is now planned as the runtime-convenience pass:
+Phase 6 is now in progress as the runtime-convenience pass:
 - single hosted-mode launcher
-- recurring scheduler automation
+- recurring scheduler automation helpers
 - simpler daily operator workflow
 - tunnel/runtime reliability polish
 - evidence-loop reliability hardening for postgame grading
+- final one-shot execution order for the full ops closeout
+- Phase 6 runbook and helper scripts now exist for launcher and scheduler setup
 
 Phase 7 is now planned as the intelligence-upgrade pass:
 - market-as-prior architecture
@@ -112,6 +114,7 @@ nba-oracle/
 - Phase 4C integration plan: [docs/plans/implementation/phase-4c.md](docs/plans/implementation/phase-4c.md)
 - Phase 5 clarity plan: [docs/plans/implementation/phase-5.md](docs/plans/implementation/phase-5.md)
 - Phase 6 operations plan: [docs/plans/implementation/phase-6.md](docs/plans/implementation/phase-6.md)
+- Phase 6 runbook: [docs/runbooks/phase-6.md](docs/runbooks/phase-6.md)
 - Phase 7 intelligence plan: [docs/plans/implementation/phase-7.md](docs/plans/implementation/phase-7.md)
 - Deployment runbook: [docs/runbooks/deployment.md](docs/runbooks/deployment.md)
 - Recovery runbook: [docs/runbooks/recovery.md](docs/runbooks/recovery.md)

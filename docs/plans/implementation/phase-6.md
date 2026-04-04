@@ -1,17 +1,31 @@
-# NBA Oracle Phase 6 Implementation Plan
+# NBA Oracle Phase 6 Final One-Shot Implementation Plan
 
 ## Purpose
-Phase 6 is the operator-convenience and runtime-automation pass.
+Phase 6 is the final operator-convenience and runtime-automation pass.
 
 Phases 1 through 5 built the model, the live data path, the review workflows, the operating dashboard, the hosted access path, and the comprehension layer.
 
-That means NBA Oracle can now function as a real pregame operator system.
+That means NBA Oracle can already function as a real pregame operator system.
 
-But there is still an operating gap:
+What still remains is an operations gap:
 
-> The product works, yet it still depends too much on manual startup and manual recurring execution.
+> The product works, but it still depends too much on manual startup and manual recurring execution for normal day-to-day use.
 
-Phase 6 exists to make NBA Oracle easier to live with day to day without changing the core model logic.
+Phase 6 exists to close that gap in one coherent pass without changing the core model logic.
+
+## What Changed Since The First Phase 6 Draft
+The original Phase 6 plan focused on convenience and automation at a high level.
+
+Since then, two important realities became clearer through real usage and audit work:
+- the daily evidence loop matters just as much as startup convenience
+- runtime truth must stay explicit, especially around what is automatic, what is manual, and what is merely visible in the dashboard
+
+Recent validated changes that now shape this final plan:
+- official outcome fetching now retries and falls back safely when the primary NBA endpoint stalls
+- synthetic runtime runs are now filtered out of live grading summaries
+- the real postgame bridge today is `python main.py run-scheduler-once`
+
+So this final Phase 6 plan is not just about launching the stack more easily. It is about making the full operating loop livable, repeatable, and trustworthy.
 
 ## Source of Truth
 This plan is derived from:
@@ -32,28 +46,30 @@ It is grounded in the current runtime path:
 - [grade_outcomes.py](../../../nba_oracle/runs/grade_outcomes.py)
 - [fetcher.py](../../../nba_oracle/outcomes/fetcher.py)
 
-## Phase 6 Goal
-Make the system operationally smoother and more automatic for normal daily use.
-
-Phase 6 should reduce friction in five areas:
-1. starting the hosted operating stack
-2. keeping the scheduler running on a useful cadence
-3. making daily operator workflow explicit and easy to follow
-4. handling local-backend-plus-tunnel reality more cleanly
-5. keeping the evidence loop trustworthy for daily postgame use
-
-## What Phase 6 Must Respect
+## Fixed Reality Phase 6 Must Respect
 
 1. Phase 6 is not a model redesign.
 2. Phase 6 is not a frontend redesign.
-3. Phase 6 should improve convenience and automation without hiding operational truth.
-4. The hosted deployment shape remains:
+3. Phase 6 must improve convenience without hiding operational truth.
+4. The deployment shape remains:
    - `Vercel` frontend
    - local backend
    - `Cloudflare Tunnel`
    - `Supabase`
 5. The scheduler must run often enough to catch the built-in pregame decision window.
-6. The evidence loop must remain honest about what is graded, what is still pending, and what is synthetic.
+6. The evidence loop must remain honest about what is graded, what is pending, and what is synthetic.
+7. Dashboard visibility is not the same as backend operation.
+8. Backend operation is not the same as recurring scheduler execution.
+
+## Phase 6 Goal
+Make NBA Oracle operationally smoother and more automatic for normal daily use.
+
+This pass should reduce friction in five areas:
+1. starting the hosted operating stack
+2. keeping the scheduler running on a useful cadence
+3. making the daily operator workflow explicit and easy to follow
+4. handling local-backend-plus-tunnel reality more cleanly
+5. keeping the postgame evidence loop trustworthy and low-friction
 
 ## In Scope
 - hosted-mode startup launcher
@@ -61,7 +77,7 @@ Phase 6 should reduce friction in five areas:
 - runbook updates for daily operation
 - clearer documentation of what runs automatically versus manually
 - tunnel/runtime reliability guidance
-- evidence-loop reliability hardening for outcome grading and postgame reviews
+- evidence-loop reliability hardening as part of the operating story
 - small helper artifacts for operating the system cleanly
 
 ## Out of Scope
@@ -71,17 +87,18 @@ Phase 6 should reduce friction in five areas:
 - live in-game betting
 - new dashboard pages
 - replacing the deployment shape
+- Phase 7 intelligence changes
 
-## The Problems Phase 6 Is Solving
+## Problems This Final Plan Solves
 
-### Problem 1: Hosted access currently takes two manual terminals
-Today, normal hosted usage requires:
-- backend terminal
-- Cloudflare tunnel terminal
+### Problem 1: Hosted access still takes too many manual steps
+Normal hosted use currently requires:
+- one backend terminal
+- one Cloudflare tunnel terminal
 
-That is workable, but more manual than it should be.
+That is functional, but still too manual for a system that is supposed to be used regularly.
 
-### Problem 2: Scheduler intelligence exists, but recurring execution does not
+### Problem 2: The scheduler exists, but recurring execution still does not
 The system already knows when jobs are due.
 
 But unless `python main.py run-scheduler-once` is executed repeatedly, nothing new happens:
@@ -90,28 +107,45 @@ But unless `python main.py run-scheduler-once` is executed repeatedly, nothing n
 - no stability follow-up
 - no learning follow-up
 
-### Problem 3: The app can be mistaken for "running automatically" when it is not
-The dashboard can be open while the backend is not truly operating.
+### Problem 3: The operator truth can still be misunderstood
+There are four different runtime states that must not be conflated:
+- dashboard open
+- backend running
+- tunnel available
+- scheduler recurring
 
-We need clearer runtime truth around:
-- dashboard open vs backend running
-- backend running vs scheduler being called
-- stored predictions vs newly graded outcomes
+Phase 6 needs to make those distinctions explicit.
 
-### Problem 4: Tunnel-backed hosted operation is functional but still fragile
-Quick tunnel URLs can change, and the current setup benefits from cleaner operator instructions and helper tooling.
+### Problem 4: Tunnel-backed hosted operation is workable, but still brittle
+Quick tunnel URLs can rotate, and recovery depends on the operator knowing:
+- what changed
+- which env values matter
+- what must be restarted
 
-### Problem 5: The evidence loop must be robust enough for daily postgame use
+### Problem 5: The postgame evidence loop must stay operationally trustworthy
 The system is only as good as its ability to:
 - fetch official finals reliably
 - backfill real outcomes into stored predictions
-- avoid letting synthetic or test runtime artifacts pollute daily grading summaries
+- avoid letting synthetic runtime artifacts distort live summaries
 
-Recent audit work exposed two real operational seams:
-- official outcome fetches can stall on the heavier NBA stats endpoint
-- synthetic runtime folders can distort `pending_unfinished` counts if they are not filtered out
+That means the grading path belongs inside the Phase 6 operating story, not as an isolated backend detail.
 
-Phase 6 should treat this as runtime maturity work, not just backend correctness.
+## Final One-Shot Execution Order
+Phase 6 should be executed in this order and treated as one pass:
+
+1. create the hosted startup launcher
+2. add recurring scheduler automation
+3. tighten runtime and tunnel recovery guidance
+4. rewrite the daily operator workflow around the real system behavior
+5. verify the full loop:
+   - startup
+   - scheduler cadence
+   - live-slate timing
+   - postgame grading
+   - stability follow-up
+   - learning follow-up
+
+Do not split this phase into scattered convenience changes. It should land as one operational closeout.
 
 ## Workstreams
 
@@ -120,12 +154,11 @@ Create a single hosted-mode launcher that:
 - starts the backend
 - starts Cloudflare Tunnel
 
-Recommended deliverable:
+Required deliverable:
 - one `.bat` file for hosted mode only
 
-Deliverables:
-- one-click hosted startup path
-- reduced terminal friction for normal use
+Expected outcome:
+- hosted usage becomes one simple launch action instead of two separate terminal rituals
 
 ### Workstream 2: Recurring Scheduler Automation
 Set up external recurring execution for:
@@ -134,85 +167,99 @@ Set up external recurring execution for:
 python main.py run-scheduler-once
 ```
 
-Recommended platform:
+Required platform:
 - Windows Task Scheduler
 
 Recommended cadence:
-- every `30` or `60` minutes
+- every `30` minutes
+
+Acceptable fallback cadence:
+- every `60` minutes
 
 Reason:
-- the internal scheduler uses a pregame target window around `2` hours before tipoff
-- a `4` hour cadence is too sparse to reliably catch that window
+- the internal scheduler is built around a pregame target window roughly `2` hours before tipoff
+- a `4` hour cadence is too sparse to catch that window reliably
 
-Deliverables:
-- clear Task Scheduler setup path
-- documented cadence recommendation
-- operator confidence that the system continues collecting and reviewing even when the dashboard is not open
+Expected outcome:
+- the system keeps collecting, grading, reviewing, and feeding the evidence loop even when the operator does not manually open the dashboard that day
 
-Current manual bridge until automation lands:
-- pregame: run the live-slate workflow when needed
-- postgame: run `python main.py run-scheduler-once`
-- use `python main.py grade-outcomes` directly when you want a focused grading pass
-
-### Workstream 3: Daily Operator Workflow Cleanup
-Document the real daily operating flow:
+### Workstream 3: Daily Operator Workflow Rewrite
+Document the real day-to-day operator flow:
 - what must be started
-- what runs automatically once the scheduler is recurring
-- what still needs manual intervention
+- what remains running
+- what becomes automatic once scheduler recurrence exists
+- what still remains manual
 - what happens on no-slate days
 - what happens after games finish
 
-Deliverables:
-- simpler runbook language
-- clearer daily checklist
-- explicit distinction between "hosted dashboard visible" and "system actively operating"
-- explicit distinction between "stored predictions exist" and "outcomes have actually been graded"
+The workflow must explicitly separate:
+- visible dashboard state
+- runtime state
+- evidence state
 
-### Workstream 4: Tunnel and Runtime Reliability Polish
+Expected outcome:
+- a new operator can understand how to use NBA Oracle day to day without guessing
+
+### Workstream 4: Tunnel and Runtime Recovery Polish
 Clarify and harden the reality of the tunnel-backed deployment:
 - quick tunnel URL rotation
 - env-update implications when URLs change
 - fallback workflow when the tunnel is down
-- recommended path toward a cleaner persistent tunnel later if desired
+- exact restart order for backend and tunnel
+- guidance for hosted dashboard availability checks
 
-Deliverables:
-- stronger tunnel troubleshooting guidance
-- less confusion around hosted availability
-- cleaner restart/recovery instructions
+Expected outcome:
+- fewer operator mistakes during hosted access failures
+- less confusion about when the app is actually reachable
 
-### Workstream 5: Evidence-Loop Reliability Hardening
-Harden the daily review path so postgame intelligence accumulation remains trustworthy.
+### Workstream 5: Evidence-Loop Operational Hardening
+Treat the daily grading and review loop as an operations feature, not just a backend command.
 
-This includes:
-- retry/backoff around official outcome fetches
-- fallback to the lighter NBA live scoreboard when the heavier stats endpoint stalls
-- explicit guidance on when to run grading manually versus through the scheduler
-- ignoring synthetic/test runtime artifacts during grading summaries
+Required expectations:
+- official outcome fetches degrade safely instead of failing the whole loop when the primary endpoint is slow
+- synthetic runtime runs do not pollute live grading summaries
+- postgame operator guidance prefers `python main.py run-scheduler-once`
+- direct `python main.py grade-outcomes` remains documented as the focused fallback path
 
-Deliverables:
-- official outcome fetches that degrade safely instead of failing the entire daily review loop
-- cleaner `pending_unfinished` reporting for real slates
-- clearer postgame operating guidance
+Expected outcome:
+- the daily evidence loop is operationally reliable enough to support future Phase 7 intelligence work
 
-## Recommended Implementation Areas
+## Required Deliverables
+
+1. one hosted-mode `.bat` launcher
+2. one documented Windows Task Scheduler setup path for recurring scheduler execution
+3. updated deployment and recovery runbooks
+4. updated daily operator workflow documentation
+5. explicit docs clarifying:
+   - dashboard open vs backend running
+   - backend running vs scheduler recurring
+   - predictions stored vs outcomes graded
+6. verified evidence-loop hardening included in the Phase 6 operating story
+
+## Implementation Areas
 
 - `nba_oracle/cli.py`
 - `nba_oracle/runtime/meta_scheduler.py`
-- `nba_oracle/runs/grade_outcomes.py`
-- `nba_oracle/outcomes/fetcher.py`
 - `docs/runbooks/deployment.md`
 - `docs/runbooks/recovery.md`
 - `docs/runbooks/`
 - repo-root helper scripts or batch files
 
-## Concrete Deliverables
+Already-landed supporting files that Phase 6 must account for:
+- [grade_outcomes.py](../../../nba_oracle/runs/grade_outcomes.py)
+- [fetcher.py](../../../nba_oracle/outcomes/fetcher.py)
 
-1. hosted-mode `.bat` launcher
-2. recurring scheduler automation setup for Windows
-3. runbook updates for daily operation
-4. runbook updates for tunnel/restart behavior
-5. explicit docs clarifying what is automatic vs what is manual
-6. evidence-loop reliability hardening for official outcome grading
+## Manual Operator Truth During Phase 6
+Until recurring automation is fully set up, the real bridge remains:
+
+- pregame:
+  - run the live-slate workflow when needed
+- postgame:
+  - run `python main.py run-scheduler-once`
+- focused grading fallback:
+  - run `python main.py grade-outcomes`
+
+This must remain explicit in the docs until Workstream 2 is actually implemented and verified.
 
 ## Acceptance Criteria
 Phase 6 is acceptable only if:
@@ -220,16 +267,18 @@ Phase 6 is acceptable only if:
 1. The hosted operating stack can be started with one simple launcher.
 2. The scheduler can run on a recurring cadence without manual command entry each time.
 3. It is clear that the dashboard being open does not itself mean the intelligence layer is running.
-4. The system can keep collecting, grading, and reviewing data even when the operator is not manually opening the dashboard that day.
-5. The docs explain the daily operating reality cleanly.
-6. Outcome grading remains reliable enough for daily use even when the primary official endpoint is slow.
-7. Synthetic test runtime artifacts do not pollute live grading summaries.
+4. It is clear that backend uptime alone does not guarantee scheduler execution.
+5. The system can keep collecting, grading, and reviewing data even when the operator is not manually opening the dashboard that day.
+6. The docs explain the daily operating reality cleanly.
+7. Outcome grading remains reliable enough for daily use even when the primary official endpoint is slow.
+8. Synthetic runtime artifacts do not pollute live grading summaries.
 
 ## Final Exit Rule
 Do not call Phase 6 complete until:
 
 1. startup friction is materially lower
-2. recurring scheduler execution is set up and documented
+2. recurring scheduler execution is actually set up and documented
 3. the operator workflow is easier to follow day to day
-4. the hosted runtime path feels operational, not improvised
+4. the hosted runtime path feels operational instead of improvised
 5. the evidence loop is operationally trustworthy for daily postgame use
+6. the repo docs match the real operator workflow exactly

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -33,6 +34,9 @@ def build_startup_sanity_report() -> dict[str, Any]:
     _ensure_directory(REPORTS_DIR)
     _ensure_directory(RUNTIME_DIR)
     _ensure_directory(RUNTIME_STATE_DIR)
+    hosted_launcher_path = ROOT_DIR / "start_hosted_stack.bat"
+    scheduler_script_path = ROOT_DIR / "scripts" / "run_nba_oracle_scheduler.ps1"
+    scheduler_task_name = "NBA Oracle Scheduler"
 
     checks.append(
         _check(
@@ -99,6 +103,28 @@ def build_startup_sanity_report() -> dict[str, Any]:
     )
     checks.append(
         _check(
+            "hosted_launcher",
+            "healthy" if hosted_launcher_path.exists() else "warning",
+            "present" if hosted_launcher_path.exists() else "missing_start_hosted_stack_bat",
+        )
+    )
+    checks.append(
+        _check(
+            "scheduler_runner_script",
+            "healthy" if scheduler_script_path.exists() else "warning",
+            "present" if scheduler_script_path.exists() else "missing_run_nba_oracle_scheduler_script",
+        )
+    )
+    scheduler_task_registered = _scheduled_task_registered(scheduler_task_name)
+    checks.append(
+        _check(
+            "scheduler_task",
+            "healthy" if scheduler_task_registered else "warning",
+            scheduler_task_name if scheduler_task_registered else "not_registered",
+        )
+    )
+    checks.append(
+        _check(
             "dashboard_build",
             "healthy" if (ROOT_DIR / "dashboard" / "dist" / "index.html").exists() else "warning",
             "present" if (ROOT_DIR / "dashboard" / "dist" / "index.html").exists() else "run_dashboard_build_before_deploy",
@@ -153,3 +179,16 @@ def _ensure_directory(path: Path) -> None:
 
 def _check(name: str, status: str, detail: str) -> dict[str, str]:
     return {"name": name, "status": status, "detail": detail}
+
+
+def _scheduled_task_registered(task_name: str) -> bool:
+    try:
+        result = subprocess.run(
+            ["schtasks.exe", "/Query", "/TN", task_name],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return False
+    return result.returncode == 0
