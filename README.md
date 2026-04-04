@@ -60,6 +60,12 @@ Phase 5 is in progress:
 - inline metric explanations
 - in-product guide page and operator-confidence copy pass
 
+Phase 6 is now planned as the runtime-convenience pass:
+- single hosted-mode launcher
+- recurring scheduler automation
+- simpler daily operator workflow
+- tunnel/runtime reliability polish
+
 Phase 7 is now planned as the intelligence-upgrade pass:
 - market-as-prior architecture
 - stronger lineup and team-strength context
@@ -104,6 +110,7 @@ nba-oracle/
 - Phase 4B runbook: [docs/runbooks/phase-4b.md](docs/runbooks/phase-4b.md)
 - Phase 4C integration plan: [docs/plans/implementation/phase-4c.md](docs/plans/implementation/phase-4c.md)
 - Phase 5 clarity plan: [docs/plans/implementation/phase-5.md](docs/plans/implementation/phase-5.md)
+- Phase 6 operations plan: [docs/plans/implementation/phase-6.md](docs/plans/implementation/phase-6.md)
 - Phase 7 intelligence plan: [docs/plans/implementation/phase-7.md](docs/plans/implementation/phase-7.md)
 - Deployment runbook: [docs/runbooks/deployment.md](docs/runbooks/deployment.md)
 - Recovery runbook: [docs/runbooks/recovery.md](docs/runbooks/recovery.md)
@@ -152,4 +159,5 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Phase 4C now adds startup sanity, deployment artifacts, recovery runbooks, and hosted API support.
 - Supabase schema files now enable RLS by default for all Oracle tables in `public`.
 - Phase 5 is now in progress as the interpretation and operator-confidence pass for human-readable explanations, metric education, and the in-product guide page.
+- Phase 6 is now planned as the operator-convenience and automation pass for hosted startup, recurring scheduler execution, and cleaner runtime operations.
 - Phase 7 is now planned as the intelligence-layer upgrade for stronger pregame NBA moneyline judgment.

@@ -29,7 +29,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|
 | Where are we now? | The full project is now operating end to end against the chosen deployment shape of Vercel + local backend over Cloudflare Tunnel + Supabase. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
-| What is the biggest unfinished product item? | Two threads now remain: finish the Phase 5 operator-comprehension pass, then execute the Phase 7 intelligence-upgrade pass for stronger pregame moneyline judgment. |
+| What is the biggest unfinished product item? | Three threads now remain: finish Phase 5 comprehension polish, execute Phase 6 operations automation, then execute the Phase 7 intelligence-upgrade pass for stronger pregame moneyline judgment. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
 | What manual closeout is still required? | Keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live, and keep grading outcomes as games finish. |
@@ -78,6 +78,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 3: Stability Layer | Complete for current scope | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
 | Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
 | Phase 5: Interpretation and Guidance | In progress | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and the in-product guide page are now landing in the dashboard. |
+| Phase 6: Operations Automation | Planned | Hosted startup convenience, recurring scheduler execution, operator workflow cleanup, and tunnel/runtime reliability polish are the next operating pass. |
 | Phase 7: Intelligence Upgrade | Planned | Market-as-prior modeling, richer team-strength and injury intelligence, timing-aware pregame judgment, uncertainty-aware gating, and segmented moneyline evaluation are the next model-quality pass. |
 
 ## Recent Changes Summary
@@ -102,6 +103,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4C execution start | Complete | Startup sanity, hosted API/CORS support, notification history in health, deployment artifacts, recovery runbooks, dashboard-wide runtime refresh, and hosted verification are landed. |
 | Phase 5 planning | Complete | The next pass now targets human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and a first-class guide page. |
 | Phase 5 execution start | In progress | Shared translation helpers, inline metric explanations, provider/bookmaker naming cleanup, and the new Guide route/page are now in code and building successfully. |
+| Phase 6 planning | Complete | The runtime-convenience pass is now defined around a single hosted-mode launcher, recurring scheduler automation, operator workflow cleanup, and tunnel reliability guidance. |
 | Phase 7 planning | Complete | The next model-quality pass is now defined around market-as-prior probability design, stronger lineup/injury intelligence, timing-aware judgment, uncertainty gating, and segmented moneyline evaluation. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
@@ -150,11 +152,12 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Operate the finished system, keep evidence accumulating, finish Phase 5, and prepare for Phase 7:
+Operate the finished system, keep evidence accumulating, finish Phase 5, plan/execute Phase 6, and prepare for Phase 7:
 - keep the local backend and Cloudflare Tunnel running when you want the hosted dashboard live
 - run `python main.py build-live-slate --live` on slate days
 - run `python main.py grade-outcomes` after games finish
 - run `python main.py review-stability` and `python main.py review-learning` as evidence grows
 - execute the Phase 5 clarity/help pass through [phase-5.md](../plans/implementation/phase-5.md)
+- use [phase-6.md](../plans/implementation/phase-6.md) as the next runtime-automation source of truth
 - use [phase-7.md](../plans/implementation/phase-7.md) as the next intelligence-upgrade source of truth
 - keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change
