@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import socket
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
@@ -31,7 +32,7 @@ def request_text(
         with urlopen(request, timeout=timeout) as response:
             body = response.read().decode("utf-8")
             response_headers = {key.lower(): value for key, value in response.headers.items()}
-    except (HTTPError, URLError) as exc:
+    except (HTTPError, URLError, TimeoutError, socket.timeout) as exc:
         raise HttpRequestError(str(exc)) from exc
 
     return body, response_headers

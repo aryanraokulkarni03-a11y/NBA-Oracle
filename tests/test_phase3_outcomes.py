@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from unittest.mock import patch
 
+from nba_oracle.http import HttpRequestError
 from nba_oracle.outcomes.fetcher import OfficialOutcome, fetch_official_outcomes
 from nba_oracle.outcomes.persistence import LocalOutcomeRepository
 from nba_oracle.runs.grade_outcomes import grade_outcomes
@@ -104,6 +105,45 @@ class Phase3OutcomeTests(unittest.TestCase):
             self.assertEqual(updated_predictions["predictions"][0]["actual_winner"], "Boston Celtics")
             self.assertEqual(updated_snapshots["snapshots"][0]["actual_winner"], "Boston Celtics")
             self.assertEqual(outcome_grades["grades"][0]["actual_winner"], "Boston Celtics")
+
+    def test_fetch_official_outcomes_falls_back_to_live_scoreboard_after_timeouts(self) -> None:
+        live_payload = {
+            "scoreboard": {
+                "games": [
+                    {
+                        "gameTimeUTC": "2026-04-03T23:30:00Z",
+                        "gameStatus": 3,
+                        "gameStatusText": "Final",
+                        "awayTeam": {
+                            "teamTricode": "CHI",
+                            "teamCity": "Chicago",
+                            "teamName": "Bulls",
+                            "score": 102,
+                        },
+                        "homeTeam": {
+                            "teamTricode": "BOS",
+                            "teamCity": "Boston",
+                            "teamName": "Celtics",
+                            "score": 111,
+                        },
+                    }
+                ]
+            }
+        }
+
+        with patch(
+            "nba_oracle.outcomes.fetcher.request_text",
+            side_effect=HttpRequestError("The read operation timed out"),
+        ), patch(
+            "nba_oracle.outcomes.fetcher.request_json",
+            return_value=(live_payload, {}),
+        ):
+            outcomes = fetch_official_outcomes(datetime(2026, 4, 3, tzinfo=timezone.utc).date())
+
+        self.assertEqual(len(outcomes), 1)
+        self.assertEqual(outcomes[0].game_id, "2026-04-03-chi-bos")
+        self.assertEqual(outcomes[0].source_name, "nba_scoreboard_live")
+        self.assertEqual(outcomes[0].actual_winner, "Boston Celtics")
 
 
 if __name__ == "__main__":
