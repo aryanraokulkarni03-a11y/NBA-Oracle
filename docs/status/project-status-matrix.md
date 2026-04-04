@@ -28,7 +28,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Question | Answer |
 |---|---|
 | Where are we now? | The full project is now operating end to end with a recommended free daily workflow of local dashboard + local backend + recurring scheduler, while Vercel + Cloudflare Tunnel + Supabase remains the optional hosted-access path. |
-| What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
+| What is production-ready today? | The full current scope through Phase 7B is production-ready for its intended use: replay validation, live provider execution, persistence, grading/stability/learning workflows, operator backend, dashboard, local-first automation, forecast visibility, and the current intelligence-upgrade pass. |
 | What is the biggest unfinished product item? | The planned 7A and 7B product/model upgrades are now complete for the current scope, so the next meaningful work is whichever future expansion phase we choose next. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
@@ -175,4 +175,5 @@ Operate the finished system, keep evidence accumulating, and use the completed P
 - use [phase-6.md](../plans/implementation/phase-6.md) as the current runtime-automation source of truth
 - use [phase-7a.md](../plans/implementation/phase-7a.md) as the forecast-visibility closeout record
 - use [phase-7b.md](../plans/implementation/phase-7b.md) as the closeout record for the current intelligence-upgrade pass
+- use [project-audit.md](./project-audit.md) as the one-shot “what is done vs deferred” reference
 - keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change

@@ -3,6 +3,15 @@ __pycache__/
 *.pyo
 .venv/
 .env
+.env.local
+.coverage
+.mypy_cache/
+.ruff_cache/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
 .pytest_cache/
 .python_packages/
 reports/
@@ -14,6 +23,8 @@ data/stability/
 dashboard/node_modules/
 dashboard/dist/
 dashboard/.vite/
+dashboard/.env.local
+dashboard/.env.*.local
 dashboard/*.tsbuildinfo
 dashboard/vite.config.js
 dashboard/vite.config.d.ts
