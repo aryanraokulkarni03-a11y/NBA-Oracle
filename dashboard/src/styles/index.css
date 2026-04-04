@@ -406,6 +406,12 @@ a {
   max-width: 36rem;
 }
 
+.panel__meta {
+  color: var(--text-soft);
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+}
+
 .summary-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -480,6 +486,12 @@ a {
   color: var(--text-soft);
   font-size: 0.88rem;
   font-family: var(--font-mono);
+}
+
+.prediction-card__meta {
+  margin: 0 0 0.55rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
 }
 
 .prediction-card__grid {
@@ -689,6 +701,80 @@ a {
 
 .data-table td {
   font-family: var(--font-mono);
+}
+
+.slate-section-stack {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.mini-empty-state {
+  padding: 1.15rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.mini-empty-state strong,
+.mini-empty-state p {
+  display: block;
+}
+
+.mini-empty-state p {
+  margin: 0.5rem 0 0;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.performance-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.performance-stat-card {
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
+    radial-gradient(circle at top left, rgba(209, 176, 138, 0.08), transparent 65%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.performance-stat-card span,
+.performance-stat-card small {
+  display: block;
+}
+
+.performance-stat-card span {
+  margin-bottom: 0.55rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.performance-stat-card strong {
+  display: block;
+  font-size: clamp(1.3rem, 2vw, 1.85rem);
+  font-family: var(--font-mono);
+}
+
+.performance-stat-card small {
+  margin-top: 0.7rem;
+  color: var(--text-soft);
+  line-height: 1.5;
+}
+
+.table-matchup {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.table-matchup span {
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-family: var(--font-sans);
 }
 
 .operator-card {
@@ -970,7 +1056,8 @@ a {
   }
 
   .prediction-card__grid,
-  .summary-grid {
+  .summary-grid,
+  .performance-summary-grid {
     grid-template-columns: 1fr;
   }
 }

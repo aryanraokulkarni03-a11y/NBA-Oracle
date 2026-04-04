@@ -3,21 +3,21 @@ import { Panel } from "../components/Panel";
 import { getToday } from "../lib/api";
 import { TODAY_GUIDANCE } from "../lib/explain";
 import { useResource } from "../hooks/useResource";
-import { EmptyState } from "../components/EmptyState";
 import { PageHeader } from "../components/PageHeader";
 import { PredictionCard } from "../components/PredictionCard";
 import { ScreenState } from "../components/ScreenState";
 
 export function TodayPage() {
   const { data, isLoading, error, refresh } = useResource(getToday);
-  const predictions = data?.predictions ?? [];
+  const actionablePredictions = data?.actionable_predictions ?? data?.predictions ?? [];
+  const nextUpPredictions = data?.next_up_predictions ?? [];
 
   return (
     <div className="page-stack">
       <PageHeader
         eyebrow="Today"
         title="Live slate"
-        description="Current calls, value signals, and plain-language reasons behind each decision."
+        description="Actionable games first, then the next stored lookahead slate. Completed games stay off this surface so the page stays useful before tipoff."
         icon="today"
         actions={
           <button type="button" className="button button--secondary" onClick={() => void refresh()}>
@@ -40,18 +40,44 @@ export function TodayPage() {
             ))}
           </div>
         </Panel>
-        {predictions.length === 0 ? (
-          <EmptyState
-            title="No live predictions available"
-            body="This can be valid on no-slate windows or before the latest live-slate job has produced the current run."
-          />
-        ) : (
-          <section className="prediction-grid">
-            {predictions.map((prediction) => (
-              <PredictionCard key={prediction.game_id} prediction={prediction} />
-            ))}
-          </section>
-        )}
+        <section className="slate-section-stack">
+          <Panel
+            title="Actionable slate"
+            subtitle="These are the nearest upcoming games the operator can still act on from the current stored prediction history."
+            actions={<span className="panel__meta">{actionablePredictions.length} games</span>}
+          >
+            {actionablePredictions.length === 0 ? (
+              <div className="mini-empty-state">
+                <strong>No actionable games stored right now.</strong>
+                <p>This is normal between slates or before a fresh pregame run has produced upcoming predictions.</p>
+              </div>
+            ) : (
+              <section className="prediction-grid">
+                {actionablePredictions.map((prediction) => (
+                  <PredictionCard key={`${prediction.run_id ?? "run"}-${prediction.game_id ?? "game"}`} prediction={prediction} />
+                ))}
+              </section>
+            )}
+          </Panel>
+          <Panel
+            title="Next up"
+            subtitle="Use this lookahead section for tomorrow's or the next stored slate so you can plan before the main actionable window opens."
+            actions={<span className="panel__meta">{nextUpPredictions.length} games</span>}
+          >
+            {nextUpPredictions.length === 0 ? (
+              <div className="mini-empty-state">
+                <strong>No later slate is stored yet.</strong>
+                <p>The section fills in once the backend has a future pregame run beyond the current actionable date.</p>
+              </div>
+            ) : (
+              <section className="prediction-grid">
+                {nextUpPredictions.map((prediction) => (
+                  <PredictionCard key={`${prediction.run_id ?? "run"}-${prediction.game_id ?? "game"}`} prediction={prediction} />
+                ))}
+              </section>
+            )}
+          </Panel>
+        </section>
       </ScreenState>
     </div>
   );

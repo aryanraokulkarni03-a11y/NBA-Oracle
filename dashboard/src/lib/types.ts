@@ -111,6 +111,7 @@ export type ProviderRecord = {
 };
 
 export type Prediction = {
+  run_id?: string;
   game_id?: string;
   matchup_label?: string;
   away_team?: string;
@@ -130,6 +131,9 @@ export type Prediction = {
   expected_value?: number | null;
   edge_vs_stake?: number | null;
   source_quality?: number | null;
+  decision_time?: string | null;
+  tipoff_time?: string | null;
+  actual_winner?: string | null;
   reasons?: string[];
 };
 
@@ -139,6 +143,8 @@ export type TodayResponse = {
   storage_mode?: string;
   providers?: ProviderRecord[];
   predictions?: Prediction[];
+  actionable_predictions?: Prediction[];
+  next_up_predictions?: Prediction[];
   stored_paths?: string[];
 };
 
@@ -151,8 +157,35 @@ export type PickHistoryRun = {
   path?: string;
 };
 
+export type PickHistoryResult = {
+  run_id?: string;
+  game_id?: string;
+  matchup_label?: string;
+  selected_team?: string;
+  decision?: string;
+  actual_winner?: string;
+  won?: boolean;
+  tipoff_time?: string;
+  decision_time?: string;
+};
+
+export type PickHistorySummary = {
+  graded_count?: number;
+  correct_count?: number;
+  overall_accuracy?: number | null;
+  bet_count?: number;
+  bet_correct?: number;
+  bet_accuracy?: number | null;
+  lean_count?: number;
+  lean_correct?: number;
+  lean_accuracy?: number | null;
+  skip_count?: number;
+};
+
 export type PickHistoryResponse = {
   runs: PickHistoryRun[];
+  summary?: PickHistorySummary;
+  results?: PickHistoryResult[];
 };
 
 export type StabilityResponse = {

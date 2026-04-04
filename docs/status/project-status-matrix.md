@@ -29,7 +29,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|
 | Where are we now? | The full project is now operating end to end with a recommended free daily workflow of local dashboard + local backend + recurring scheduler, while Vercel + Cloudflare Tunnel + Supabase remains the optional hosted-access path. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
-| What is the biggest unfinished product item? | The main remaining product thread is now the split Phase 7 path: 7A for forecast visibility and performance truth, then 7B for deeper intelligence upgrades. |
+| What is the biggest unfinished product item? | The main remaining product thread is now Phase 7B: the deeper intelligence-upgrade pass after the completed 7A forecast-visibility work. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
 | What manual closeout is still required? | No Phase 6 setup gap remains for the current scope. Daily operation is now local-dashboard-first, with hosted Vercel access kept as an optional quick-tunnel path. |
@@ -79,7 +79,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
 | Phase 5: Interpretation and Guidance | Complete for current scope | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, the in-product guide page, page-level operator guidance, and advanced-only technical details are now in the dashboard. |
 | Phase 6: Operations Automation | Complete for current scope | Hosted launcher scripts, recurring scheduler helper scripts, operator workflow runbook, tunnel/runtime recovery guidance, evidence-loop hardening, and the verified Windows scheduler task are now in place; local dashboard mode is the recommended free daily workflow. |
-| Phase 7A: Forecast Visibility | Planned | Next-day prediction visibility, cleaner actionable Today behavior, and stronger predicted-vs-actual truth inside the existing Performance page are the next operator-facing pass. |
+| Phase 7A: Forecast Visibility | Complete for current scope | Today now prioritizes actionable upcoming games, exposes a next-up lookahead section, and Performance now surfaces predicted-vs-actual truth with graded accuracy summaries. |
 | Phase 7B: Intelligence Upgrade | Planned | Market-as-prior modeling, richer team-strength and injury intelligence, timing-aware pregame judgment, uncertainty-aware gating, and segmented moneyline evaluation are the deeper model-quality pass after 7A. |
 
 ## Recent Changes Summary
@@ -106,6 +106,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 5 execution closeout | Complete | Shared translation helpers, inline metric explanations, provider/bookmaker naming cleanup, the Guide route/page, Today and Providers interpretation panels, and advanced-only raw card details are now in code and building successfully. |
 | Phase 6 execution closeout | Complete | Hosted launcher scripts, recurring scheduler helper scripts, startup sanity checks, verified Windows task scheduling, and local-dashboard-first operator guidance are now landed. |
 | Phase 7 split planning | Complete | Phase 7 is now split into 7A forecast visibility and 7B intelligence upgrade so operator-surface improvements can land before deeper model changes. |
+| Phase 7A forecast visibility execution | Complete | Today now shows actionable upcoming games plus a next-up lookahead, and Performance now includes predicted-vs-actual truth with overall, BET, and LEAN accuracy summaries. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
@@ -130,6 +131,7 @@ Use this as the operational checkpoint before starting a new phase.
 - `python main.py serve-api` boots the Phase 4A FastAPI server successfully.
 - `npm.cmd run build` now compiles the Phase 4B dashboard successfully.
 - The final Phase 5 polish build now compiles successfully with clearer Today, Providers, and review-surface guidance.
+- The Phase 7A forecast-visibility pass now compiles successfully with actionable Today sections and predicted-versus-actual truth inside Performance.
 - Phase 4C now closes against `Vercel + Cloudflare Tunnel + Supabase` as the deployment target.
 - `python main.py startup-sanity` now succeeds and reports hosted/local readiness.
 - Hosted Vercel frontend, public Cloudflare health endpoint, and dashboard operator actions have now been manually verified.
@@ -149,6 +151,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4B dashboard | [App.tsx](../../dashboard/src/App.tsx), [AppShell.tsx](../../dashboard/src/components/AppShell.tsx), [Dashboard.tsx](../../dashboard/src/pages/Dashboard.tsx), [Today.tsx](../../dashboard/src/pages/Today.tsx), [Operations.tsx](../../dashboard/src/pages/Operations.tsx), [index.css](../../dashboard/src/styles/index.css) |
 | Phase 4C startup and deployment | [startup.py](../../nba_oracle/runtime/startup.py), [deployment.md](../runbooks/deployment.md), [recovery.md](../runbooks/recovery.md), [phase-4.md](../runbooks/phase-4.md), [vercel.json](../../dashboard/vercel.json) |
 | Phase 6 operator tooling | [start_hosted_stack.bat](../../start_hosted_stack.bat), [start_nba_oracle_backend.ps1](../../scripts/start_nba_oracle_backend.ps1), [start_nba_oracle_tunnel.ps1](../../scripts/start_nba_oracle_tunnel.ps1), [run_nba_oracle_scheduler.ps1](../../scripts/run_nba_oracle_scheduler.ps1), [register_nba_oracle_scheduler.ps1](../../scripts/register_nba_oracle_scheduler.ps1), [phase-6.md](../runbooks/phase-6.md) |
+| Phase 7A forecast visibility | [today.py](../../nba_oracle/api/routes/today.py), [picks.py](../../nba_oracle/api/routes/picks.py), [prediction_views.py](../../nba_oracle/runtime/prediction_views.py), [Today.tsx](../../dashboard/src/pages/Today.tsx), [Performance.tsx](../../dashboard/src/pages/Performance.tsx) |
 | Phase 3.1 remote schema | [phase3_schema.sql](../../supabase/phase3_schema.sql) |
 | Outcome remote schema | [phase3_2_schema.sql](../../supabase/phase3_2_schema.sql) |
 | Phase 4A remote schema | [phase4a_schema.sql](../../supabase/phase4a_schema.sql) |
@@ -168,6 +171,6 @@ Operate the finished system, keep evidence accumulating, and prepare for Phase 7
 - run `python main.py run-scheduler-once` after games finish, or `python main.py grade-outcomes` directly when you want a focused grading pass
 - run `python main.py review-stability` and `python main.py review-learning` as evidence grows
 - use [phase-6.md](../plans/implementation/phase-6.md) as the current runtime-automation source of truth
-- use [phase-7a.md](../plans/implementation/phase-7a.md) as the next operator-facing source of truth
+- use [phase-7a.md](../plans/implementation/phase-7a.md) as the forecast-visibility closeout record
 - use [phase-7b.md](../plans/implementation/phase-7b.md) as the deeper intelligence-upgrade source of truth
 - keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change

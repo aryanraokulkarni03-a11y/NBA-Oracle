@@ -28,12 +28,14 @@ function MetricItem({ label, value, note }: MetricItemProps) {
 export function PredictionCard({ prediction }: { prediction: Prediction }) {
   const reasonLines = formatPredictionReasons(prediction.reasons);
   const matchupLabel = prediction.matchup_label ?? prediction.game_id ?? "Unknown matchup";
+  const tipoffLabel = formatDateTime(prediction.tipoff_time);
 
   return (
     <article className="prediction-card">
       <header className="prediction-card__header">
         <div>
           <p className="prediction-card__game">{matchupLabel}</p>
+          <p className="prediction-card__meta">Tipoff {tipoffLabel}</p>
           <h3>{prediction.selected_team ?? "No side selected"}</h3>
         </div>
         <StatusPill value={prediction.decision} />

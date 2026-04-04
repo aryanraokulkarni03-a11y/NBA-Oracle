@@ -72,10 +72,11 @@ Phase 6 is complete for the current operating scope:
 - Phase 6 runbook and helper scripts now exist for launcher and scheduler setup
 - free-first local dashboard workflow is now the recommended daily path
 
-Phase 7A is now planned as the forecast-visibility pass:
-- next-day pregame prediction visibility
-- cleaner actionable Today workflow
+Phase 7A is complete for the current scope:
+- actionable Today workflow with completed games removed from the main pregame surface
+- next-up slate visibility for later stored prediction dates
 - predicted-vs-actual performance truth inside the existing Performance page
+- accuracy summary blocks for overall, BET, and LEAN graded calls
 
 Phase 7B is now planned as the intelligence-upgrade pass:
 - market-as-prior architecture
@@ -176,7 +177,7 @@ Generated replay and live-slate outputs are written to `reports/`.
 - `Vercel + Cloudflare Tunnel + Supabase` remains a supported hosted-access path, but quick `trycloudflare.com` tunnels are intentionally treated as brittle and optional.
 - Phase 4C now adds startup sanity, deployment artifacts, recovery runbooks, and hosted API support.
 - Supabase schema files now enable RLS by default for all Oracle tables in `public`.
-- Phase 5 is now in progress as the interpretation and operator-confidence pass for human-readable explanations, metric education, and the in-product guide page.
+- Phase 5 is now complete for the current explanation and operator-confidence scope.
 - Phase 6 is now complete for the current operator-convenience and automation scope.
 - Phase 6 also now explicitly covers evidence-loop hardening, including resilient outcome fetching and filtering synthetic runtime artifacts out of live grading summaries.
-- Phase 7 is now split into 7A and 7B so operator-surface upgrades land before deeper model changes.
+- Phase 7A is now complete for the current forecast-visibility scope, and Phase 7B remains the next deeper intelligence pass.

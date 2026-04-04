@@ -100,3 +100,17 @@ Do not call Phase 7A complete until:
 1. Today better supports forward-looking operator use
 2. Performance clearly shows predicted-vs-actual truth
 3. the dashboard remains honest about evidence depth
+
+## Closeout
+Phase 7A is complete for the current scope.
+
+What landed:
+- Today now prioritizes actionable upcoming games and keeps completed games off the main pregame surface
+- Today now exposes a separate next-up section for later stored prediction dates
+- Performance now shows predicted-versus-actual results inside the existing page
+- Performance now includes accuracy summary blocks for overall, BET, and LEAN graded calls
+- API and type updates now support both surfaces without adding a new dashboard page
+
+Verification:
+- `python -m unittest discover -s tests -p "test_*.py"`
+- `cd dashboard && npm run build`

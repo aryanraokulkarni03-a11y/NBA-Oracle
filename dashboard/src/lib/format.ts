@@ -33,6 +33,10 @@ export function formatCount(value?: number | null) {
   return String(value);
 }
 
+export function formatRecord(correct?: number | null, total?: number | null) {
+  return `${formatCount(correct)}/${formatCount(total)}`;
+}
+
 export function toHeadline(value?: string | null) {
   if (!value) {
     return "Unknown";
