@@ -72,15 +72,18 @@ Phase 6 is complete for the current operating scope:
 - Phase 6 runbook and helper scripts now exist for launcher and scheduler setup
 - free-first local dashboard workflow is now the recommended daily path
 
-Phase 7 is now planned as the intelligence-upgrade pass:
+Phase 7A is now planned as the forecast-visibility pass:
+- next-day pregame prediction visibility
+- cleaner actionable Today workflow
+- predicted-vs-actual performance truth inside the existing Performance page
+
+Phase 7B is now planned as the intelligence-upgrade pass:
 - market-as-prior architecture
 - stronger lineup and team-strength context
 - injury impact modeling
 - timing and line-movement intelligence
 - uncertainty-aware bet gating
 - segmented evaluation for NBA moneylines
-- next-day pregame prediction visibility
-- predicted-vs-actual performance truth inside the existing Performance page
 
 ## Repo Structure
 
@@ -120,7 +123,9 @@ nba-oracle/
 - Phase 5 clarity plan: [docs/plans/implementation/phase-5.md](docs/plans/implementation/phase-5.md)
 - Phase 6 operations plan: [docs/plans/implementation/phase-6.md](docs/plans/implementation/phase-6.md)
 - Phase 6 runbook: [docs/runbooks/phase-6.md](docs/runbooks/phase-6.md)
-- Phase 7 intelligence plan: [docs/plans/implementation/phase-7.md](docs/plans/implementation/phase-7.md)
+- Phase 7 split note: [docs/plans/implementation/phase-7.md](docs/plans/implementation/phase-7.md)
+- Phase 7A forecast-visibility plan: [docs/plans/implementation/phase-7a.md](docs/plans/implementation/phase-7a.md)
+- Phase 7B intelligence plan: [docs/plans/implementation/phase-7b.md](docs/plans/implementation/phase-7b.md)
 - Deployment runbook: [docs/runbooks/deployment.md](docs/runbooks/deployment.md)
 - Recovery runbook: [docs/runbooks/recovery.md](docs/runbooks/recovery.md)
 - Phase 4 closeout runbook: [docs/runbooks/phase-4.md](docs/runbooks/phase-4.md)
@@ -174,4 +179,4 @@ Generated replay and live-slate outputs are written to `reports/`.
 - Phase 5 is now in progress as the interpretation and operator-confidence pass for human-readable explanations, metric education, and the in-product guide page.
 - Phase 6 is now complete for the current operator-convenience and automation scope.
 - Phase 6 also now explicitly covers evidence-loop hardening, including resilient outcome fetching and filtering synthetic runtime artifacts out of live grading summaries.
-- Phase 7 is now planned as the intelligence-layer upgrade for stronger pregame NBA moneyline judgment.
+- Phase 7 is now split into 7A and 7B so operator-surface upgrades land before deeper model changes.

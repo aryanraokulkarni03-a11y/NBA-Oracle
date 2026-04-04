@@ -29,7 +29,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|
 | Where are we now? | The full project is now operating end to end with a recommended free daily workflow of local dashboard + local backend + recurring scheduler, while Vercel + Cloudflare Tunnel + Supabase remains the optional hosted-access path. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
-| What is the biggest unfinished product item? | The main remaining product thread is now Phase 7: the intelligence-upgrade pass for stronger pregame moneyline judgment. |
+| What is the biggest unfinished product item? | The main remaining product thread is now the split Phase 7 path: 7A for forecast visibility and performance truth, then 7B for deeper intelligence upgrades. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
 | What manual closeout is still required? | No Phase 6 setup gap remains for the current scope. Daily operation is now local-dashboard-first, with hosted Vercel access kept as an optional quick-tunnel path. |
@@ -79,7 +79,8 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
 | Phase 5: Interpretation and Guidance | Complete for current scope | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, the in-product guide page, page-level operator guidance, and advanced-only technical details are now in the dashboard. |
 | Phase 6: Operations Automation | Complete for current scope | Hosted launcher scripts, recurring scheduler helper scripts, operator workflow runbook, tunnel/runtime recovery guidance, evidence-loop hardening, and the verified Windows scheduler task are now in place; local dashboard mode is the recommended free daily workflow. |
-| Phase 7: Intelligence Upgrade | Planned | Market-as-prior modeling, richer team-strength and injury intelligence, timing-aware pregame judgment, uncertainty-aware gating, segmented moneyline evaluation, next-day prediction visibility, and stronger predicted-vs-actual performance surfacing are the next model-quality pass. |
+| Phase 7A: Forecast Visibility | Planned | Next-day prediction visibility, cleaner actionable Today behavior, and stronger predicted-vs-actual truth inside the existing Performance page are the next operator-facing pass. |
+| Phase 7B: Intelligence Upgrade | Planned | Market-as-prior modeling, richer team-strength and injury intelligence, timing-aware pregame judgment, uncertainty-aware gating, and segmented moneyline evaluation are the deeper model-quality pass after 7A. |
 
 ## Recent Changes Summary
 
@@ -104,7 +105,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 5 planning | Complete | The next pass now targets human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and a first-class guide page. |
 | Phase 5 execution closeout | Complete | Shared translation helpers, inline metric explanations, provider/bookmaker naming cleanup, the Guide route/page, Today and Providers interpretation panels, and advanced-only raw card details are now in code and building successfully. |
 | Phase 6 execution closeout | Complete | Hosted launcher scripts, recurring scheduler helper scripts, startup sanity checks, verified Windows task scheduling, and local-dashboard-first operator guidance are now landed. |
-| Phase 7 planning | Complete | The next model-quality pass is now defined around market-as-prior probability design, stronger lineup/injury intelligence, timing-aware judgment, uncertainty gating, segmented moneyline evaluation, next-day slate visibility, and stronger predicted-vs-actual performance surfacing. |
+| Phase 7 split planning | Complete | Phase 7 is now split into 7A forecast visibility and 7B intelligence upgrade so operator-surface improvements can land before deeper model changes. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
 | Supabase | Complete for current scope | Credentials are loaded from `.env`, dual persistence is active, and live runs are storing successfully. |
 
@@ -167,5 +168,6 @@ Operate the finished system, keep evidence accumulating, and prepare for Phase 7
 - run `python main.py run-scheduler-once` after games finish, or `python main.py grade-outcomes` directly when you want a focused grading pass
 - run `python main.py review-stability` and `python main.py review-learning` as evidence grows
 - use [phase-6.md](../plans/implementation/phase-6.md) as the current runtime-automation source of truth
-- use [phase-7.md](../plans/implementation/phase-7.md) as the next intelligence-upgrade source of truth
+- use [phase-7a.md](../plans/implementation/phase-7a.md) as the next operator-facing source of truth
+- use [phase-7b.md](../plans/implementation/phase-7b.md) as the deeper intelligence-upgrade source of truth
 - keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change
