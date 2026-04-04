@@ -18,7 +18,7 @@ export function OperationsPage() {
       <PageHeader
         eyebrow="Operations"
         title="Operator actions"
-        description="Every job is explicit, confirmable, and returns the real backend payload."
+        description="Every job is explicit, confirmable, and returns the real backend result instead of a softened UI summary."
         icon="operations"
       />
       <section className="operations-grid">
@@ -30,13 +30,13 @@ export function OperationsPage() {
         />
         <OperatorActionCard
           title="Run scheduler once"
-          description="Executes the scheduler decision pass using the current runtime state and due-job logic."
+          description="Checks what is due right now and runs only the jobs that genuinely need to execute."
           confirmLabel="Run scheduler once"
           onRun={() => runScheduler(ensureToken(), false)}
         />
         <OperatorActionCard
           title="Grade outcomes"
-          description="Attempts to backfill official winners into eligible finished predictions and update grading reports."
+          description="Pulls official game results into eligible finished predictions and refreshes the grading reports."
           confirmLabel="Grade outcomes"
           onRun={() => runOutcomeGrading(ensureToken())}
         />

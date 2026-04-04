@@ -18,7 +18,7 @@ export function StabilityPage() {
       <PageHeader
         eyebrow="Stability"
         title="Model health and drift"
-        description="Drift, timing, readiness, and containment with insufficient-data states kept visible."
+        description="Drift, timing, readiness, and containment, with honest insufficient-data states left visible instead of hidden."
         icon="stability"
       />
       <ScreenState isLoading={isLoading} error={error}>

@@ -1,4 +1,5 @@
 import { getLearning, runLearningReview } from "../lib/api";
+import { formatEvidenceReasons } from "../lib/explain";
 import { useAuth } from "../lib/auth";
 import { useResource } from "../hooks/useResource";
 import { KeyValueList } from "../components/KeyValueList";
@@ -36,7 +37,7 @@ export function LearningPage() {
           </Panel>
           <Panel title="Why the current status exists" subtitle="The UI never upgrades the backend's evidence claim.">
             <ul className="reason-list">
-              {(data?.reasons ?? ["No learning reasons reported."]).map((reason) => (
+              {formatEvidenceReasons(data?.reasons).map((reason) => (
                 <li key={reason}>{reason}</li>
               ))}
             </ul>

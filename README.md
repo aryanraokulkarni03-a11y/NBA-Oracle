@@ -54,11 +54,13 @@ Phase 4C is complete for the chosen deployment shape:
 - dashboard-wide refresh after operator actions
 - hosted verification through `Vercel + Cloudflare Tunnel + Supabase`
 
-Phase 5 is in progress:
+Phase 5 is complete for the current scope:
 - human-readable reason translation
 - bookmaker/provider naming cleanup
 - inline metric explanations
 - in-product guide page and operator-confidence copy pass
+- page-level interpretation guidance on Today and Providers
+- advanced-only raw technical detail exposure on prediction cards
 
 Phase 6 is complete for the current operating scope:
 - single hosted-mode launcher

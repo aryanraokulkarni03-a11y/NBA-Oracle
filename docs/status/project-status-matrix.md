@@ -29,7 +29,7 @@ Use this as the operational checkpoint before starting a new phase.
 |---|---|
 | Where are we now? | The full project is now operating end to end with a recommended free daily workflow of local dashboard + local backend + recurring scheduler, while Vercel + Cloudflare Tunnel + Supabase remains the optional hosted-access path. |
 | What is production-ready today? | Phase 1 replay/validation, Phase 2 live provider execution and dual persistence, Phase 3 review/outcome workflows, and the full Phase 4 operating/dashboard stack. |
-| What is the biggest unfinished product item? | Two threads now remain: finish Phase 5 comprehension polish, then execute the Phase 7 intelligence-upgrade pass for stronger pregame moneyline judgment. |
+| What is the biggest unfinished product item? | The main remaining product thread is now Phase 7: the intelligence-upgrade pass for stronger pregame moneyline judgment. |
 | Can the app run live inputs today? | Yes, through `python main.py build-live-slate --live`, with bundle fallback still available. |
 | Can it place real bets end-to-end today? | No. It remains a selective analysis and operator workflow system, not an auto-betting system. |
 | What manual closeout is still required? | No Phase 6 setup gap remains for the current scope. Daily operation is now local-dashboard-first, with hosted Vercel access kept as an optional quick-tunnel path. |
@@ -77,7 +77,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 2: Signal Quality Layer | Complete | Real provider paths, bundle fallback, dual storage code path, live execution mode, and Phase 2.2 schedule fallback are built and verified on a real pregame run. |
 | Phase 3: Stability Layer | Complete for current scope | Baseline refresh rules, ROI/CLV/calibration drift review, timing-event logs, market-readiness evidence, analyst disagreement logging, model-review bookkeeping, and official outcome grading are live; graded evidence depth still needs to mature. |
 | Phase 4: Output / Operating Layer | Complete for chosen deployment shape | Phase 4A operating core, Phase 4B dashboard, and Phase 4C hosted/deployment closeout are now wired and verified against Vercel + Cloudflare Tunnel + Supabase. |
-| Phase 5: Interpretation and Guidance | In progress | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and the in-product guide page are now landing in the dashboard. |
+| Phase 5: Interpretation and Guidance | Complete for current scope | Human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, the in-product guide page, page-level operator guidance, and advanced-only technical details are now in the dashboard. |
 | Phase 6: Operations Automation | Complete for current scope | Hosted launcher scripts, recurring scheduler helper scripts, operator workflow runbook, tunnel/runtime recovery guidance, evidence-loop hardening, and the verified Windows scheduler task are now in place; local dashboard mode is the recommended free daily workflow. |
 | Phase 7: Intelligence Upgrade | Planned | Market-as-prior modeling, richer team-strength and injury intelligence, timing-aware pregame judgment, uncertainty-aware gating, and segmented moneyline evaluation are the next model-quality pass. |
 
@@ -102,7 +102,7 @@ Use this as the operational checkpoint before starting a new phase.
 | Phase 4C final one-shot plan | Complete | The last remaining pass is now rewritten around the real unfinished seams: startup, scheduler truth, dashboard/API refresh consistency, delivery verification, recovery, hosted deployment, and end-to-end closeout. |
 | Phase 4C execution start | Complete | Startup sanity, hosted API/CORS support, notification history in health, deployment artifacts, recovery runbooks, dashboard-wide runtime refresh, and hosted verification are landed. |
 | Phase 5 planning | Complete | The next pass now targets human-readable reason translation, metric explanations, provider/bookmaker naming cleanup, and a first-class guide page. |
-| Phase 5 execution start | In progress | Shared translation helpers, inline metric explanations, provider/bookmaker naming cleanup, and the new Guide route/page are now in code and building successfully. |
+| Phase 5 execution closeout | Complete | Shared translation helpers, inline metric explanations, provider/bookmaker naming cleanup, the Guide route/page, Today and Providers interpretation panels, and advanced-only raw card details are now in code and building successfully. |
 | Phase 6 execution closeout | Complete | Hosted launcher scripts, recurring scheduler helper scripts, startup sanity checks, verified Windows task scheduling, and local-dashboard-first operator guidance are now landed. |
 | Phase 7 planning | Complete | The next model-quality pass is now defined around market-as-prior probability design, stronger lineup/injury intelligence, timing-aware judgment, uncertainty gating, and segmented moneyline evaluation. |
 | Sentiment | Deferred | Still intentionally optional and not live-enabled yet. |
@@ -128,6 +128,7 @@ Use this as the operational checkpoint before starting a new phase.
 - The free daily local dashboard workflow on `http://localhost:3000` is now the recommended operating path.
 - `python main.py serve-api` boots the Phase 4A FastAPI server successfully.
 - `npm.cmd run build` now compiles the Phase 4B dashboard successfully.
+- The final Phase 5 polish build now compiles successfully with clearer Today, Providers, and review-surface guidance.
 - Phase 4C now closes against `Vercel + Cloudflare Tunnel + Supabase` as the deployment target.
 - `python main.py startup-sanity` now succeeds and reports hosted/local readiness.
 - Hosted Vercel frontend, public Cloudflare health endpoint, and dashboard operator actions have now been manually verified.
@@ -156,7 +157,7 @@ Use this as the operational checkpoint before starting a new phase.
 
 ## Next Recommended Step
 
-Operate the finished system, keep evidence accumulating, finish Phase 5, and prepare for Phase 7:
+Operate the finished system, keep evidence accumulating, and prepare for Phase 7:
 - use the local dashboard workflow as the default free daily path:
   - `python main.py serve-api`
   - `cd dashboard && npm.cmd run dev`
@@ -165,7 +166,6 @@ Operate the finished system, keep evidence accumulating, finish Phase 5, and pre
 - run `python main.py build-live-slate --live` on slate days
 - run `python main.py run-scheduler-once` after games finish, or `python main.py grade-outcomes` directly when you want a focused grading pass
 - run `python main.py review-stability` and `python main.py review-learning` as evidence grows
-- execute the Phase 5 clarity/help pass through [phase-5.md](../plans/implementation/phase-5.md)
 - use [phase-6.md](../plans/implementation/phase-6.md) as the current runtime-automation source of truth
 - use [phase-7.md](../plans/implementation/phase-7.md) as the next intelligence-upgrade source of truth
 - keep the Phase 1 replay flow intact as the acceptance gate for every future provider or model change

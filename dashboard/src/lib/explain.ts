@@ -11,6 +11,11 @@ type GuideSection = {
   points: string[];
 };
 
+type GuidanceItem = {
+  title: string;
+  body: string;
+};
+
 const BOOKMAKER_NAMES: Record<string, string> = {
   betmgm: "BetMGM",
   draftkings: "DraftKings",
@@ -59,6 +64,46 @@ const REASON_EXPLANATIONS: Record<string, string> = {
   edge_is_real_but_not_strong: "There may be some value here, but not enough to qualify as a full bet.",
   all_gates_passed: "The model, price, and source-quality checks all cleared the full bet gate.",
 };
+
+const REVIEW_REASON_EXPLANATIONS: Record<string, string> = {
+  insufficient_data: "There is not enough graded evidence yet to make a stronger claim.",
+  no_review: "No candidate model review is open right now.",
+  retraining_not_recommended: "Current evidence does not justify a model change.",
+  outcome_history_too_shallow: "The graded history is still too small to support a stronger conclusion.",
+  actionable_history_too_shallow: "There are not enough actionable graded bets yet to trust a stronger judgment.",
+  market_readiness_locked: "The market-readiness policy is still intentionally cautious.",
+  baseline_recently_refreshed: "The baseline was refreshed recently, so the system is still building comparison history.",
+};
+
+export const TODAY_GUIDANCE: GuidanceItem[] = [
+  {
+    title: "Start with the decision, not the win chance",
+    body: "A likely winner can still be a skip if the market price is too expensive.",
+  },
+  {
+    title: "Use EV and Edge together",
+    body: "Positive EV and positive edge suggest value. Negative EV usually means pass, even on strong teams.",
+  },
+  {
+    title: "Treat degraded inputs as caution, not failure",
+    body: "Fallback or weaker data does not automatically break the workflow, but it should lower confidence.",
+  },
+];
+
+export const PROVIDER_GUIDANCE: GuidanceItem[] = [
+  {
+    title: "Healthy means the source contributed normally",
+    body: "The provider returned usable data and did not need a meaningful fallback.",
+  },
+  {
+    title: "Degraded means usable with caution",
+    body: "The source still helped, but the app had to fall back, defer, or accept weaker-than-ideal data quality.",
+  },
+  {
+    title: "Failed means do not lean on that source",
+    body: "The workflow may still run overall, but that provider did not contribute reliable input to the current run.",
+  },
+];
 
 function titleCase(value: string) {
   return value
@@ -112,6 +157,13 @@ export function formatPredictionReasons(reasons?: string[]) {
   return reasons.map((reason) => REASON_EXPLANATIONS[reason] ?? titleCase(reason));
 }
 
+export function formatRawReasonCode(reason?: string) {
+  if (!reason) {
+    return "unknown_reason";
+  }
+  return reason;
+}
+
 export function summarizePrediction(prediction: Prediction) {
   const reasons = prediction.reasons ?? [];
   if (reasons.includes("negative_expected_value")) {
@@ -143,9 +195,9 @@ export function explainMetric(label: string, prediction: Prediction) {
         ? "Positive edge means the model is above the market's implied view."
         : "Negative edge means the market is at least as strong as the model's number.";
     case "Reference":
-      return "This is the primary line used for the decision.";
+      return "This is the main price the system judged first before comparing it with the best market price.";
     case "Best":
-      return "This is the best price seen across the books in the current snapshot.";
+      return "This is the strongest bettor-friendly price seen in the current market snapshot.";
     case "Model":
       return "This is the model's win estimate for the selected side.";
     case "Market time":
@@ -153,6 +205,13 @@ export function explainMetric(label: string, prediction: Prediction) {
     default:
       return "";
   }
+}
+
+export function formatEvidenceReasons(reasons?: string[]) {
+  if (!reasons || reasons.length === 0) {
+    return ["No additional review notes were reported."];
+  }
+  return reasons.map((reason) => REVIEW_REASON_EXPLANATIONS[reason] ?? titleCase(reason));
 }
 
 export const METRIC_DEFINITIONS: Definition[] = [

@@ -262,7 +262,8 @@ a {
 .operations-grid,
 .prediction-grid,
 .guide-stack,
-.definition-grid {
+.definition-grid,
+.guide-mini-grid {
   display: grid;
   gap: 1.1rem;
 }
@@ -523,6 +524,21 @@ a {
   gap: 0.7rem;
 }
 
+.prediction-card__callout {
+  padding: 0.95rem 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.prediction-card__callout-label {
+  margin: 0 0 0.55rem;
+  color: var(--text-soft);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
 .prediction-card__reason-list,
 .guide-points,
 .guide-flow {
@@ -541,11 +557,28 @@ a {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.guide-mini-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 .definition-card {
   padding: 1rem;
   border-radius: var(--radius-md);
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.guide-mini-card {
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.guide-mini-card p:last-child {
+  margin: 0;
+  color: var(--text-muted);
+  line-height: 1.55;
 }
 
 .definition-card__body {
@@ -848,6 +881,30 @@ a {
   color: var(--danger);
 }
 
+.prediction-card__advanced {
+  padding-top: 0.2rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.prediction-card__advanced summary {
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.prediction-card__advanced-body {
+  margin-top: 0.75rem;
+  display: grid;
+  gap: 0.55rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.prediction-card__advanced-body p {
+  margin: 0;
+}
+
 @keyframes page-enter {
   from {
     opacity: 0;
@@ -879,7 +936,8 @@ a {
   .panel-grid--two,
   .operations-grid,
   .prediction-grid,
-  .definition-grid {
+  .definition-grid,
+  .guide-mini-grid {
     grid-template-columns: 1fr;
   }
 

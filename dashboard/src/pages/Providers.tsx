@@ -1,4 +1,5 @@
 import { getHealth, getProviders } from "../lib/api";
+import { PROVIDER_GUIDANCE } from "../lib/explain";
 import { formatDateTime } from "../lib/format";
 import { useResource } from "../hooks/useResource";
 import { EmptyState } from "../components/EmptyState";
@@ -22,6 +23,16 @@ export function ProvidersPage() {
         icon="providers"
       />
       <ScreenState isLoading={providers.isLoading || health.isLoading} error={providers.error || health.error}>
+        <Panel title="How to read provider health" subtitle="Provider status is a confidence signal, not background noise.">
+          <div className="guide-mini-grid">
+            {PROVIDER_GUIDANCE.map((item) => (
+              <article key={item.title} className="guide-mini-card">
+                <p className="eyebrow">{item.title}</p>
+                <p>{item.body}</p>
+              </article>
+            ))}
+          </div>
+        </Panel>
         <section className="panel-grid panel-grid--two">
           <Panel title="Runtime summary" subtitle="Live API and service readiness from /api/health">
             <KeyValueList

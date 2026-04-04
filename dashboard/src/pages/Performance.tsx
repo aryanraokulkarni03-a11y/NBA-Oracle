@@ -16,7 +16,7 @@ export function PerformancePage() {
       <PageHeader
         eyebrow="Performance"
         title="Run history"
-        description="Recent run summaries only. No fabricated ROI, just the backend truth we actually store today."
+        description="Recent run summaries only. This page shows what the backend has actually stored, not invented performance claims."
         icon="performance"
         actions={
           <button type="button" className="button button--secondary" onClick={() => void refresh()}>
@@ -26,7 +26,7 @@ export function PerformancePage() {
         }
       />
       <ScreenState isLoading={isLoading} error={error}>
-        <Panel title="Recent runs" subtitle="Run summaries pulled from /api/picks/history">
+        <Panel title="Recent runs" subtitle="Use this as an audit trail of recent prediction runs, not as a finished betting ledger.">
           {rows.length === 0 ? (
             <EmptyState title="No history available" body="Run history will appear here after live slate jobs generate prediction artifacts." />
           ) : (

@@ -108,7 +108,7 @@ export function DashboardPage() {
           </Panel>
         </section>
         <section className="panel-grid panel-grid--two">
-          <Panel title="Stability and learning" subtitle="Insufficient evidence remains visible instead of being flattened into false certainty.">
+          <Panel title="Stability and learning" subtitle="Evidence stays visible as it really is, including honest insufficient-data states.">
             <div className="list-stack">
               <div className="list-row">
                 <span>Drift</span>
@@ -128,7 +128,7 @@ export function DashboardPage() {
               </div>
             </div>
           </Panel>
-          <Panel title="Startup and delivery" subtitle="4C keeps startup readiness and notification truth visible in the main overview.">
+          <Panel title="Startup and delivery" subtitle="Startup readiness and recent delivery truth stay visible in the main overview.">
             <div className="list-stack">
               <div className="list-row">
                 <span>Startup warnings</span>
@@ -154,10 +154,10 @@ export function DashboardPage() {
           </Panel>
         </section>
         <section className="panel-grid panel-grid--two">
-          <Panel title="Providers" subtitle="Source quality stays visible in the primary surface.">
+          <Panel title="Providers" subtitle="Source quality stays visible in the primary operator surface.">
             <ProviderList providers={(providers.data?.providers ?? []).slice(0, 3)} />
           </Panel>
-          <Panel title="Startup checks" subtitle="Hosted readiness is explicit instead of being left to manual memory.">
+          <Panel title="Startup checks" subtitle="Runtime readiness is explicit instead of being left to memory.">
             <div className="list-stack">
               {(startup?.checks ?? []).slice(0, 4).map((check) => (
                 <div className="list-row" key={check.name}>
